@@ -7,6 +7,7 @@ import dmitry.molchanov.snake.presentation.Direct.DOWN
 import dmitry.molchanov.snake.presentation.Direct.LEFT
 import dmitry.molchanov.snake.presentation.Direct.RIGHT
 import dmitry.molchanov.snake.presentation.Direct.TOP
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,8 +31,8 @@ class MainViewModel(
             chainSize = chainSize.toFloat(),
             freeChain = SnakeChain(positionX = 0, positionY = 0),
             chains = listOf(
-                SnakeChain(positionX = 40, positionY = centerY),
-                SnakeChain(positionX = 20, positionY = centerY),
+                SnakeChain(positionX = chainSize + chainSize, positionY = centerY),
+                SnakeChain(positionX = chainSize, positionY = centerY),
                 SnakeChain(positionX = 0, positionY = centerY),
             ),
         )
@@ -39,9 +40,19 @@ class MainViewModel(
     val stateFlow = _stateFlow.asStateFlow()
 
     init {
-        initNewFreeChain()
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
+            initNewFreeChain()
             runSnake()
+        }
+    }
+
+    fun onAction(action: Action) {
+        println("action = $action")
+        when (action) {
+            TopClick -> changeDirect(newDirect = TOP)
+            RightClick -> changeDirect(newDirect = RIGHT)
+            BottomClick -> changeDirect(newDirect = DOWN)
+            LeftClick -> changeDirect(newDirect = LEFT)
         }
     }
 
@@ -76,17 +87,8 @@ class MainViewModel(
      * (x - center_x)² + (y - center_y)² < radius².
      */
     private fun isChainInRadius(x: Int, y: Int, centerX: Int, centerY: Int, radius: Int): Boolean =
-        (x - centerX).toDouble().pow(2) + (y - centerY).toDouble().pow(2) < radius.toDouble().pow(2)
-
-    fun onAction(action: Action) {
-        println("action = $action")
-        when (action) {
-            TopClick -> changeDirect(newDirect = TOP)
-            RightClick -> changeDirect(newDirect = RIGHT)
-            BottomClick -> changeDirect(newDirect = DOWN)
-            LeftClick -> changeDirect(newDirect = LEFT)
-        }
-    }
+        (x - centerX).toDouble().pow(2) + (y - centerY).toDouble().pow(2) < radius.toDouble()
+            .pow(2) - 50
 
     private fun changeDirect(newDirect: Direct) {
         val currentDirect = stateFlow.value.direct
@@ -104,12 +106,18 @@ class MainViewModel(
 
     private suspend fun runSnake() {
         delay(START_SPEED)
+        val state = stateFlow.value
         val chains = stateFlow.value.chains
-        val newChain = getNewHeadPosition(
+        val newChains = mutableListOf<SnakeChain>()
+        val newChain = getNewHeadChain(
             direct = stateFlow.value.direct,
             currentChain = stateFlow.value.chains.first()
         )
-        val newChains = mutableListOf(newChain)
+        if (isNextChainFree(headChain = newChain, freeChain = state.freeChain, direct = state.direct)) {
+            newChains.add(state.freeChain)
+            initNewFreeChain()
+        }
+        newChains.add(newChain)
         var lastXYPair = 0 to 0
         chains.forEachIndexed { index, snakeChain ->
             if (index != 0) {
@@ -119,18 +127,17 @@ class MainViewModel(
             }
             lastXYPair = snakeChain.positionX to snakeChain.positionY
         }
-
-
         _stateFlow.update { it.copy(chains = newChains) }
         runSnake()
     }
 
-    private fun isChainInSnakeHead(chains: List<SnakeChain>, chain: SnakeChain): Boolean {
-        val snakeHeadChain = chains.first()
-        return snakeHeadChain.positionX == chain.positionX && snakeHeadChain.positionY == chain.positionY
-    }
+    private fun isNextChainFree(
+        headChain: SnakeChain,
+        freeChain: SnakeChain,
+        direct: Direct
+    ): Boolean = getNewHeadChain(direct = direct, headChain) == freeChain
 
-    private fun getNewHeadPosition(
+    private fun getNewHeadChain(
         direct: Direct,
         currentChain: SnakeChain
     ): SnakeChain {
@@ -157,7 +164,7 @@ class MainViewModel(
     }
 
     private companion object {
-        const val START_SPEED = 100L
+        const val START_SPEED = 500L
     }
 }
 
