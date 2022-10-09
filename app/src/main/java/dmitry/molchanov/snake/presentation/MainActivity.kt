@@ -6,8 +6,6 @@ import android.util.DisplayMetrics
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.flow.launchIn
 
 
 class MainActivity : ComponentActivity() {
@@ -17,7 +15,7 @@ class MainActivity : ComponentActivity() {
         MainViewModelProvider(
             width = widthHeightPair.first,
             height = widthHeightPair.second,
-            chainSize = 10
+            chainSize = 20
         )
     }
 
@@ -26,8 +24,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             GameScreen(viewModel = viewModel)
         }
-        viewModel.stateFlow
-            .launchIn(lifecycleScope)
     }
 
     private fun getScreenWidthHeightPair(): Pair<Int, Int> {
@@ -37,7 +33,6 @@ class MainActivity : ComponentActivity() {
             val bounds = windowManager.currentWindowMetrics.bounds
             height = bounds.height()
             width = bounds.width()
-
         } else {
             val metrics = DisplayMetrics()
             windowManager.defaultDisplay.getMetrics(metrics)

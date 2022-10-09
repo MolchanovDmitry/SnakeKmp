@@ -12,18 +12,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.IntSize
 
+private const val PRESS_SCREEN_RATIO = 0.3
+
 @Composable
 fun GameScreen(viewModel: MainViewModel) {
     val state = viewModel.stateFlow.collectAsState()
 
-    DrawSnake(state.value.chains, viewModel::onAction)
+    DrawSnake(state.value.chains, state.value.freeChain, viewModel::onAction)
 
 }
 
-private const val PRESS_SCREEN_RATIO = 0.3
-
 @Composable
-private fun DrawSnake(chains: List<SnakeChain>, onAction: (Action) -> Unit) {
+private fun DrawSnake(chains: List<SnakeChain>, freeChain: SnakeChain, onAction: (Action) -> Unit) {
     Canvas(modifier = Modifier
         .fillMaxSize()
         .pointerInput(Unit) {
@@ -39,6 +39,12 @@ private fun DrawSnake(chains: List<SnakeChain>, onAction: (Action) -> Unit) {
                 topLeft = Offset(x = it.positionX.toFloat(), y = it.positionY.toFloat())
             )
         }
+        drawRect(
+            color = Color.Red,
+            size = Size(20f, 20f),
+            topLeft = Offset(x = freeChain.positionX.toFloat(), y = freeChain.positionY.toFloat())
+        )
+
     }
 }
 

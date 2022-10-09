@@ -12,6 +12,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.math.pow
+import kotlin.random.Random
 
 class MainViewModel(
     private val height: Int,
@@ -19,17 +21,57 @@ class MainViewModel(
     private val chainSize: Int
 ) : ViewModel() {
 
-    private val _stateFlow = MutableStateFlow(SnakeState(chains = emptyList()))
+    private val maxHorizontalChains: Int = width / chainSize
+    private val maxVerticalChains: Int = height / chainSize
+    private val centerX = chainSize * maxHorizontalChains / 2
+    private val centerY = chainSize * maxVerticalChains / 2
+    private val _stateFlow = MutableStateFlow(
+        SnakeState(
+            freeChain = SnakeChain(positionX = 0, positionY = 0),
+            chains = listOf(SnakeChain(positionX = 0, positionY = centerY)),
+        )
+    )
     val stateFlow = _stateFlow.asStateFlow()
 
     init {
-        _stateFlow.update {
-            it.copy(chains = listOf(SnakeChain(positionX = 0, positionY = height / 2)))
-        }
+        initNewFreeChain()
         viewModelScope.launch {
             runSnake()
         }
     }
+
+    private fun initNewFreeChain() {
+        val randomHorizontalChainCount = Random.nextInt(0, maxHorizontalChains)
+        val randomVerticalChainCount = Random.nextInt(0, maxVerticalChains)
+        val freeChainX = randomHorizontalChainCount * chainSize
+        val freeChainY = randomVerticalChainCount * chainSize
+        val shouldSkip = !isChainInRadius(
+            x = freeChainX, y = freeChainY,
+            centerX = centerX,
+            centerY = centerY,
+            radius = width / 2
+        ) && !isChainInSnake(x = freeChainX, y = freeChainY)
+
+        if (shouldSkip) {
+            initNewFreeChain()
+        } else {
+            _stateFlow.update {
+                it.copy(
+                    freeChain = SnakeChain(positionX = freeChainX, positionY = freeChainY)
+                )
+            }
+        }
+    }
+
+    private fun isChainInSnake(x: Int, y: Int): Boolean =
+        stateFlow.value.chains
+            .find { it.positionX == x && it.positionY == y } != null
+
+    /**
+     * (x - center_x)² + (y - center_y)² < radius².
+     */
+    private fun isChainInRadius(x: Int, y: Int, centerX: Int, centerY: Int, radius: Int): Boolean =
+        (x - centerX).toDouble().pow(2) + (y - centerY).toDouble().pow(2) < radius.toDouble().pow(2)
 
     fun onAction(action: Action) {
         println("action = $action")
