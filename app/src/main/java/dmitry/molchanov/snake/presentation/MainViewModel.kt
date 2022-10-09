@@ -17,24 +17,22 @@ import kotlin.math.pow
 import kotlin.random.Random
 
 class MainViewModel(
-    private val height: Int,
-    private val width: Int,
+    inputWidth: Int,
+    inputHeight: Int,
     private val chainSize: Int
 ) : ViewModel() {
 
-    private val maxHorizontalChains: Int = width / chainSize
-    private val maxVerticalChains: Int = height / chainSize
-    private val centerX = chainSize * maxHorizontalChains / 2
-    private val centerY = chainSize * maxVerticalChains / 2
+    private val maxHorizontalChains: Int = inputWidth / chainSize
+    private val maxVerticalChains: Int = inputHeight / chainSize
+    private val width = maxHorizontalChains * chainSize
+    private val height = maxVerticalChains * chainSize
+    private val centerX = width / 2
+    private val centerY = height / 2
     private val _stateFlow = MutableStateFlow(
         SnakeState(
             chainSize = chainSize.toFloat(),
             freeChain = SnakeChain(positionX = 0, positionY = 0),
-            chains = listOf(
-                SnakeChain(positionX = chainSize + chainSize, positionY = centerY),
-                SnakeChain(positionX = chainSize, positionY = centerY),
-                SnakeChain(positionX = 0, positionY = centerY),
-            ),
+            chains = listOf(SnakeChain(positionX = 0, positionY = centerY))
         )
     )
     val stateFlow = _stateFlow.asStateFlow()
@@ -113,7 +111,12 @@ class MainViewModel(
             direct = stateFlow.value.direct,
             currentChain = stateFlow.value.chains.first()
         )
-        if (isNextChainFree(headChain = newChain, freeChain = state.freeChain, direct = state.direct)) {
+        if (isNextChainFree(
+                headChain = newChain,
+                freeChain = state.freeChain,
+                direct = state.direct
+            )
+        ) {
             newChains.add(state.freeChain)
             initNewFreeChain()
         }
@@ -164,7 +167,7 @@ class MainViewModel(
     }
 
     private companion object {
-        const val START_SPEED = 500L
+        const val START_SPEED = 200L
     }
 }
 
@@ -175,13 +178,13 @@ object TopClick : Action()
 object BottomClick : Action()
 
 class MainViewModelProvider(
-    private val height: Int,
     private val width: Int,
+    private val height: Int,
     private val chainSize: Int
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return MainViewModel(height = height, width = width, chainSize = chainSize) as T
+        return MainViewModel(inputWidth = width, inputHeight = height, chainSize = chainSize) as T
     }
 
 }
