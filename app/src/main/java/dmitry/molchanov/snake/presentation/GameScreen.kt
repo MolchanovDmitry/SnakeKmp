@@ -17,13 +17,14 @@ private const val PRESS_SCREEN_RATIO = 0.3
 @Composable
 fun GameScreen(viewModel: MainViewModel) {
     val state = viewModel.stateFlow.collectAsState()
-
-    DrawSnake(state.value.chains, state.value.freeChain, viewModel::onAction)
+    val chainSize = state.value.chainSize-2
+    DrawSnake(state.value.chains, chainSize,viewModel::onAction)
+    DrawFreeChain(state.value.freeChain, chainSize)
 
 }
 
 @Composable
-private fun DrawSnake(chains: List<SnakeChain>, freeChain: SnakeChain, onAction: (Action) -> Unit) {
+private fun DrawSnake(chains: List<SnakeChain>, chainSize: Float, onAction: (Action) -> Unit) {
     Canvas(modifier = Modifier
         .fillMaxSize()
         .pointerInput(Unit) {
@@ -35,16 +36,24 @@ private fun DrawSnake(chains: List<SnakeChain>, freeChain: SnakeChain, onAction:
             println(it)
             drawRect(
                 color = Color.Red,
-                size = Size(20f, 20f),
+                size = Size(chainSize, chainSize),
                 topLeft = Offset(x = it.positionX.toFloat(), y = it.positionY.toFloat())
             )
         }
+    }
+}
+
+@Composable
+private fun DrawFreeChain(freeChain: SnakeChain, chainSize: Float) {
+    Canvas(modifier = Modifier.fillMaxSize()) {
         drawRect(
             color = Color.Red,
-            size = Size(20f, 20f),
-            topLeft = Offset(x = freeChain.positionX.toFloat(), y = freeChain.positionY.toFloat())
+            size = Size(chainSize, chainSize),
+            topLeft = Offset(
+                x = freeChain.positionX.toFloat(),
+                y = freeChain.positionY.toFloat()
+            )
         )
-
     }
 }
 

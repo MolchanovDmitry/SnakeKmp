@@ -27,8 +27,13 @@ class MainViewModel(
     private val centerY = chainSize * maxVerticalChains / 2
     private val _stateFlow = MutableStateFlow(
         SnakeState(
+            chainSize = chainSize.toFloat(),
             freeChain = SnakeChain(positionX = 0, positionY = 0),
-            chains = listOf(SnakeChain(positionX = 0, positionY = centerY)),
+            chains = listOf(
+                SnakeChain(positionX = 40, positionY = centerY),
+                SnakeChain(positionX = 20, positionY = centerY),
+                SnakeChain(positionX = 0, positionY = centerY),
+            ),
         )
     )
     val stateFlow = _stateFlow.asStateFlow()
@@ -99,22 +104,30 @@ class MainViewModel(
 
     private suspend fun runSnake() {
         delay(START_SPEED)
-
+        val chains = stateFlow.value.chains
         val newChain = getNewHeadPosition(
             direct = stateFlow.value.direct,
             currentChain = stateFlow.value.chains.first()
         )
-        _stateFlow.update {
-            it.copy(
-                chains = stateFlow.value.chains.map {
-                    SnakeChain(
-                        positionX = newChain.positionX,
-                        positionY = newChain.positionY
-                    )
-                }
-            )
+        val newChains = mutableListOf(newChain)
+        var lastXYPair = 0 to 0
+        chains.forEachIndexed { index, snakeChain ->
+            if (index != 0) {
+                newChains.add(
+                    SnakeChain(positionX = lastXYPair.first, positionY = lastXYPair.second)
+                )
+            }
+            lastXYPair = snakeChain.positionX to snakeChain.positionY
         }
+
+
+        _stateFlow.update { it.copy(chains = newChains) }
         runSnake()
+    }
+
+    private fun isChainInSnakeHead(chains: List<SnakeChain>, chain: SnakeChain): Boolean {
+        val snakeHeadChain = chains.first()
+        return snakeHeadChain.positionX == chain.positionX && snakeHeadChain.positionY == chain.positionY
     }
 
     private fun getNewHeadPosition(
