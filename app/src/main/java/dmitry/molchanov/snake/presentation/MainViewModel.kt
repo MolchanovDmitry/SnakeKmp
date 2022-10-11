@@ -31,8 +31,8 @@ class MainViewModel(
     private val _stateFlow = MutableStateFlow(
         SnakeState(
             chainSize = chainSize.toFloat(),
-            freeChain = SnakeChain(positionX = 0, positionY = 0),
-            chains = listOf(SnakeChain(positionX = 0, positionY = centerY))
+            freeChain = SnakeChain(x = 0, y = 0),
+            chains = listOf(SnakeChain(x = 0, y = centerY))
         )
     )
     val stateFlow = _stateFlow.asStateFlow()
@@ -71,7 +71,7 @@ class MainViewModel(
         } else {
             _stateFlow.update {
                 it.copy(
-                    freeChain = SnakeChain(positionX = freeChainX, positionY = freeChainY)
+                    freeChain = SnakeChain(x = freeChainX, y = freeChainY)
                 )
             }
         }
@@ -79,7 +79,7 @@ class MainViewModel(
 
     private fun isChainInSnake(x: Int, y: Int): Boolean =
         stateFlow.value.chains
-            .find { it.positionX == x && it.positionY == y } != null
+            .find { it.x == x && it.y == y } != null
 
     /**
      * (x - center_x)² + (y - center_y)² < radius².
@@ -125,10 +125,10 @@ class MainViewModel(
         chains.forEachIndexed { index, snakeChain ->
             if (index != 0) {
                 newChains.add(
-                    SnakeChain(positionX = lastXYPair.first, positionY = lastXYPair.second)
+                    SnakeChain(x = lastXYPair.first, y = lastXYPair.second)
                 )
             }
-            lastXYPair = snakeChain.positionX to snakeChain.positionY
+            lastXYPair = snakeChain.x to snakeChain.y
         }
         _stateFlow.update { it.copy(chains = newChains) }
         runSnake()
@@ -144,24 +144,24 @@ class MainViewModel(
         direct: Direct,
         currentChain: SnakeChain
     ): SnakeChain {
-        val x = currentChain.positionX
-        val y = currentChain.positionY
+        val x = currentChain.x
+        val y = currentChain.y
         return when (direct) {
             RIGHT -> {
                 val newX = x + chainSize
-                SnakeChain(positionX = if (newX >= width) 0 else newX, positionY = y)
+                SnakeChain(x = if (newX >= width) 0 else newX, y = y)
             }
             LEFT -> {
                 val newX = x - chainSize
-                SnakeChain(positionX = if (newX <= 0) width else newX, positionY = y)
+                SnakeChain(x = if (newX <= 0) width else newX, y = y)
             }
             TOP -> {
                 val newY = y - chainSize
-                SnakeChain(positionX = x, positionY = if (newY <= 0) height else newY)
+                SnakeChain(x = x, y = if (newY <= 0) height else newY)
             }
             DOWN -> {
                 val newY = y + chainSize
-                SnakeChain(positionX = x, positionY = if (newY >= height) 0 else newY)
+                SnakeChain(x = x, y = if (newY >= height) 0 else newY)
             }
         }
     }

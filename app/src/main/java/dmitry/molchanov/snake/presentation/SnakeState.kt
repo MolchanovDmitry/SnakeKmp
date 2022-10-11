@@ -8,7 +8,7 @@ data class SnakeState(
 )
 
 data class SnakeChain(
-    val positionX: Int,
-    val positionY: Int
+    val x: Int,
+    val y: Int
 )
 

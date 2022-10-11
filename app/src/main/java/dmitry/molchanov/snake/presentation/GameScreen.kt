@@ -37,7 +37,7 @@ private fun DrawSnake(chains: List<SnakeChain>, chainSize: Float, onAction: (Act
             drawRect(
                 color = Color.Red,
                 size = Size(chainSize, chainSize),
-                topLeft = Offset(x = it.positionX.toFloat(), y = it.positionY.toFloat())
+                topLeft = Offset(x = it.x.toFloat(), y = it.y.toFloat())
             )
         }
     }
@@ -50,8 +50,8 @@ private fun DrawFreeChain(freeChain: SnakeChain, chainSize: Float) {
             color = Color.Red,
             size = Size(chainSize, chainSize),
             topLeft = Offset(
-                x = freeChain.positionX.toFloat(),
-                y = freeChain.positionY.toFloat()
+                x = freeChain.x.toFloat(),
+                y = freeChain.y.toFloat()
             )
         )
     }
