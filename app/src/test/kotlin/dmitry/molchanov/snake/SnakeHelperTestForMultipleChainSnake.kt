@@ -22,10 +22,8 @@ class SnakeHelperTestForMultipleChainSnake {
         val secondChain = SnakeChain(x = 50, y = 50 + CHAIN_SIZE)
         val chains = listOf(firstChain, secondChain)
         Direct.values().forEach { direct ->
-            val newChains = snakeHelper.addChainToEnd(chains, direct)
-            assertEquals(firstChain, newChains.first())
-            assertEquals(secondChain, newChains[1])
-            assertEquals(SnakeChain(x = 50, y = 50 + CHAIN_SIZE * 2), newChains.last())
+            val newChains = snakeHelper.getNewChainToTail(chains, direct)
+            assertEquals(SnakeChain(x = 50, y = 50 + CHAIN_SIZE * 2), newChains)
         }
     }
 
@@ -35,10 +33,8 @@ class SnakeHelperTestForMultipleChainSnake {
         val secondChain = SnakeChain(x = 50 - CHAIN_SIZE, y = 50)
         val chains = listOf(firstChain, secondChain)
         Direct.values().forEach { direct ->
-            val newChains = snakeHelper.addChainToEnd(chains, direct)
-            assertEquals(firstChain, newChains.first())
-            assertEquals(secondChain, newChains[1])
-            assertEquals(SnakeChain(x = 50 - CHAIN_SIZE * 2, y = 50), newChains.last())
+            val newChains = snakeHelper.getNewChainToTail(chains, direct)
+            assertEquals(SnakeChain(x = 50 - CHAIN_SIZE * 2, y = 50), newChains)
         }
     }
 
@@ -48,10 +44,8 @@ class SnakeHelperTestForMultipleChainSnake {
         val secondChain = SnakeChain(x = 50, y = 50 - CHAIN_SIZE)
         val chains = listOf(firstChain, secondChain)
         Direct.values().forEach { direct ->
-            val newChains = snakeHelper.addChainToEnd(chains, direct)
-            assertEquals(firstChain, newChains.first())
-            assertEquals(secondChain, newChains[1])
-            assertEquals(SnakeChain(x = 50, y = 50 - CHAIN_SIZE * 2), newChains.last())
+            val newChains = snakeHelper.getNewChainToTail(chains, direct)
+            assertEquals(SnakeChain(x = 50, y = 50 - CHAIN_SIZE * 2), newChains)
         }
     }
 
@@ -61,10 +55,8 @@ class SnakeHelperTestForMultipleChainSnake {
         val secondChain = SnakeChain(x = 50 + CHAIN_SIZE, y = 50)
         val chains = listOf(firstChain, secondChain)
         Direct.values().forEach { direct ->
-            val newChains = snakeHelper.addChainToEnd(chains, direct)
-            assertEquals(firstChain, newChains.first())
-            assertEquals(secondChain, newChains[1])
-            assertEquals(SnakeChain(x = 50 + CHAIN_SIZE * 2, y = 50), newChains.last())
+            val newChains = snakeHelper.getNewChainToTail(chains, direct)
+            assertEquals(SnakeChain(x = 50 + CHAIN_SIZE * 2, y = 50), newChains)
         }
     }
 

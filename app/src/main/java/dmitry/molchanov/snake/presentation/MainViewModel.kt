@@ -28,6 +28,8 @@ class MainViewModel(
     private val height = maxVerticalChains * chainSize
     private val centerX = width / 2
     private val centerY = height / 2
+    private val snakeHelper =
+        SnakeHelper(width = inputWidth, height = inputHeight, chainSize = chainSize)
     private val _stateFlow = MutableStateFlow(
         SnakeState(
             chainSize = chainSize.toFloat(),
@@ -105,69 +107,22 @@ class MainViewModel(
     private suspend fun runSnake() {
         delay(START_SPEED)
         val state = stateFlow.value
-        val chains = stateFlow.value.chains
-        val newChains = mutableListOf<SnakeChain>()
-        val newChain = getNewHeadChain(
-            direct = stateFlow.value.direct,
-            currentChain = stateFlow.value.chains.first()
-        )
-        if (isNextChainFree(
-                headChain = newChain,
-                freeChain = state.freeChain,
-                direct = state.direct
-            )
-        ) {
-            newChains.add(state.freeChain)
+        val chains = state.chains
+
+        val movedChains = snakeHelper.getMovedChains(chains = chains, direct = state.direct)
+            .toMutableList()
+        if (movedChains.first() == state.freeChain) {
             initNewFreeChain()
+            snakeHelper.getNewChainToTail(chains = movedChains, direct = state.direct)
+                .let(movedChains::add)
         }
-        newChains.add(newChain)
-        var lastXYPair = 0 to 0
-        chains.forEachIndexed { index, snakeChain ->
-            if (index != 0) {
-                newChains.add(
-                    SnakeChain(x = lastXYPair.first, y = lastXYPair.second)
-                )
-            }
-            lastXYPair = snakeChain.x to snakeChain.y
-        }
-        _stateFlow.update { it.copy(chains = newChains) }
+
+        _stateFlow.update { it.copy(chains = movedChains) }
         runSnake()
     }
 
-    private fun isNextChainFree(
-        headChain: SnakeChain,
-        freeChain: SnakeChain,
-        direct: Direct
-    ): Boolean = getNewHeadChain(direct = direct, headChain) == freeChain
-
-    private fun getNewHeadChain(
-        direct: Direct,
-        currentChain: SnakeChain
-    ): SnakeChain {
-        val x = currentChain.x
-        val y = currentChain.y
-        return when (direct) {
-            RIGHT -> {
-                val newX = x + chainSize
-                SnakeChain(x = if (newX >= width) 0 else newX, y = y)
-            }
-            LEFT -> {
-                val newX = x - chainSize
-                SnakeChain(x = if (newX <= 0) width else newX, y = y)
-            }
-            TOP -> {
-                val newY = y - chainSize
-                SnakeChain(x = x, y = if (newY <= 0) height else newY)
-            }
-            DOWN -> {
-                val newY = y + chainSize
-                SnakeChain(x = x, y = if (newY >= height) 0 else newY)
-            }
-        }
-    }
-
     private companion object {
-        const val START_SPEED = 200L
+        const val START_SPEED = 500L
     }
 }
 
