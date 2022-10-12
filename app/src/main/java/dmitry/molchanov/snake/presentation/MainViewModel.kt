@@ -32,7 +32,7 @@ class MainViewModel(
     private val centerX = width / 2
     private val centerY = height / 2
     private val snakeHelper =
-        SnakeHelper(width = inputWidth, height = inputHeight, chainSize = chainSize)
+        SnakeHelper(width = width, height = height, chainSize = chainSize)
     private val scope =
         CoroutineScope(newSingleThreadContext("Snake move thread") + SupervisorJob())
     private val _stateFlow = MutableStateFlow(
