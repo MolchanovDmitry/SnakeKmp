@@ -17,9 +17,7 @@ import kotlin.math.pow
 import kotlin.random.Random
 
 class MainViewModel(
-    inputWidth: Int,
-    inputHeight: Int,
-    private val chainSize: Int
+    inputWidth: Int, inputHeight: Int, private val chainSize: Int
 ) : ViewModel() {
 
     private val maxHorizontalChains: Int = inputWidth / chainSize
@@ -62,26 +60,18 @@ class MainViewModel(
         val freeChainX = randomHorizontalChainCount * chainSize
         val freeChainY = randomVerticalChainCount * chainSize
         val shouldSkip = !isChainInRadius(
-            x = freeChainX, y = freeChainY,
-            centerX = centerX,
-            centerY = centerY,
-            radius = width / 2
+            x = freeChainX, y = freeChainY, centerX = centerX, centerY = centerY, radius = width / 2
         ) && !isChainInSnake(x = freeChainX, y = freeChainY)
 
         if (shouldSkip) {
             initNewFreeChain()
         } else {
-            _stateFlow.update {
-                it.copy(
-                    freeChain = SnakeChain(x = freeChainX, y = freeChainY)
-                )
-            }
+            _stateFlow.update { it.copy(freeChain = SnakeChain(x = freeChainX, y = freeChainY)) }
         }
     }
 
     private fun isChainInSnake(x: Int, y: Int): Boolean =
-        stateFlow.value.chains
-            .find { it.x == x && it.y == y } != null
+        stateFlow.value.chains.find { it.x == x && it.y == y } != null
 
     /**
      * (x - center_x)² + (y - center_y)² < radius².
@@ -109,8 +99,8 @@ class MainViewModel(
         val state = stateFlow.value
         val chains = state.chains
 
-        val movedChains = snakeHelper.getMovedChains(chains = chains, direct = state.direct)
-            .toMutableList()
+        val movedChains =
+            snakeHelper.getMovedChains(chains = chains, direct = state.direct).toMutableList()
         if (movedChains.first() == state.freeChain) {
             initNewFreeChain()
             snakeHelper.getNewChainToTail(chains = movedChains, direct = state.direct)
@@ -133,9 +123,7 @@ object TopClick : Action()
 object BottomClick : Action()
 
 class MainViewModelProvider(
-    private val width: Int,
-    private val height: Int,
-    private val chainSize: Int
+    private val width: Int, private val height: Int, private val chainSize: Int
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
