@@ -7,17 +7,22 @@ import dmitry.molchanov.snake.presentation.Direct.DOWN
 import dmitry.molchanov.snake.presentation.Direct.LEFT
 import dmitry.molchanov.snake.presentation.Direct.RIGHT
 import dmitry.molchanov.snake.presentation.Direct.TOP
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.newSingleThreadContext
 import kotlin.math.pow
 import kotlin.random.Random
 
 class MainViewModel(
-    inputWidth: Int, inputHeight: Int, private val chainSize: Int
+    inputWidth: Int,
+    inputHeight: Int,
+    private val chainSize: Int
 ) : ViewModel() {
 
     private val maxHorizontalChains: Int = inputWidth / chainSize
@@ -28,6 +33,8 @@ class MainViewModel(
     private val centerY = height / 2
     private val snakeHelper =
         SnakeHelper(width = inputWidth, height = inputHeight, chainSize = chainSize)
+    private val scope =
+        CoroutineScope(newSingleThreadContext("Snake move thread") + SupervisorJob())
     private val _stateFlow = MutableStateFlow(
         SnakeState(
             chainSize = chainSize.toFloat(),
@@ -36,9 +43,10 @@ class MainViewModel(
         )
     )
     val stateFlow = _stateFlow.asStateFlow()
+    private var job: Job? = null
 
     init {
-        viewModelScope.launch(Dispatchers.Default) {
+        scope.launch {
             initNewFreeChain()
             runSnake()
         }
@@ -90,25 +98,30 @@ class MainViewModel(
             else -> false
         }
         if (shouldUpdate) {
+            job?.cancel()
+            job = null
             _stateFlow.update { it.copy(direct = newDirect) }
+            viewModelScope.launch { }
+            runSnake()
         }
     }
 
-    private suspend fun runSnake() {
-        delay(START_SPEED)
-        val state = stateFlow.value
-        val chains = state.chains
+    private fun runSnake() {
+        job = scope.launch {
+            val state = stateFlow.value
+            val chains = state.chains
+            val movedChains =
+                snakeHelper.getMovedChains(chains = chains, direct = state.direct).toMutableList()
+            if (movedChains.first() == state.freeChain) {
+                initNewFreeChain()
+                snakeHelper.getNewChainToTail(chains = movedChains, direct = state.direct)
+                    .let(movedChains::add)
+            }
 
-        val movedChains =
-            snakeHelper.getMovedChains(chains = chains, direct = state.direct).toMutableList()
-        if (movedChains.first() == state.freeChain) {
-            initNewFreeChain()
-            snakeHelper.getNewChainToTail(chains = movedChains, direct = state.direct)
-                .let(movedChains::add)
+            _stateFlow.update { it.copy(chains = movedChains) }
+            delay(START_SPEED)
+            runSnake()
         }
-
-        _stateFlow.update { it.copy(chains = movedChains) }
-        runSnake()
     }
 
     private companion object {
