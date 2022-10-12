@@ -1,6 +1,7 @@
 package dmitry.molchanov.snake.presentation
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
@@ -9,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -23,7 +25,11 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.sp
+import androidx.wear.compose.material.Text
+import dmitry.molchanov.snake.R
 
 private const val PRESS_SCREEN_RATIO = 0.3
 
@@ -52,8 +58,18 @@ fun GameScreen(viewModel: MainViewModel) {
             .focusRequester(requester)
             .focusable()
     ) {
-        DrawSnake(state.value.chains, chainSize, viewModel::onAction)
-        DrawFreeChain(state.value.freeChain, chainSize)
+        if (!state.value.isGameOver) {
+            DrawSnake(state.value.chains, chainSize, viewModel::onAction)
+            DrawFreeChain(state.value.freeChain, chainSize)
+        } else {
+            Text(
+                text = stringResource(R.string.game_over),
+                fontSize = 20.sp,
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .clickable { viewModel.onAction(GameOverClick) }
+            )
+        }
     }
     LaunchedEffect(Unit) {
         requester.requestFocus()
@@ -65,11 +81,11 @@ private fun DrawSnake(chains: List<SnakeChain>, chainSize: Float, onAction: (Act
     Canvas(
         modifier = Modifier
             .fillMaxSize()
-        .pointerInput(Unit) {
-            detectTapGestures(onTap = { offset ->
-                onTapScreen(offset = offset, size = size, onAction)
-            })
-        }
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = { offset ->
+                    onTapScreen(offset = offset, size = size, onAction)
+                })
+            }
     ) {
         chains.forEach {
             drawRect(

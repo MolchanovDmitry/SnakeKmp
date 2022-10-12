@@ -13,6 +13,29 @@ class SnakeHelper(
             else -> chains.getNewChainBy2LastChain()
         }
 
+    fun getMovedChains(chains: List<SnakeChain>, direct: Direct): List<SnakeChain> {
+        var lastXYPair = 0 to 0
+        return chains.mapIndexed { index, snakeChain ->
+            if (index == 0) {
+                getNewHeadChain(currentChain = snakeChain, direct = direct)
+            } else {
+                SnakeChain(x = lastXYPair.first, y = lastXYPair.second)
+            }.also { lastXYPair = snakeChain.x to snakeChain.y }
+        }
+    }
+
+    fun isGameOver(chains: List<SnakeChain>): Boolean {
+        val headChain = chains.first()
+        chains.forEachIndexed { index, snakeChain ->
+            if (index != 0) {
+                if (snakeChain == headChain) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
     private fun SnakeChain.getNewChainDirect(direct: Direct): SnakeChain {
         return when (direct) {
             Direct.TOP -> {
@@ -45,17 +68,6 @@ class SnakeHelper(
             else -> error("Uncatched chain difference")
         }
         return lastChain.getNewChainDirect(tailDirect)
-    }
-
-    fun getMovedChains(chains: List<SnakeChain>, direct: Direct): List<SnakeChain> {
-        var lastXYPair = 0 to 0
-        return chains.mapIndexed { index, snakeChain ->
-            if (index == 0) {
-                getNewHeadChain(currentChain = snakeChain, direct = direct)
-            } else {
-                SnakeChain(x = lastXYPair.first, y = lastXYPair.second)
-            }.also { lastXYPair = snakeChain.x to snakeChain.y }
-        }
     }
 
     private fun getNewHeadChain(currentChain: SnakeChain, direct: Direct): SnakeChain {

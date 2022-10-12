@@ -2,7 +2,6 @@ package dmitry.molchanov.snake.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import dmitry.molchanov.snake.presentation.Direct.DOWN
 import dmitry.molchanov.snake.presentation.Direct.LEFT
 import dmitry.molchanov.snake.presentation.Direct.RIGHT
@@ -59,7 +58,20 @@ class MainViewModel(
             RightClick -> changeDirect(newDirect = RIGHT)
             BottomClick -> changeDirect(newDirect = DOWN)
             LeftClick -> changeDirect(newDirect = LEFT)
+            GameOverClick -> runNewGame()
+            else -> error("Uncatched event")
         }
+    }
+
+    private fun runNewGame() {
+        _stateFlow.update {
+            it.copy(
+                direct = RIGHT,
+                isGameOver = false,
+                chains = listOf(SnakeChain(x = 0, y = centerY)),
+            )
+        }
+        initNewFreeChain()
     }
 
     private fun initNewFreeChain() {
@@ -69,7 +81,7 @@ class MainViewModel(
         val freeChainY = randomVerticalChainCount * chainSize
         val shouldSkip = !isChainInRadius(
             x = freeChainX, y = freeChainY, centerX = centerX, centerY = centerY, radius = width / 2
-        ) && !isChainInSnake(x = freeChainX, y = freeChainY)
+        ) && !isChainInSnake(SnakeChain(x = freeChainX, y = freeChainY))
 
         if (shouldSkip) {
             initNewFreeChain()
@@ -78,8 +90,8 @@ class MainViewModel(
         }
     }
 
-    private fun isChainInSnake(x: Int, y: Int): Boolean =
-        stateFlow.value.chains.find { it.x == x && it.y == y } != null
+    private fun isChainInSnake(snakeChain: SnakeChain): Boolean =
+        stateFlow.value.chains.find { it.x == snakeChain.x && it.y == snakeChain.y } != null
 
     /**
      * (x - center_x)² + (y - center_y)² < radius².
@@ -99,9 +111,7 @@ class MainViewModel(
         }
         if (shouldUpdate) {
             job?.cancel()
-            job = null
             _stateFlow.update { it.copy(direct = newDirect) }
-            viewModelScope.launch { }
             runSnake()
         }
     }
@@ -112,12 +122,14 @@ class MainViewModel(
             val chains = state.chains
             val movedChains =
                 snakeHelper.getMovedChains(chains = chains, direct = state.direct).toMutableList()
+            if (snakeHelper.isGameOver(movedChains)) {
+                _stateFlow.update { it.copy(isGameOver = true) }
+            }
             if (movedChains.first() == state.freeChain) {
                 initNewFreeChain()
                 snakeHelper.getNewChainToTail(chains = movedChains, direct = state.direct)
                     .let(movedChains::add)
             }
-
             _stateFlow.update { it.copy(chains = movedChains) }
             delay(START_SPEED)
             runSnake()
@@ -134,6 +146,7 @@ object LeftClick : Action()
 object RightClick : Action()
 object TopClick : Action()
 object BottomClick : Action()
+object GameOverClick : Action()
 
 class MainViewModelProvider(
     private val width: Int, private val height: Int, private val chainSize: Int
