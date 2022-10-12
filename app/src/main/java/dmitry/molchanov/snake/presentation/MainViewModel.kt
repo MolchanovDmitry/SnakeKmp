@@ -43,6 +43,7 @@ class MainViewModel(
     )
     val stateFlow = _stateFlow.asStateFlow()
     private var job: Job? = null
+    private var speed = START_SPEED
 
     init {
         scope.launch {
@@ -63,7 +64,8 @@ class MainViewModel(
         }
     }
 
-    private fun runNewGame() {
+    private fun runNewGame() = scope.launch {
+        speed = START_SPEED
         _stateFlow.update {
             it.copy(
                 direct = RIGHT,
@@ -129,15 +131,16 @@ class MainViewModel(
                 initNewFreeChain()
                 snakeHelper.getNewChainToTail(chains = movedChains, direct = state.direct)
                     .let(movedChains::add)
+                speed = (speed - (10F / 100F * speed)).toLong()
             }
             _stateFlow.update { it.copy(chains = movedChains) }
-            delay(START_SPEED)
+            delay(speed)
             runSnake()
         }
     }
 
     private companion object {
-        const val START_SPEED = 500L
+        const val START_SPEED = 700L
     }
 }
 
