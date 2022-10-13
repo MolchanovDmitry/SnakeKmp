@@ -1,10 +1,24 @@
 package dmitry.molchanov.snake.presentation
 
+import kotlin.math.pow
+import kotlin.random.Random
+
 class SnakeHelper(
-    private val width: Int,
-    private val height: Int,
+    inputWidth: Int,
+    inputHeight: Int,
     private val chainSize: Int
 ) {
+
+    private val maxHorizontalChains: Int = inputWidth / chainSize
+    private val maxVerticalChains: Int = inputHeight / chainSize
+    private val width = maxHorizontalChains * chainSize
+    private val height = maxVerticalChains * chainSize
+    private val centerX = width / 2
+    private val centerY = height / 2
+
+    val startChains: List<SnakeChain>
+        get() = listOf(SnakeChain(x = 0, y = centerY))
+
 
     fun getNewChainToTail(chains: List<SnakeChain>, direct: Direct): SnakeChain =
         when (chains.size) {
@@ -35,6 +49,32 @@ class SnakeHelper(
         }
         return false
     }
+
+    fun getFreeChain(chains: List<SnakeChain>): SnakeChain {
+        val randomHorizontalChainCount = Random.nextInt(0, maxHorizontalChains)
+        val randomVerticalChainCount = Random.nextInt(0, maxVerticalChains)
+        val freeChainX = randomHorizontalChainCount * chainSize
+        val freeChainY = randomVerticalChainCount * chainSize
+        val shouldSkip = !isChainInRadius(
+            x = freeChainX, y = freeChainY, centerX = centerX, centerY = centerY, radius = width / 2
+        ) && !chains.isInSnake(SnakeChain(x = freeChainX, y = freeChainY))
+
+        return if (shouldSkip) {
+            getFreeChain(chains)
+        } else {
+            SnakeChain(x = freeChainX, y = freeChainY)
+        }
+    }
+
+    private fun List<SnakeChain>.isInSnake(snakeChain: SnakeChain): Boolean =
+        find { it.x == snakeChain.x && it.y == snakeChain.y } != null
+
+    /**
+     * (x - center_x)² + (y - center_y)² < radius².
+     */
+    private fun isChainInRadius(x: Int, y: Int, centerX: Int, centerY: Int, radius: Int): Boolean =
+        (x - centerX).toDouble().pow(2) + (y - centerY).toDouble().pow(2) < radius.toDouble()
+            .pow(2) - 50
 
     private fun SnakeChain.getNewChainDirect(direct: Direct): SnakeChain {
         return when (direct) {

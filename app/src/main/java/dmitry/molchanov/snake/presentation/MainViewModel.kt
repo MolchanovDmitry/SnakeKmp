@@ -15,8 +15,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
-import kotlin.math.pow
-import kotlin.random.Random
 
 class MainViewModel(
     inputWidth: Int,
@@ -24,21 +22,15 @@ class MainViewModel(
     private val chainSize: Int
 ) : ViewModel() {
 
-    private val maxHorizontalChains: Int = inputWidth / chainSize
-    private val maxVerticalChains: Int = inputHeight / chainSize
-    private val width = maxHorizontalChains * chainSize
-    private val height = maxVerticalChains * chainSize
-    private val centerX = width / 2
-    private val centerY = height / 2
     private val snakeHelper =
-        SnakeHelper(width = width, height = height, chainSize = chainSize)
+        SnakeHelper(inputWidth = inputWidth, inputHeight = inputHeight, chainSize = chainSize)
     private val scope =
         CoroutineScope(newSingleThreadContext("Snake move thread") + SupervisorJob())
     private val _stateFlow = MutableStateFlow(
         SnakeState(
             chainSize = chainSize.toFloat(),
             freeChain = SnakeChain(x = 0, y = 0),
-            chains = listOf(SnakeChain(x = 0, y = centerY))
+            chains = snakeHelper.startChains
         )
     )
     val stateFlow = _stateFlow.asStateFlow()
@@ -70,37 +62,17 @@ class MainViewModel(
             it.copy(
                 direct = RIGHT,
                 isGameOver = false,
-                chains = listOf(SnakeChain(x = 0, y = centerY)),
+                chains = snakeHelper.startChains
             )
         }
         initNewFreeChain()
     }
 
     private fun initNewFreeChain() {
-        val randomHorizontalChainCount = Random.nextInt(0, maxHorizontalChains)
-        val randomVerticalChainCount = Random.nextInt(0, maxVerticalChains)
-        val freeChainX = randomHorizontalChainCount * chainSize
-        val freeChainY = randomVerticalChainCount * chainSize
-        val shouldSkip = !isChainInRadius(
-            x = freeChainX, y = freeChainY, centerX = centerX, centerY = centerY, radius = width / 2
-        ) && !isChainInSnake(SnakeChain(x = freeChainX, y = freeChainY))
-
-        if (shouldSkip) {
-            initNewFreeChain()
-        } else {
-            _stateFlow.update { it.copy(freeChain = SnakeChain(x = freeChainX, y = freeChainY)) }
+        _stateFlow.update {
+            it.copy(freeChain = snakeHelper.getFreeChain(chains = stateFlow.value.chains))
         }
     }
-
-    private fun isChainInSnake(snakeChain: SnakeChain): Boolean =
-        stateFlow.value.chains.find { it.x == snakeChain.x && it.y == snakeChain.y } != null
-
-    /**
-     * (x - center_x)² + (y - center_y)² < radius².
-     */
-    private fun isChainInRadius(x: Int, y: Int, centerX: Int, centerY: Int, radius: Int): Boolean =
-        (x - centerX).toDouble().pow(2) + (y - centerY).toDouble().pow(2) < radius.toDouble()
-            .pow(2) - 50
 
     private fun changeDirect(newDirect: Direct) {
         val currentDirect = stateFlow.value.direct
