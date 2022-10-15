@@ -6,7 +6,7 @@ import kotlin.random.Random
 class SnakeHelper(
     inputWidth: Int,
     inputHeight: Int,
-    private val chainSize: Int
+    val chainSize: Int
 ) {
 
     private val maxHorizontalChains: Int = inputWidth / chainSize
@@ -74,7 +74,7 @@ class SnakeHelper(
      */
     private fun isChainInRadius(x: Int, y: Int, centerX: Int, centerY: Int, radius: Int): Boolean =
         (x - centerX).toDouble().pow(2) + (y - centerY).toDouble().pow(2) < radius.toDouble()
-            .pow(2) - 50
+            .pow(2)
 
     private fun SnakeChain.getNewChainDirect(direct: Direct): SnakeChain {
         return when (direct) {

@@ -13,8 +13,8 @@ class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels {
         val widthHeightPair = getScreenWidthHeightPair()
         MainViewModelProvider(
-            width = widthHeightPair.first,
-            height = widthHeightPair.second,
+            inputWidth = widthHeightPair.first,
+            inputHeight = widthHeightPair.second,
             chainSize = 20
         )
     }

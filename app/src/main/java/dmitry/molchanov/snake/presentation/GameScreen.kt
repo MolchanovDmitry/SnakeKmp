@@ -72,17 +72,24 @@ fun GameScreen(viewModel: MainViewModel) {
         if (!state.value.isGameOver) {
             DrawSnake(state.value.chains, chainSize, color)
             DrawFreeChain(state.value.freeChain, color, chainSize)
-        } else {
-            Text(text = stringResource(R.string.game_over),
-                fontSize = 20.sp,
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .clickable { viewModel.onAction(GameOverClick) })
+        }else {
+            GameOver(modifier = Modifier
+                .align(Alignment.Center)
+                .clickable { viewModel.onAction(GameOverClick) })
         }
     }
     LaunchedEffect(Unit) {
         requester.requestFocus()
     }
+}
+
+@Composable
+private fun GameOver(modifier: Modifier) {
+    Text(
+        modifier = modifier,
+        text = stringResource(R.string.game_over),
+        fontSize = 20.sp,
+    )
 }
 
 @Composable

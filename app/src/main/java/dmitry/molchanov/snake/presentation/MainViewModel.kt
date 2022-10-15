@@ -17,18 +17,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
 
 class MainViewModel(
-    inputWidth: Int,
-    inputHeight: Int,
-    private val chainSize: Int
+    private val snakeHelper: SnakeHelper
 ) : ViewModel() {
 
-    private val snakeHelper =
-        SnakeHelper(inputWidth = inputWidth, inputHeight = inputHeight, chainSize = chainSize)
     private val scope =
         CoroutineScope(newSingleThreadContext("Snake move thread") + SupervisorJob())
     private val _stateFlow = MutableStateFlow(
         SnakeState(
-            chainSize = chainSize.toFloat(),
+            chainSize = snakeHelper.chainSize.toFloat(),
             freeChain = SnakeChain(x = 0, y = 0),
             chains = snakeHelper.startChains
         )
@@ -45,7 +41,6 @@ class MainViewModel(
     }
 
     fun onAction(action: Action) {
-        println("action = $action")
         when (action) {
             TopClick -> changeDirect(newDirect = TOP)
             RightClick -> changeDirect(newDirect = RIGHT)
@@ -59,11 +54,7 @@ class MainViewModel(
     private fun runNewGame() = scope.launch {
         speed = START_SPEED
         _stateFlow.update {
-            it.copy(
-                direct = RIGHT,
-                isGameOver = false,
-                chains = snakeHelper.startChains
-            )
+            it.copy(direct = RIGHT, isGameOver = false, chains = snakeHelper.startChains)
         }
         initNewFreeChain()
     }
@@ -124,11 +115,15 @@ object BottomClick : Action()
 object GameOverClick : Action()
 
 class MainViewModelProvider(
-    private val width: Int, private val height: Int, private val chainSize: Int
+    private val inputWidth: Int, private val inputHeight: Int, private val chainSize: Int
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return MainViewModel(inputWidth = width, inputHeight = height, chainSize = chainSize) as T
+        return MainViewModel(
+            snakeHelper = SnakeHelper(
+                inputWidth = inputWidth, inputHeight = inputHeight, chainSize = chainSize
+            )
+        ) as T
     }
 
 }
