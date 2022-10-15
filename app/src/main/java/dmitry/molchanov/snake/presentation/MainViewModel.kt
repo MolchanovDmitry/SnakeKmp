@@ -121,7 +121,9 @@ class MainViewModelProvider(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return MainViewModel(
             snakeHelper = SnakeHelper(
-                inputWidth = inputWidth, inputHeight = inputHeight, chainSize = chainSize
+                inputWidth = inputWidth,
+                inputHeight = inputHeight,
+                chainSize = chainSize
             )
         ) as T
     }

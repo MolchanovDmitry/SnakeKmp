@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -73,10 +74,13 @@ fun GameScreen(viewModel: MainViewModel) {
         if (!state.value.isGameOver) {
             DrawSnake(state.value.chains, chainSize, color)
             DrawFreeChain(state.value.freeChain, color, chainSize)
-        }else {
-            GameOver(modifier = Modifier
-                .align(Alignment.Center)
-                .clickable { viewModel.onAction(GameOverClick) })
+        } else {
+            GameOver(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .clickable { viewModel.onAction(GameOverClick) },
+                score = state.value.chains.size
+            )
         }
     }
     LaunchedEffect(Unit) {
@@ -85,12 +89,17 @@ fun GameScreen(viewModel: MainViewModel) {
 }
 
 @Composable
-private fun GameOver(modifier: Modifier) {
-    Text(
-        modifier = modifier,
-        text = stringResource(R.string.game_over),
-        fontSize = dimensionResource(id = R.dimen.game_over_text_size).value.sp,
-    )
+private fun GameOver(modifier: Modifier, score: Int) {
+    Column(modifier = modifier) {
+        Text(
+            text = stringResource(R.string.game_over),
+            fontSize = dimensionResource(id = R.dimen.game_over_text_size).value.sp,
+        )
+        Text(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            text = stringResource(id = R.string.score, score)
+        )
+    }
 }
 
 @Composable
