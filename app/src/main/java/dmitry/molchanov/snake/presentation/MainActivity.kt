@@ -6,6 +6,7 @@ import android.util.DisplayMetrics
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import dmitry.molchanov.snake.R
 
 
 class MainActivity : ComponentActivity() {
@@ -15,7 +16,7 @@ class MainActivity : ComponentActivity() {
         MainViewModelProvider(
             inputWidth = widthHeightPair.first,
             inputHeight = widthHeightPair.second,
-            chainSize = 20
+            chainSize = resources.getDimensionPixelSize(R.dimen.chain_size)
         )
     }
 

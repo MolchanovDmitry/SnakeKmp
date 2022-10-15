@@ -28,6 +28,7 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.sp
@@ -88,7 +89,7 @@ private fun GameOver(modifier: Modifier) {
     Text(
         modifier = modifier,
         text = stringResource(R.string.game_over),
-        fontSize = 20.sp,
+        fontSize = dimensionResource(id = R.dimen.game_over_text_size).value.sp,
     )
 }
 
