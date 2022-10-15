@@ -30,6 +30,8 @@ class MainViewModel(
         )
     )
     val stateFlow = _stateFlow.asStateFlow()
+    private val state: SnakeState
+        get() = stateFlow.value
     private var job: Job? = null
     private var speed = START_SPEED
 
@@ -42,10 +44,7 @@ class MainViewModel(
 
     fun onAction(action: Action) {
         when (action) {
-            TopClick -> changeDirect(newDirect = TOP)
-            RightClick -> changeDirect(newDirect = RIGHT)
-            BottomClick -> changeDirect(newDirect = DOWN)
-            LeftClick -> changeDirect(newDirect = LEFT)
+            is NewDirect -> changeDirect(action.direct)
             GameOverClick -> runNewGame()
             else -> error("Uncatched event")
         }
@@ -61,12 +60,12 @@ class MainViewModel(
 
     private fun initNewFreeChain() {
         _stateFlow.update {
-            it.copy(freeChain = snakeHelper.getFreeChain(chains = stateFlow.value.chains))
+            it.copy(freeChain = snakeHelper.getFreeChain(chains = state.chains))
         }
     }
 
     private fun changeDirect(newDirect: Direct) {
-        val currentDirect = stateFlow.value.direct
+        val currentDirect = state.direct
         val shouldUpdate = when {
             newDirect == TOP && (currentDirect == RIGHT || currentDirect == LEFT) -> true
             newDirect == RIGHT && (currentDirect == TOP || currentDirect == DOWN) -> true
@@ -83,7 +82,7 @@ class MainViewModel(
 
     private fun runSnake() {
         job = scope.launch {
-            val state = stateFlow.value
+            val state = state
             val chains = state.chains
             val movedChains =
                 snakeHelper.getMovedChains(chains = chains, direct = state.direct).toMutableList()
@@ -108,10 +107,7 @@ class MainViewModel(
 }
 
 sealed class Action
-object LeftClick : Action()
-object RightClick : Action()
-object TopClick : Action()
-object BottomClick : Action()
+class NewDirect(val direct: Direct) : Action()
 object GameOverClick : Action()
 
 class MainViewModelProvider(

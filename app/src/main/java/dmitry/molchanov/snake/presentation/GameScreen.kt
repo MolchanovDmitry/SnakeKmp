@@ -31,13 +31,11 @@ import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.Text
 import dmitry.molchanov.snake.R
 import dmitry.molchanov.snake.presentation.theme.colors
 
-private const val PRESS_SCREEN_RATIO = 0.3
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -49,14 +47,28 @@ fun GameScreen(viewModel: MainViewModel) {
     fun onKeyEventFetched(keyEvent: KeyEvent): Boolean {
         if (keyEvent.type == KeyEventType.KeyUp) {
             when (keyEvent.key) {
-                Key.DirectionUp -> viewModel.onAction(TopClick)
-                Key.DirectionRight -> viewModel.onAction(RightClick)
-                Key.DirectionDown -> viewModel.onAction(BottomClick)
-                Key.DirectionLeft -> viewModel.onAction(LeftClick)
+                Key.DirectionUp -> Direct.TOP
+                Key.DirectionRight -> Direct.RIGHT
+                Key.DirectionDown -> Direct.DOWN
+                Key.DirectionLeft -> Direct.LEFT
                 else -> null
-            }?.let { return true }
+            }?.let { direct ->
+                viewModel.onAction(NewDirect(direct))
+                return true
+            }
         }
         return false
+    }
+
+    fun onTap(offset: Offset) {
+        getNewDirect(
+            x = offset.x.toInt(),
+            y = offset.y.toInt(),
+            headDirect = state.value.direct,
+            headChain = state.value.chains.first()
+        )?.let{ direct ->
+            viewModel.onAction(NewDirect(direct))
+        }
     }
 
     Box(modifier = Modifier
@@ -65,9 +77,7 @@ fun GameScreen(viewModel: MainViewModel) {
         .pointerInput(Unit) {
             detectTapGestures(onDoubleTap = {
                 color = getNextItem(color, colors)
-            }, onTap = { offset ->
-                onTapScreen(offset = offset, size = size, viewModel::onAction)
-            })
+            }, onTap = ::onTap)
         }
         .focusRequester(requester)
         .focusable()) {
@@ -128,32 +138,8 @@ private fun DrawFreeChain(freeChain: SnakeChain, color: Color, chainSize: Float)
     }
 }
 
+
 private fun getNextItem(currentColor: Color, colors: Array<Color>): Color {
     val newIndex = colors.indexOf(currentColor) + 1
     return if (newIndex >= colors.size) colors.first() else colors[newIndex]
 }
-
-private fun onTapScreen(offset: Offset, size: IntSize, onAction: (Action) -> Unit) {
-    val x = offset.x.toInt()
-    val y = offset.y.toInt()
-    val height = size.height
-    val width = size.width
-    when {
-        isLeftClick(x = x, y = y, width = width, height = height) -> onAction(LeftClick)
-        isRightClick(x = x, y = y, width = width, height = height) -> onAction(RightClick)
-        isTopClick(x = x, y = y, width = width, height = height) -> onAction(TopClick)
-        isBottomClick(x = x, y = y, width = width, height = height) -> onAction(BottomClick)
-    }
-}
-
-private fun isLeftClick(x: Int, y: Int, width: Int, height: Int): Boolean =
-    x < width * PRESS_SCREEN_RATIO && y in (height * PRESS_SCREEN_RATIO).toInt()..(height - (height * PRESS_SCREEN_RATIO)).toInt()
-
-private fun isRightClick(x: Int, y: Int, width: Int, height: Int): Boolean =
-    x > width - width * PRESS_SCREEN_RATIO && y in (height * PRESS_SCREEN_RATIO).toInt()..(height - (height * PRESS_SCREEN_RATIO)).toInt()
-
-private fun isTopClick(x: Int, y: Int, width: Int, height: Int): Boolean =
-    y < height * PRESS_SCREEN_RATIO && x in (width * PRESS_SCREEN_RATIO).toInt()..(width - (width * PRESS_SCREEN_RATIO)).toInt()
-
-private fun isBottomClick(x: Int, y: Int, width: Int, height: Int): Boolean =
-    y > height - height * PRESS_SCREEN_RATIO && x in (width * PRESS_SCREEN_RATIO).toInt()..(width - (width * PRESS_SCREEN_RATIO)).toInt()

@@ -17,7 +17,7 @@ class SnakeHelperTestForOneChainSnake {
         const val CHAIN_SIZE = 10
     }
 
-    private val snakeHelper = SnakeHelper(width = WIDTH, height = HEIGHT, chainSize = CHAIN_SIZE)
+    private val snakeHelper = SnakeHelper(inputWidth = WIDTH, inputHeight = HEIGHT, chainSize = CHAIN_SIZE)
 
     @Test
     fun `add chain to single chain, TOP direct, simple position`() {
