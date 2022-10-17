@@ -75,7 +75,7 @@ fun GameScreen(viewModel: MainViewModel) {
         .fillMaxSize()
         .onKeyEvent(::onKeyEventFetched)
         .pointerInput(Unit) {
-            detectTapGestures(onDoubleTap = {
+            detectTapGestures(onLongPress = {
                 color = getNextItem(color, colors)
             }, onTap = ::onTap)
         }
