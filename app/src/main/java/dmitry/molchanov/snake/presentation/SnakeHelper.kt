@@ -57,7 +57,7 @@ class SnakeHelper(
         val freeChainY = randomVerticalChainCount * chainSize
         val shouldSkip = !isChainInRadius(
             x = freeChainX, y = freeChainY, centerX = centerX, centerY = centerY, radius = width / 2
-        ) && !chains.isInSnake(SnakeChain(x = freeChainX, y = freeChainY))
+        ) || chains.contains(SnakeChain(x = freeChainX, y = freeChainY))
 
         return if (shouldSkip) {
             getFreeChain(chains)
@@ -65,9 +65,6 @@ class SnakeHelper(
             SnakeChain(x = freeChainX, y = freeChainY)
         }
     }
-
-    private fun List<SnakeChain>.isInSnake(snakeChain: SnakeChain): Boolean =
-        find { it.x == snakeChain.x && it.y == snakeChain.y } != null
 
     /**
      * (x - center_x)² + (y - center_y)² < radius².
