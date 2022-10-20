@@ -1,12 +1,12 @@
 package dmitry.molchanov.snake.presentation.domain
 
-import kotlin.math.pow
 import kotlin.random.Random
 
 class SnakeHelper(
     inputWidth: Int,
     inputHeight: Int,
-    inputChainSize: Int
+    inputChainSize: Int,
+    private val screenHelper: ScreenHelper
 ) {
 
     val chainSize = getRoundedChainSize(notOptimizeChainSize = inputChainSize)
@@ -14,8 +14,6 @@ class SnakeHelper(
     private val maxVerticalChains: Int = inputHeight / chainSize
     private val width = maxHorizontalChains * chainSize
     private val height = maxVerticalChains * chainSize
-    private val centerX = width / 2
-    private val centerY = height / 2
 
     val startChains: List<SnakeChain>
         get() = listOf(startChain)
@@ -63,10 +61,13 @@ class SnakeHelper(
         val randomVerticalChainCount = Random.nextInt(0, maxVerticalChains)
         val freeChainX = randomHorizontalChainCount * chainSize
         val freeChainY = randomVerticalChainCount * chainSize
-        val shouldSkip = !isChainInRadius(
-            x = freeChainX, y = freeChainY, centerX = centerX, centerY = centerY, radius = width / 2
-        ) || chains.contains(SnakeChain(x = freeChainX, y = freeChainY))
-
+        val shouldSkip =
+            !screenHelper.isPointOnScreen(
+                width = width,
+                height = height,
+                x = freeChainX,
+                y = freeChainY
+            ) || chains.contains(SnakeChain(x = freeChainX, y = freeChainY))
         return if (shouldSkip) {
             getFreeChain(chains)
         } else {
@@ -82,13 +83,6 @@ class SnakeHelper(
             notOptimizeChainSize + 5 - chainSizeDivRest
         }
     }
-
-    /**
-     * (x - center_x)² + (y - center_y)² < radius².
-     */
-    private fun isChainInRadius(x: Int, y: Int, centerX: Int, centerY: Int, radius: Int): Boolean =
-        (x - centerX).toDouble().pow(2) + (y - centerY).toDouble().pow(2) < radius.toDouble()
-            .pow(2)
 
     private fun SnakeChain.getNewChainDirect(direct: Direct): SnakeChain {
         return when (direct) {
@@ -134,11 +128,11 @@ class SnakeHelper(
             }
             Direct.LEFT -> {
                 val newX = x - chainSize
-                SnakeChain(x = if (newX <= 0) width else newX, y = y)
+                SnakeChain(x = if (newX < 0) width else newX, y = y)
             }
             Direct.TOP -> {
                 val newY = y - chainSize
-                SnakeChain(x = x, y = if (newY <= 0) height else newY)
+                SnakeChain(x = x, y = if (newY < 0) height else newY)
             }
             Direct.DOWN -> {
                 val newY = y + chainSize

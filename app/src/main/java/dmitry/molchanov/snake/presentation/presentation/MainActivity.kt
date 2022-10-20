@@ -19,7 +19,8 @@ class MainActivity : ComponentActivity() {
             inputWidth = widthHeightPair.first,
             inputHeight = widthHeightPair.second,
             chainSize = resources.getDimensionPixelOffset(R.dimen.chain_size),
-            sharedPreferences = lazy { getSharedPreferences("SnakePref", Context.MODE_PRIVATE) }
+            sharedPreferences = lazy { getSharedPreferences("SnakePref", Context.MODE_PRIVATE) },
+            screenHelper = ScreenHelperImpl(isRoundDevice = resources.configuration.isScreenRound)
         )
     }
 

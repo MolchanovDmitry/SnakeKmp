@@ -91,6 +91,7 @@ fun GameScreen(viewModel: MainViewModel) {
         .focusable()) {
         when (val gameStatus = state.value.gameOverStatus) {
             is GameInProgress -> {
+                println("snale = ${state.value.chains} freeChain = ${state.value.freeChain}")
                 DrawSnake(state.value.chains, chainSize, color)
                 DrawFreeChain(state.value.freeChain, color, chainSize)
             }

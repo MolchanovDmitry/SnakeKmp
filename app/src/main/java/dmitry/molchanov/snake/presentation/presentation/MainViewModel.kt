@@ -12,6 +12,7 @@ import dmitry.molchanov.snake.presentation.domain.Direct.RIGHT
 import dmitry.molchanov.snake.presentation.domain.Direct.TOP
 import dmitry.molchanov.snake.presentation.domain.GameInProgress
 import dmitry.molchanov.snake.presentation.domain.GameOver
+import dmitry.molchanov.snake.presentation.domain.ScreenHelper
 import dmitry.molchanov.snake.presentation.domain.SnakeChain
 import dmitry.molchanov.snake.presentation.domain.SnakeHelper
 import dmitry.molchanov.snake.presentation.domain.SnakeState
@@ -59,7 +60,6 @@ class MainViewModel(
         when (action) {
             is NewDirect -> changeDirect(action.direct)
             GameOverClick -> runNewGame()
-            else -> error("Uncatched event")
         }
     }
 
@@ -158,6 +158,7 @@ class MainViewModelProvider(
     private val inputWidth: Int,
     private val inputHeight: Int,
     private val chainSize: Int,
+    private val screenHelper: ScreenHelper,
     private val sharedPreferences: Lazy<SharedPreferences>,
 ) : ViewModelProvider.Factory {
 
@@ -169,7 +170,8 @@ class MainViewModelProvider(
             snakeHelper = SnakeHelper(
                 inputWidth = inputWidth,
                 inputHeight = inputHeight,
-                inputChainSize = chainSize
+                inputChainSize = chainSize,
+                screenHelper = screenHelper
             ),
             getCurrentRecordUseCase = lazy {
                 GetCurrentRecordUseCase(preferenceRepository.value, coroutineDispatchers)
