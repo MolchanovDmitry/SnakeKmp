@@ -9,16 +9,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  permission:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Change wrapper permission
-          run: chmod +x ./gradlew
 
   checkout:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Change wrapper permission
+          run: chmod +x ./gradlew
 
   lint:
     runs-on: ubuntu-latest
