@@ -20,24 +20,27 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Run unit test
         run: ./gradlew ktlintCheck
 
-#  test:
-#    - name: Run unit test
-#        run: ./gradlew :app:testReleaseUnitTest
-#
-#  build:
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#
-#      - name: Assemble
-#        run: ./gradlew :app:assembleRelease
-#
-#      - name: Deploy apk
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: snake
-#          path: app/build/outputs/apk/release/app-release.apk
-#          retention-days: 2
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run unit test
+      run: ./gradlew :app:testReleaseUnitTest
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Assemble
+        run: ./gradlew :app:assembleRelease
+
+      - name: Deploy apk
+        uses: actions/upload-artifact@v3
+        with:
+          name: snake
+          path: app/build/outputs/apk/release/app-release.apk
+          retention-days: 2
