@@ -1,8 +1,8 @@
 package dmitry.molchanov.snake
 
-import dmitry.molchanov.snake.presentation.Direct
-import dmitry.molchanov.snake.presentation.SnakeChain
-import dmitry.molchanov.snake.presentation.SnakeHelper
+import dmitry.molchanov.snake.presentation.domain.Direct
+import dmitry.molchanov.snake.presentation.domain.SnakeChain
+import dmitry.molchanov.snake.presentation.domain.SnakeHelper
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

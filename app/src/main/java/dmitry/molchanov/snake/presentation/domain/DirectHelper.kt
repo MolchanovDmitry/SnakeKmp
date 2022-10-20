@@ -1,4 +1,4 @@
-package dmitry.molchanov.snake.presentation
+package dmitry.molchanov.snake.presentation.domain
 
 fun getNewDirect(x: Int, y: Int, headChain: SnakeChain, headDirect: Direct): Direct? = when {
     (headDirect == Direct.TOP || headDirect == Direct.DOWN) && headChain.x < x -> Direct.RIGHT

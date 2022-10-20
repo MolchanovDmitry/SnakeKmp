@@ -1,4 +1,4 @@
-package dmitry.molchanov.snake.presentation
+package dmitry.molchanov.snake.presentation.domain
 
 import kotlin.math.pow
 import kotlin.random.Random

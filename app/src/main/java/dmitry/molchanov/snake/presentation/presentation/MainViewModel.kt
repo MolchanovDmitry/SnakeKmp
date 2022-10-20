@@ -2,10 +2,14 @@ package dmitry.molchanov.snake.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import dmitry.molchanov.snake.presentation.Direct.DOWN
-import dmitry.molchanov.snake.presentation.Direct.LEFT
-import dmitry.molchanov.snake.presentation.Direct.RIGHT
-import dmitry.molchanov.snake.presentation.Direct.TOP
+import dmitry.molchanov.snake.presentation.domain.Direct
+import dmitry.molchanov.snake.presentation.domain.Direct.DOWN
+import dmitry.molchanov.snake.presentation.domain.Direct.LEFT
+import dmitry.molchanov.snake.presentation.domain.Direct.RIGHT
+import dmitry.molchanov.snake.presentation.domain.Direct.TOP
+import dmitry.molchanov.snake.presentation.domain.SnakeChain
+import dmitry.molchanov.snake.presentation.domain.SnakeHelper
+import dmitry.molchanov.snake.presentation.domain.SnakeState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
@@ -119,7 +123,7 @@ class MainViewModelProvider(
             snakeHelper = SnakeHelper(
                 inputWidth = inputWidth,
                 inputHeight = inputHeight,
-                chainSize = chainSize
+                inputChainSize = chainSize
             )
         ) as T
     }

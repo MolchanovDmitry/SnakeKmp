@@ -1,4 +1,4 @@
-package dmitry.molchanov.snake.presentation.theme
+package dmitry.molchanov.snake.presentation.presentation.ui.theme
 
 import androidx.compose.runtime.Composable
 import androidx.wear.compose.material.MaterialTheme

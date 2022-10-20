@@ -1,4 +1,4 @@
-package dmitry.molchanov.snake.presentation
+package dmitry.molchanov.snake.presentation.presentation
 
 import android.os.Build
 import android.os.Bundle
@@ -7,6 +7,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import dmitry.molchanov.snake.R
+import dmitry.molchanov.snake.presentation.MainViewModel
+import dmitry.molchanov.snake.presentation.MainViewModelProvider
+import dmitry.molchanov.snake.presentation.presentation.ui.GameScreen
 
 
 class MainActivity : ComponentActivity() {

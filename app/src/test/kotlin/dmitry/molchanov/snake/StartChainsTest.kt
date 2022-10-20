@@ -1,6 +1,6 @@
 package dmitry.molchanov.snake
 
-import dmitry.molchanov.snake.presentation.SnakeHelper
+import dmitry.molchanov.snake.presentation.domain.SnakeHelper
 import junit.framework.Assert.assertTrue
 import org.junit.Assert.assertEquals
 import org.junit.Test

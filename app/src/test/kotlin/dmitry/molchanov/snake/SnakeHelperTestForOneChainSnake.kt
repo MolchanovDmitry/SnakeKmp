@@ -1,11 +1,11 @@
 package dmitry.molchanov.snake
 
-import dmitry.molchanov.snake.presentation.Direct.DOWN
-import dmitry.molchanov.snake.presentation.Direct.LEFT
-import dmitry.molchanov.snake.presentation.Direct.RIGHT
-import dmitry.molchanov.snake.presentation.Direct.TOP
-import dmitry.molchanov.snake.presentation.SnakeChain
-import dmitry.molchanov.snake.presentation.SnakeHelper
+import dmitry.molchanov.snake.presentation.domain.Direct.DOWN
+import dmitry.molchanov.snake.presentation.domain.Direct.LEFT
+import dmitry.molchanov.snake.presentation.domain.Direct.RIGHT
+import dmitry.molchanov.snake.presentation.domain.Direct.TOP
+import dmitry.molchanov.snake.presentation.domain.SnakeChain
+import dmitry.molchanov.snake.presentation.domain.SnakeHelper
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
