@@ -15,13 +15,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Change wrapper permission
-          run: chmod +x ./gradlew
+        run: chmod +x ./gradlew
 
   lint:
     runs-on: ubuntu-latest
     steps:
       - name: Run unit test
-          run: ./gradlew ktlintCheck
+        run: ./gradlew ktlintCheck
 
 #  test:
 #    - name: Run unit test
