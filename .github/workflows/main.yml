@@ -10,31 +10,37 @@ on:
 
 jobs:
   permission:
-    - name: Change wrapper permission
-        run: chmod +x ./gradlew
+    runs-on: ubuntu-latest
+    steps:
+      - name: Change wrapper permission
+          run: chmod +x ./gradlew
 
   checkout:
-    - uses: actions/checkout@v2
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
 
   lint:
-    - name: Run unit test
-        run: ./gradlew ktlintCheck
-
-  test:
-    - name: Run unit test
-        run: ./gradlew :app:testReleaseUnitTest
-
-  build:
     runs-on: ubuntu-latest
-
     steps:
+      - name: Run unit test
+          run: ./gradlew ktlintCheck
 
-      - name: Assemble
-        run: ./gradlew :app:assembleRelease
-
-      - name: Deploy apk
-        uses: actions/upload-artifact@v3
-        with:
-          name: snake
-          path: app/build/outputs/apk/release/app-release.apk
-          retention-days: 2
+#  test:
+#    - name: Run unit test
+#        run: ./gradlew :app:testReleaseUnitTest
+#
+#  build:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#
+#      - name: Assemble
+#        run: ./gradlew :app:assembleRelease
+#
+#      - name: Deploy apk
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: snake
+#          path: app/build/outputs/apk/release/app-release.apk
+#          retention-days: 2
