@@ -1,6 +1,7 @@
 package dmitry.molchanov.snake
 
 import dmitry.molchanov.snake.presentation.domain.SnakeHelper
+import dmitry.molchanov.snake.presentation.presentation.ScreenHelperImpl
 import junit.framework.Assert.assertTrue
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -10,7 +11,12 @@ class StartChainsTest {
 
     @Test
     fun `check start chains not empty`() {
-        val snakeHelper = SnakeHelper(inputWidth = 100, inputHeight = 100, inputChainSize = 10)
+        val snakeHelper = SnakeHelper(
+            inputWidth = 100,
+            inputHeight = 100,
+            inputChainSize = 10,
+            screenHelper = ScreenHelperImpl(isRoundDevice = Random.nextBoolean())
+        )
         val startChains = snakeHelper.startChains
         assertTrue(startChains.isNotEmpty())
     }
@@ -18,7 +24,12 @@ class StartChainsTest {
     @Test
     fun `check start chains in right coordinates`() {
         val chainSize = 10
-        val snakeHelper = SnakeHelper(inputWidth = 100, inputHeight = 100, inputChainSize = 10)
+        val snakeHelper = SnakeHelper(
+            inputWidth = 100,
+            inputHeight = 100,
+            inputChainSize = 10,
+            screenHelper = ScreenHelperImpl(isRoundDevice = Random.nextBoolean())
+        )
         val startChains = snakeHelper.startChains
         startChains.forEach { chain ->
             assertTrue(chain.x % chainSize == 0)
@@ -35,7 +46,8 @@ class StartChainsTest {
             val snakeHelper = SnakeHelper(
                 inputWidth = inputWidth,
                 inputHeight = inputHeight,
-                inputChainSize = chainSize
+                inputChainSize = chainSize,
+                screenHelper = ScreenHelperImpl(isRoundDevice = Random.nextBoolean())
             )
             val startChains = snakeHelper.startChains
             startChains.forEach { chain ->

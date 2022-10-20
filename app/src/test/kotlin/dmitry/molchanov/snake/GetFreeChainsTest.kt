@@ -2,15 +2,18 @@ package dmitry.molchanov.snake
 
 import dmitry.molchanov.snake.presentation.domain.SnakeChain
 import dmitry.molchanov.snake.presentation.domain.SnakeHelper
+import dmitry.molchanov.snake.presentation.presentation.ScreenHelperImpl
 import org.junit.Assert.assertFalse
 import org.junit.Test
+import kotlin.random.Random
 
 class GetFreeChainsTest {
 
     private val snakeHelper = SnakeHelper(
         inputWidth = 500,
         inputHeight = 500,
-        chainSize = 10
+        inputChainSize = 10,
+        screenHelper = ScreenHelperImpl(isRoundDevice = Random.nextBoolean())
     )
 
     @Test

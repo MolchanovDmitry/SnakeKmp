@@ -3,8 +3,10 @@ package dmitry.molchanov.snake
 import dmitry.molchanov.snake.presentation.domain.Direct
 import dmitry.molchanov.snake.presentation.domain.SnakeChain
 import dmitry.molchanov.snake.presentation.domain.SnakeHelper
+import dmitry.molchanov.snake.presentation.presentation.ScreenHelperImpl
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import kotlin.random.Random
 
 class SnakeHelperTestForMultipleChainSnake {
 
@@ -15,7 +17,12 @@ class SnakeHelperTestForMultipleChainSnake {
     }
 
     private val snakeHelper =
-        SnakeHelper(inputWidth = WIDTH, inputHeight = HEIGHT, inputChainSize = CHAIN_SIZE)
+        SnakeHelper(
+            inputWidth = WIDTH,
+            inputHeight = HEIGHT,
+            inputChainSize = CHAIN_SIZE,
+            screenHelper = ScreenHelperImpl(isRoundDevice = Random.nextBoolean())
+        )
 
     @Test
     fun `add chain to chains, TOP direct, simple position`() {
