@@ -14,7 +14,8 @@ class SnakeHelperTestForMultipleChainSnake {
         const val CHAIN_SIZE = 10
     }
 
-    private val snakeHelper = SnakeHelper(inputWidth = WIDTH, inputHeight = HEIGHT, chainSize = CHAIN_SIZE)
+    private val snakeHelper =
+        SnakeHelper(inputWidth = WIDTH, inputHeight = HEIGHT, inputChainSize = CHAIN_SIZE)
 
     @Test
     fun `add chain to chains, TOP direct, simple position`() {

@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
         MainViewModelProvider(
             inputWidth = widthHeightPair.first,
             inputHeight = widthHeightPair.second,
-            chainSize = getRoundedChainSize()
+            chainSize = resources.getDimensionPixelOffset(R.dimen.chain_size)
         )
     }
 
@@ -25,17 +25,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             GameScreen(viewModel = viewModel)
         }
-    }
-
-    private fun getRoundedChainSize(): Int {
-        val chainSize = resources.getDimensionPixelOffset(R.dimen.chain_size)
-        val chainSizeDivRest = chainSize % 5
-        return if (chainSizeDivRest == 0) {
-            chainSize
-        } else {
-            chainSize + 5 - chainSizeDivRest
-        }
-
     }
 
     private fun getScreenWidthHeightPair(): Pair<Int, Int> {

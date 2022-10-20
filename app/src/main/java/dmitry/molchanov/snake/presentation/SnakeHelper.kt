@@ -6,9 +6,10 @@ import kotlin.random.Random
 class SnakeHelper(
     inputWidth: Int,
     inputHeight: Int,
-    val chainSize: Int
+    inputChainSize: Int
 ) {
 
+    val chainSize = getRoundedChainSize(notOptimizeChainSize = inputChainSize)
     private val maxHorizontalChains: Int = inputWidth / chainSize
     private val maxVerticalChains: Int = inputHeight / chainSize
     private val width = maxHorizontalChains * chainSize
@@ -17,8 +18,15 @@ class SnakeHelper(
     private val centerY = height / 2
 
     val startChains: List<SnakeChain>
-        get() = listOf(SnakeChain(x = 0, y = centerY))
+        get() = listOf(startChain)
 
+    private val startChain: SnakeChain
+        get() {
+            val roundedVerticalChains =
+                if (maxVerticalChains % 2 == 0) maxVerticalChains / 2
+                else maxVerticalChains / 2 + 1
+            return SnakeChain(x = 0, y = roundedVerticalChains * chainSize)
+        }
 
     fun getNewChainToTail(chains: List<SnakeChain>, direct: Direct): SnakeChain =
         when (chains.size) {
@@ -63,6 +71,15 @@ class SnakeHelper(
             getFreeChain(chains)
         } else {
             SnakeChain(x = freeChainX, y = freeChainY)
+        }
+    }
+
+    private fun getRoundedChainSize(notOptimizeChainSize: Int): Int {
+        val chainSizeDivRest = notOptimizeChainSize % 5
+        return if (chainSizeDivRest == 0) {
+            notOptimizeChainSize
+        } else {
+            notOptimizeChainSize + 5 - chainSizeDivRest
         }
     }
 
