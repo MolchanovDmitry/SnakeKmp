@@ -34,12 +34,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.Text
 import dmitry.molchanov.snake.R
-import dmitry.molchanov.snake.presentation.GameOverClick
-import dmitry.molchanov.snake.presentation.MainViewModel
-import dmitry.molchanov.snake.presentation.NewDirect
 import dmitry.molchanov.snake.presentation.domain.Direct
+import dmitry.molchanov.snake.presentation.domain.GameInProgress
+import dmitry.molchanov.snake.presentation.domain.GameOver
 import dmitry.molchanov.snake.presentation.domain.SnakeChain
 import dmitry.molchanov.snake.presentation.domain.getNewDirect
+import dmitry.molchanov.snake.presentation.presentation.GameOverClick
+import dmitry.molchanov.snake.presentation.presentation.MainViewModel
+import dmitry.molchanov.snake.presentation.presentation.NewDirect
 import dmitry.molchanov.snake.presentation.presentation.ui.theme.colors
 
 
@@ -72,7 +74,7 @@ fun GameScreen(viewModel: MainViewModel) {
             y = offset.y.toInt(),
             headDirect = state.value.direct,
             headChain = state.value.chains.first()
-        )?.let{ direct ->
+        )?.let { direct ->
             viewModel.onAction(NewDirect(direct))
         }
     }
@@ -87,16 +89,20 @@ fun GameScreen(viewModel: MainViewModel) {
         }
         .focusRequester(requester)
         .focusable()) {
-        if (!state.value.isGameOver) {
-            DrawSnake(state.value.chains, chainSize, color)
-            DrawFreeChain(state.value.freeChain, color, chainSize)
-        } else {
-            GameOver(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .clickable { viewModel.onAction(GameOverClick) },
-                score = state.value.chains.size
-            )
+        when (val gameStatus = state.value.gameOverStatus) {
+            is GameInProgress -> {
+                DrawSnake(state.value.chains, chainSize, color)
+                DrawFreeChain(state.value.freeChain, color, chainSize)
+            }
+            is GameOver -> {
+                ShowGameOver(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .clickable { viewModel.onAction(GameOverClick) },
+                    score = gameStatus.score,
+                    record = gameStatus.record
+                )
+            }
         }
     }
     LaunchedEffect(Unit) {
@@ -105,16 +111,23 @@ fun GameScreen(viewModel: MainViewModel) {
 }
 
 @Composable
-private fun GameOver(modifier: Modifier, score: Int) {
+private fun ShowGameOver(modifier: Modifier, score: Int, record: Int) {
     Column(modifier = modifier) {
         Text(
             text = stringResource(R.string.game_over),
             fontSize = dimensionResource(id = R.dimen.game_over_text_size).value.sp,
         )
-        Text(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            text = stringResource(id = R.string.score, score)
-        )
+        if (score <= record) {
+            Text(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                text = stringResource(id = R.string.score, score, record)
+            )
+        } else {
+            Text(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                text = stringResource(id = R.string.new_record, score)
+            )
+        }
     }
 }
 

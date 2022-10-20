@@ -1,5 +1,6 @@
 package dmitry.molchanov.snake.presentation.presentation
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -7,8 +8,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import dmitry.molchanov.snake.R
-import dmitry.molchanov.snake.presentation.MainViewModel
-import dmitry.molchanov.snake.presentation.MainViewModelProvider
 import dmitry.molchanov.snake.presentation.presentation.ui.GameScreen
 
 
@@ -19,7 +18,8 @@ class MainActivity : ComponentActivity() {
         MainViewModelProvider(
             inputWidth = widthHeightPair.first,
             inputHeight = widthHeightPair.second,
-            chainSize = resources.getDimensionPixelOffset(R.dimen.chain_size)
+            chainSize = resources.getDimensionPixelOffset(R.dimen.chain_size),
+            sharedPreferences = lazy { getSharedPreferences("SnakePref", Context.MODE_PRIVATE) }
         )
     }
 

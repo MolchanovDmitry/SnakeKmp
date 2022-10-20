@@ -1,31 +1,40 @@
-package dmitry.molchanov.snake.presentation
+package dmitry.molchanov.snake.presentation.presentation
 
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import dmitry.molchanov.snake.presentation.data.PreferenceRepositoryImpl
+import dmitry.molchanov.snake.presentation.domain.CoroutineDispatchers
 import dmitry.molchanov.snake.presentation.domain.Direct
 import dmitry.molchanov.snake.presentation.domain.Direct.DOWN
 import dmitry.molchanov.snake.presentation.domain.Direct.LEFT
 import dmitry.molchanov.snake.presentation.domain.Direct.RIGHT
 import dmitry.molchanov.snake.presentation.domain.Direct.TOP
+import dmitry.molchanov.snake.presentation.domain.GameInProgress
+import dmitry.molchanov.snake.presentation.domain.GameOver
 import dmitry.molchanov.snake.presentation.domain.SnakeChain
 import dmitry.molchanov.snake.presentation.domain.SnakeHelper
 import dmitry.molchanov.snake.presentation.domain.SnakeState
+import dmitry.molchanov.snake.presentation.domain.usecase.CheckScoreAndSetRecordUseCase
+import dmitry.molchanov.snake.presentation.domain.usecase.GetCurrentRecordUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.newSingleThreadContext
 
 class MainViewModel(
-    private val snakeHelper: SnakeHelper
+    coroutineDispatchers: CoroutineDispatchers,
+    private val snakeHelper: SnakeHelper,
+    private val getCurrentRecordUseCase: Lazy<GetCurrentRecordUseCase>,
+    private val checkScoreAndSetRecordUseCase: Lazy<CheckScoreAndSetRecordUseCase>
 ) : ViewModel() {
 
-    private val scope =
-        CoroutineScope(newSingleThreadContext("Snake move thread") + SupervisorJob())
+    private val scope = CoroutineScope(coroutineDispatchers.main + SupervisorJob())
     private val _stateFlow = MutableStateFlow(
         SnakeState(
             chainSize = snakeHelper.chainSize.toFloat(),
@@ -56,10 +65,25 @@ class MainViewModel(
 
     private fun runNewGame() = scope.launch {
         speed = START_SPEED
-        _stateFlow.update {
-            it.copy(direct = RIGHT, isGameOver = false, chains = snakeHelper.startChains)
-        }
+        saveNewRecord()
+        initIdleGameState()
         initNewFreeChain()
+    }
+
+    private suspend fun saveNewRecord() {
+        (state.gameOverStatus as? GameOver)?.score?.let { score ->
+            checkScoreAndSetRecordUseCase.value.execute(score)
+        }
+    }
+
+    private fun initIdleGameState() {
+        _stateFlow.update {
+            it.copy(
+                direct = RIGHT,
+                gameOverStatus = GameInProgress,
+                chains = snakeHelper.startChains
+            )
+        }
     }
 
     private fun initNewFreeChain() {
@@ -91,7 +115,7 @@ class MainViewModel(
             val movedChains =
                 snakeHelper.getMovedChains(chains = chains, direct = state.direct).toMutableList()
             if (snakeHelper.isGameOver(movedChains)) {
-                _stateFlow.update { it.copy(isGameOver = true) }
+                gameOver()
             }
             if (movedChains.first() == state.freeChain) {
                 initNewFreeChain()
@@ -105,6 +129,22 @@ class MainViewModel(
         }
     }
 
+    private suspend fun gameOver() {
+        _stateFlow.update {
+            it.copy(
+                gameOverStatus = GameOver(
+                    score = state.chains.size,
+                    record = getCurrentRecordUseCase.value.execute()
+                )
+            )
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        scope.cancel()
+    }
+
     private companion object {
         const val START_SPEED = 700L
     }
@@ -115,16 +155,28 @@ class NewDirect(val direct: Direct) : Action()
 object GameOverClick : Action()
 
 class MainViewModelProvider(
-    private val inputWidth: Int, private val inputHeight: Int, private val chainSize: Int
+    private val inputWidth: Int,
+    private val inputHeight: Int,
+    private val chainSize: Int,
+    private val sharedPreferences: Lazy<SharedPreferences>,
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        val preferenceRepository = lazy { PreferenceRepositoryImpl(sharedPreferences.value) }
+        val coroutineDispatchers = CoroutineDispatchers()
         return MainViewModel(
+            coroutineDispatchers = coroutineDispatchers,
             snakeHelper = SnakeHelper(
                 inputWidth = inputWidth,
                 inputHeight = inputHeight,
                 inputChainSize = chainSize
-            )
+            ),
+            getCurrentRecordUseCase = lazy {
+                GetCurrentRecordUseCase(preferenceRepository.value, coroutineDispatchers)
+            },
+            checkScoreAndSetRecordUseCase = lazy {
+                CheckScoreAndSetRecordUseCase(preferenceRepository.value, coroutineDispatchers)
+            }
         ) as T
     }
 
