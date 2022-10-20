@@ -17,13 +17,12 @@ jobs:
       - name: Change wrapper permission
         run: chmod +x ./gradlew
 
-      - name: Run unit test
+      - name: Run lint
         run: ./gradlew ktlintCheck
 
       - name: Run unit test
         run: ./gradlew :app:testReleaseUnitTest
 
-      - uses: actions/checkout@v2
       - name: Assemble
         run: ./gradlew :app:assembleRelease
 
