@@ -9,7 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import dmitry.molchanov.snake.R
 import dmitry.molchanov.snake.presentation.presentation.ui.GameScreen
-
+import dmitry.molchanov.snake.presentation.presentation.ui.theme.SnakeTheme
 
 class MainActivity : ComponentActivity() {
 
@@ -27,7 +27,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            GameScreen(viewModel = viewModel)
+            SnakeTheme {
+                GameScreen(viewModel = viewModel)
+            }
         }
     }
 

@@ -16,5 +16,3 @@ data class SnakeChain(
 sealed class GameStatus
 object GameInProgress : GameStatus()
 data class GameOver(val score: Int, val record: Int) : GameStatus()
-
-

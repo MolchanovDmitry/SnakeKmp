@@ -8,7 +8,6 @@ class ScreenHelperImpl(
     private val isRoundDevice: Boolean
 ) : ScreenHelper {
 
-
     override fun isPointOnScreen(width: Int, height: Int, x: Int, y: Int): Boolean {
         if (!isRoundDevice) return true
         val centerX = width / 2

@@ -44,7 +44,6 @@ import dmitry.molchanov.snake.presentation.presentation.MainViewModel
 import dmitry.molchanov.snake.presentation.presentation.NewDirect
 import dmitry.molchanov.snake.presentation.presentation.ui.theme.colors
 
-
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun GameScreen(viewModel: MainViewModel) {
@@ -79,16 +78,18 @@ fun GameScreen(viewModel: MainViewModel) {
         }
     }
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .onKeyEvent(::onKeyEventFetched)
-        .pointerInput(Unit) {
-            detectTapGestures(onLongPress = {
-                color = getNextItem(color, colors)
-            }, onTap = ::onTap)
-        }
-        .focusRequester(requester)
-        .focusable()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .onKeyEvent(::onKeyEventFetched)
+            .pointerInput(Unit) {
+                detectTapGestures(onLongPress = {
+                    color = getNextItem(color, colors)
+                }, onTap = ::onTap)
+            }
+            .focusRequester(requester)
+            .focusable()
+    ) {
         when (val gameStatus = state.value.gameOverStatus) {
             is GameInProgress -> {
                 println("snale = ${state.value.chains} freeChain = ${state.value.freeChain}")
@@ -134,7 +135,9 @@ private fun ShowGameOver(modifier: Modifier, score: Int, record: Int) {
 
 @Composable
 private fun DrawSnake(
-    chains: List<SnakeChain>, chainSize: Float, color: Color
+    chains: List<SnakeChain>,
+    chainSize: Float,
+    color: Color
 ) {
     Canvas(modifier = Modifier.fillMaxSize()) {
         chains.forEach {
@@ -151,13 +154,14 @@ private fun DrawSnake(
 private fun DrawFreeChain(freeChain: SnakeChain, color: Color, chainSize: Float) {
     Canvas(modifier = Modifier.fillMaxSize()) {
         drawRect(
-            color = color, size = Size(chainSize, chainSize), topLeft = Offset(
+            color = color,
+            size = Size(chainSize, chainSize),
+            topLeft = Offset(
                 x = freeChain.x.toFloat(), y = freeChain.y.toFloat()
             )
         )
     }
 }
-
 
 private fun getNextItem(currentColor: Color, colors: Array<Color>): Color {
     val newIndex = colors.indexOf(currentColor) + 1
