@@ -9,31 +9,20 @@ on:
   workflow_dispatch:
 
 jobs:
-
-  checkout:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Change wrapper permission
-        run: chmod +x ./gradlew
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run unit test
-        run: ./gradlew ktlintCheck
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Run unit test
-      run: ./gradlew :app:testReleaseUnitTest
-
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+
+      - name: Change wrapper permission
+        run: chmod +x ./gradlew
+
+      - name: Run unit test
+        run: ./gradlew ktlintCheck
+
+      - name: Run unit test
+        run: ./gradlew :app:testReleaseUnitTest
+
       - uses: actions/checkout@v2
       - name: Assemble
         run: ./gradlew :app:assembleRelease
