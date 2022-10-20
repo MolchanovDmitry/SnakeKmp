@@ -13,8 +13,9 @@
 <p align="center">
 Snake from childhood for your wear os watch.
 </p>
-
-![](img/screenshot.webp)
+<div align="center">
+  <img src="img/screenshot.webp">
+</div>
 
 ## License
 ```
