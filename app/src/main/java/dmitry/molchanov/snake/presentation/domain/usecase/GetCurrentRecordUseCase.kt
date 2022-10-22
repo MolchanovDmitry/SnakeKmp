@@ -1,11 +1,11 @@
 package dmitry.molchanov.snake.presentation.domain.usecase
 
+import dmitry.molchanov.preference.RecordDataStore
 import dmitry.molchanov.snake.presentation.domain.CoroutineDispatchers
-import dmitry.molchanov.snake.presentation.domain.PreferenceRepository
 import kotlinx.coroutines.withContext
 
 class GetCurrentRecordUseCase(
-    private val prefRepository: PreferenceRepository,
+    private val prefRepository: RecordDataStore,
     private val coroutineDispatchers: CoroutineDispatchers
 ) {
 

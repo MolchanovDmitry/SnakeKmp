@@ -1,9 +1,9 @@
 package dmitry.molchanov.snake.presentation.data
 
 import android.content.SharedPreferences
-import dmitry.molchanov.snake.presentation.domain.PreferenceRepository
+import dmitry.molchanov.preference.RecordDataStore
 
-class PreferenceRepositoryImpl(private val prefs: SharedPreferences) : PreferenceRepository {
+class PreferenceRepositoryImpl(private val prefs: SharedPreferences) : RecordDataStore {
 
     override var currentRecord: Int
         get() = prefs.getInt(CURRENT_RECORD_KEY, 0)

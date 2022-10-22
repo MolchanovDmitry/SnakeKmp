@@ -76,7 +76,7 @@ ktlint {
 }
 
 dependencies {
-    implementation(project(Modules.PREFERENCE))
+    implementation(project(Modules.Record.DATA_STORE))
 
     implementation("androidx.wear.compose:compose-material:${Deps.WEAR_COMPOSE_VERSION}")
     implementation("androidx.activity:activity-compose:1.6.0")
