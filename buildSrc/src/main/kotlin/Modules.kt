@@ -1,6 +1,9 @@
 object Modules {
 
-    const val PREFERENCE = ":preference"
     const val APP = ":app"
+    const val PREFERENCE = ":record:preference"
+    object Record {
+        //private const val RECORD = ":record"
 
+    }
 }
