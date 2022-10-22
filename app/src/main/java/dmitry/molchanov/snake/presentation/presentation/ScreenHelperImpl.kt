@@ -1,6 +1,6 @@
 package dmitry.molchanov.snake.presentation.presentation
 
-import dmitry.molchanov.snake.presentation.domain.ScreenHelper
+import dmitry.molchanov.gamelogic.domain.ScreenHelper
 import kotlin.math.min
 import kotlin.math.pow
 

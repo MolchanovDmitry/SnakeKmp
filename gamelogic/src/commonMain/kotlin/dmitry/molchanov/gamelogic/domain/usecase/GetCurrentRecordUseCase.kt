@@ -1,7 +1,7 @@
-package dmitry.molchanov.snake.presentation.domain.usecase
+package dmitry.molchanov.gamelogic.domain.usecase
 
+import dmitry.molchanov.gamelogic.domain.CoroutineDispatchers
 import dmitry.molchanov.preference.RecordDataStore
-import dmitry.molchanov.snake.presentation.domain.CoroutineDispatchers
 import kotlinx.coroutines.withContext
 
 class GetCurrentRecordUseCase(

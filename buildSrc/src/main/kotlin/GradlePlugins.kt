@@ -8,5 +8,4 @@ object GradlePlugins {
         const val MULTIPLATFORM = "multiplatform"
     }
 
-
 }

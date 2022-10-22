@@ -33,15 +33,15 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.Text
+import dmitry.molchanov.gamelogic.GameOverClick
+import dmitry.molchanov.gamelogic.NewDirect
+import dmitry.molchanov.gamelogic.domain.Direct
+import dmitry.molchanov.gamelogic.domain.GameInProgress
+import dmitry.molchanov.gamelogic.domain.GameOver
+import dmitry.molchanov.gamelogic.domain.SnakeChain
+import dmitry.molchanov.gamelogic.domain.getNewDirect
 import dmitry.molchanov.snake.R
-import dmitry.molchanov.snake.presentation.domain.Direct
-import dmitry.molchanov.snake.presentation.domain.GameInProgress
-import dmitry.molchanov.snake.presentation.domain.GameOver
-import dmitry.molchanov.snake.presentation.domain.SnakeChain
-import dmitry.molchanov.snake.presentation.domain.getNewDirect
-import dmitry.molchanov.snake.presentation.presentation.GameOverClick
 import dmitry.molchanov.snake.presentation.presentation.MainViewModel
-import dmitry.molchanov.snake.presentation.presentation.NewDirect
 import dmitry.molchanov.snake.presentation.presentation.ui.theme.colors
 
 @OptIn(ExperimentalComposeUiApi::class)

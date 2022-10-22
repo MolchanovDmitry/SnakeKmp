@@ -1,4 +1,4 @@
-package dmitry.molchanov.snake.presentation.domain
+package dmitry.molchanov.gamelogic.domain
 
 data class SnakeState(
     val freeChain: SnakeChain,

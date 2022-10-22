@@ -8,4 +8,8 @@ object Deps {
             "com.russhwolf:multiplatform-settings-coroutines-native-mt:0.8.1"
     }
 
+    object Coroutine {
+        const val CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3-native-mt"
+    }
+
 }
