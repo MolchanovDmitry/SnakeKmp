@@ -43,7 +43,9 @@ android {
         minSdk = Config.minSdk
         targetSdk = Config.targetSdk
     }
-}
-dependencies {
-    androidTestImplementation(project(mapOf("path" to ":app")))
+    buildTypes {
+        release {
+            isMinifyEnabled = true
+        }
+    }
 }

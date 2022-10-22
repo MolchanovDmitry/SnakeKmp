@@ -39,4 +39,9 @@ android {
         minSdk = Config.minSdk
         targetSdk = Config.targetSdk
     }
+    buildTypes {
+        release {
+            isMinifyEnabled = true
+        }
+    }
 }
