@@ -11,19 +11,24 @@ kotlin {
         browser()
         binaries.executable()
     }
-    
+
     sourceSets {
-        val commonMain by getting{
-            dependencies{
+        val commonMain by getting {
+            dependencies {
                 arrayOf(
                     project(Modules.Record.DATA_STORE),
                     Deps.Coroutine.CORE
-                ).forEach (::implementation)
+                ).forEach(::implementation)
             }
         }
         val commonTest by getting {
             dependencies {
-                implementation(kotlin("test"))
+                arrayOf(
+                    kotlin("test"),
+                    kotlin("test-common"),
+                    kotlin("test-annotations-common"),
+                ).forEach(::implementation)
+
             }
         }
         val androidMain by getting
@@ -38,4 +43,7 @@ android {
         minSdk = Config.minSdk
         targetSdk = Config.targetSdk
     }
+}
+dependencies {
+    androidTestImplementation(project(mapOf("path" to ":app")))
 }
