@@ -1,9 +1,9 @@
 package dmitry.molchanov.snake.presentation.presentation
 
-import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import dmitry.molchanov.snake.presentation.data.PreferenceRepositoryImpl
+import dmitry.molchanov.recorddsimpl.RecordDataStoreImpl
+import dmitry.molchanov.recorddsimpl.RecordSettings
 import dmitry.molchanov.snake.presentation.domain.CoroutineDispatchers
 import dmitry.molchanov.snake.presentation.domain.Direct
 import dmitry.molchanov.snake.presentation.domain.Direct.DOWN
@@ -159,11 +159,11 @@ class MainViewModelProvider(
     private val inputHeight: Int,
     private val chainSize: Int,
     private val screenHelper: ScreenHelper,
-    private val sharedPreferences: Lazy<SharedPreferences>,
+    private val recordSettings: Lazy<RecordSettings>,
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        val preferenceRepository = lazy { PreferenceRepositoryImpl(sharedPreferences.value) }
+        val recordDS = lazy { RecordDataStoreImpl(recordSettings.value) }
         val coroutineDispatchers = CoroutineDispatchers()
         return MainViewModel(
             coroutineDispatchers = coroutineDispatchers,
@@ -174,10 +174,10 @@ class MainViewModelProvider(
                 screenHelper = screenHelper
             ),
             getCurrentRecordUseCase = lazy {
-                GetCurrentRecordUseCase(preferenceRepository.value, coroutineDispatchers)
+                GetCurrentRecordUseCase(recordDS.value, coroutineDispatchers)
             },
             checkScoreAndSetRecordUseCase = lazy {
-                CheckScoreAndSetRecordUseCase(preferenceRepository.value, coroutineDispatchers)
+                CheckScoreAndSetRecordUseCase(recordDS.value, coroutineDispatchers)
             }
         ) as T
     }

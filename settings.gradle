@@ -14,4 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Snake"
 include ':app'
+
 include ':record:recordDS'
+include ':record:recordDSImpl'

@@ -5,5 +5,6 @@ object Modules {
     object Record {
         private const val RECORD = ":record"
         const val DATA_STORE = "$RECORD:recordDS"
+        const val DATA_STORE_IMPL = "$RECORD:recordDSImpl"
     }
 }

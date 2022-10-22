@@ -2,5 +2,6 @@ package dmitry.molchanov.preference
 
 interface RecordDataStore {
 
-    var currentRecord: Int
+    suspend fun setCurrentRecord(value: Int)
+    suspend fun getCurrentRecord(): Int
 }
