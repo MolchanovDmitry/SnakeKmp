@@ -139,16 +139,18 @@ private fun DrawGame(width: Int, height: Int) {
     })
     ScoreView(score = state.value.score, record = state.value.record)
     if (!state.value.isGameOver) {
-        repeat(height) { rowIndex ->
-            Div {
-                repeat(width) { columnIndex ->
-                    Input(InputType.Radio, attrs = {
-                        isChecked(
-                            state = state.value,
-                            rowIndex = rowIndex,
-                            columnIndex = columnIndex
-                        ).let(::checked)
-                    })
+        Div({ style { marginTop(50.px) } }) {
+            repeat(height) { rowIndex ->
+                Div {
+                    repeat(width) { columnIndex ->
+                        Input(InputType.Radio, attrs = {
+                            isChecked(
+                                state = state.value,
+                                rowIndex = rowIndex,
+                                columnIndex = columnIndex
+                            ).let(::checked)
+                        })
+                    }
                 }
             }
         }
