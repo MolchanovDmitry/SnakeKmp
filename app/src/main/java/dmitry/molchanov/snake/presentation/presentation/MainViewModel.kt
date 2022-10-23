@@ -48,12 +48,8 @@ class MainViewModelProvider(
                 inputChainSize = chainSize,
                 screenHelper = screenHelper
             ),
-            getCurrentRecordUseCase = lazy {
-                GetCurrentRecordUseCase(recordDS.value, coroutineDispatchers)
-            },
-            checkScoreAndSetRecordUseCase = lazy {
-                CheckScoreAndSetRecordUseCase(recordDS.value, coroutineDispatchers)
-            }
+            getCurrentRecordUseCase = GetCurrentRecordUseCase(recordDS.value, coroutineDispatchers),
+            checkScoreAndSetRecordUseCase = CheckScoreAndSetRecordUseCase(recordDS.value, coroutineDispatchers)
         )
         return MainViewModel(gameViewModel = gameVM) as T
     }

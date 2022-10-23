@@ -13,7 +13,7 @@ class RecordDataStoreImpl(
         settings.getIntOrNull(RECORD_KEY) ?: 0
 
     override suspend fun setCurrentRecord(value: Int) {
-        settings[RECORD_KEY] = value
+        settings.putInt(RECORD_KEY, value)
     }
 
     companion object {

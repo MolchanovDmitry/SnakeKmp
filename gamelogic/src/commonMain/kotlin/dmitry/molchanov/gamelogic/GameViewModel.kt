@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 interface GameViewModel {
     fun onAction(action: Action)
     fun release()
+
     val stateFlow: StateFlow<SnakeState>
 }
 

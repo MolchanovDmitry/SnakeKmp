@@ -26,8 +26,8 @@ import kotlinx.coroutines.launch
 class GameViewModelImpl(
     coroutineDispatchers: CoroutineDispatchers,
     private val snakeHelper: SnakeHelper,
-    private val getCurrentRecordUseCase: Lazy<GetCurrentRecordUseCase>,
-    private val checkScoreAndSetRecordUseCase: Lazy<CheckScoreAndSetRecordUseCase>
+    private val getCurrentRecordUseCase: GetCurrentRecordUseCase,
+    private val checkScoreAndSetRecordUseCase: CheckScoreAndSetRecordUseCase
 ) : GameViewModel {
 
     private val scope = CoroutineScope(coroutineDispatchers.main + SupervisorJob())
@@ -69,7 +69,7 @@ class GameViewModelImpl(
 
     private suspend fun saveNewRecord() {
         (state.gameOverStatus as? GameOver)?.score?.let { score ->
-            checkScoreAndSetRecordUseCase.value.execute(score)
+            checkScoreAndSetRecordUseCase.execute(score)
         }
     }
 
@@ -131,7 +131,7 @@ class GameViewModelImpl(
             it.copy(
                 gameOverStatus = GameOver(
                     score = state.chains.size,
-                    record = getCurrentRecordUseCase.value.execute()
+                    record = getCurrentRecordUseCase.execute()
                 )
             )
         }

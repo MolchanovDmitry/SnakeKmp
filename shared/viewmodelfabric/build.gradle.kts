@@ -8,7 +8,6 @@ kotlin {
 
     js(IR) {
         useCommonJs()
-        browser()
         binaries.executable()
     }
 
@@ -16,10 +15,9 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 arrayOf(
+                    project(Modules.GAME_LOGIC),
                     project(Modules.Record.DATA_STORE),
-                    Deps.Coroutine.CORE,
-                    Deps.Settings.WOLF_SETTINGS,
-                    Deps.Settings.WOLF_SETTINGS_COROUTINES
+                    project(Modules.Record.DATA_STORE_IMPL)
                 ).forEach(::implementation)
             }
         }
@@ -28,22 +26,14 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val androidMain by getting
-        val androidTest by getting
-        val jsMain by getting
     }
 }
 
 android {
-    namespace = "dmitry.molchanov.recorddsimpl"
+    namespace = "dmitry.molchanov.viewmodelfabric"
     compileSdk = Config.compileSdk
     defaultConfig {
         minSdk = Config.minSdk
         targetSdk = Config.targetSdk
-    }
-    buildTypes {
-        release {
-            isMinifyEnabled = true
-        }
     }
 }

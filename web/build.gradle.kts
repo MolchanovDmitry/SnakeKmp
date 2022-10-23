@@ -1,3 +1,5 @@
+import com.google.wireless.android.sdk.stats.GradleModule
+
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose") version ("1.2.0")
@@ -14,8 +16,15 @@ kotlin {
     sourceSets {
         val jsMain by getting {
             dependencies {
-                implementation(compose.web.core)
-                implementation(compose.runtime)
+                arrayOf(
+                    compose.web.core,
+                    compose.runtime,
+                    project(Modules.GAME_LOGIC),
+                    project(Modules.Record.DATA_STORE),
+                    project(Modules.Record.DATA_STORE_IMPL),
+                    "org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.6.3-native-mt"
+
+                ).forEach(::implementation)
             }
         }
     }

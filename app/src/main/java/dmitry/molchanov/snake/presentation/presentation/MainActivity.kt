@@ -10,6 +10,7 @@ import dmitry.molchanov.recorddsimpl.RecordSettings
 import dmitry.molchanov.snake.R
 import dmitry.molchanov.snake.presentation.presentation.ui.GameScreen
 import dmitry.molchanov.snake.presentation.presentation.ui.theme.SnakeTheme
+import kotlinx.coroutines.Dispatchers
 
 class MainActivity : ComponentActivity() {
 
@@ -19,7 +20,7 @@ class MainActivity : ComponentActivity() {
             inputWidth = widthHeightPair.first,
             inputHeight = widthHeightPair.second,
             chainSize = resources.getDimensionPixelOffset(R.dimen.chain_size),
-            recordSettings = lazy { RecordSettings(this) },
+            recordSettings = lazy { RecordSettings(this, Dispatchers.IO) },
             screenHelper = ScreenHelperImpl(isRoundDevice = resources.configuration.isScreenRound)
         )
     }
