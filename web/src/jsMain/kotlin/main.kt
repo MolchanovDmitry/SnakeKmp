@@ -2,11 +2,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import dmitry.molchanov.gamelogic.GameOverClick
 import dmitry.molchanov.gamelogic.GameViewModelImpl
 import dmitry.molchanov.gamelogic.NewDirect
 import dmitry.molchanov.gamelogic.domain.CoroutineDispatchers
 import dmitry.molchanov.gamelogic.domain.Direct
-import dmitry.molchanov.gamelogic.domain.GameOver
 import dmitry.molchanov.gamelogic.domain.ScreenHelper
 import dmitry.molchanov.gamelogic.domain.SnakeHelper
 import dmitry.molchanov.gamelogic.domain.SnakeState
@@ -31,8 +31,8 @@ import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.KeyboardEvent
 import org.w3c.dom.get
 
-private const val START_WIDTH = 40
-private const val START_HEIGHT = 20
+private const val START_WIDTH = 20
+private const val START_HEIGHT = 10
 private const val TOP_KEYCODE = 38
 private const val RIGHT_KEYCODE = 39
 private const val DOWN_KEYCODE = 40
@@ -77,9 +77,11 @@ fun main() {
         fun changeWidth(width: Int) {
             fieldState.value = fieldState.value.copy(fieldSize = fieldSize.copy(width = width))
         }
+
         fun changeHeight(height: Int) {
             fieldState.value = fieldState.value.copy(fieldSize = fieldSize.copy(height = height))
         }
+
         val isGameStart = remember { mutableStateOf(false) }
         Div(attrs = {
             style {
@@ -96,7 +98,7 @@ fun main() {
                         fieldState = fieldState.value,
                         onWidthChange = ::changeWidth,
                         onHeightChange = ::changeHeight,
-                        onStartClick = { isGameStart.value = true}
+                        onStartClick = { isGameStart.value = true }
                     )
                 }
             }
@@ -150,18 +152,24 @@ private fun DrawGame(width: Int, height: Int) {
             ?.let(::NewDirect)
             ?.let(gameViewModel::onAction)
     })
-    ScoreView(score = state.value.chains.size, record = state.value.gameOverStatus.record)
-    repeat(height) { rowIndex ->
-        Div {
-            repeat(width) { columnIndex ->
-                Input(InputType.Radio, attrs = {
-                    isChecked(
-                        state = state.value,
-                        rowIndex = rowIndex,
-                        columnIndex = columnIndex
-                    ).let(::checked)
-                })
+    ScoreView(score = state.value.score, record = state.value.record)
+    if (!state.value.isGameOver) {
+        repeat(height) { rowIndex ->
+            Div {
+                repeat(width) { columnIndex ->
+                    Input(InputType.Radio, attrs = {
+                        isChecked(
+                            state = state.value,
+                            rowIndex = rowIndex,
+                            columnIndex = columnIndex
+                        ).let(::checked)
+                    })
+                }
             }
+        }
+    } else {
+        GameOver {
+            gameViewModel.onAction(GameOverClick)
         }
     }
 }
@@ -177,11 +185,14 @@ private fun ScoreView(score: Int, record: Int) {
 }
 
 @Composable
-private fun GameResult(state: SnakeState) {
-    if (state.gameOverStatus is GameOver) {
-        H2 { Text("💀 Game Over 💀") }
-    }
-    Button(attrs = { onClick { window.location.reload() } }) {
+private fun GameOver(onClick: () -> Unit) {
+    H2 { Text("💀 Game Over 💀") }
+    Button(attrs = {
+        onClick {
+            onClick()
+            window.location.reload()
+        }
+    }) {
         Text("Try Again!")
     }
 }

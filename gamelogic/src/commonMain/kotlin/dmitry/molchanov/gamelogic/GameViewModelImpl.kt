@@ -36,7 +36,7 @@ class GameViewModelImpl(
         SnakeState(
             chainSize = snakeHelper.chainSize.toFloat(),
             freeChain = SnakeChain(x = 0, y = 0),
-            chains = snakeHelper.startChains
+            chains = snakeHelper.startChains,
         )
     )
 
@@ -49,6 +49,7 @@ class GameViewModelImpl(
 
     init {
         scope.launch {
+            initIdleGameState()
             initNewFreeChain()
             runSnake()
         }
@@ -63,30 +64,26 @@ class GameViewModelImpl(
 
     private fun runNewGame() = scope.launch {
         speed = START_SPEED
-        saveNewRecord()
         initIdleGameState()
         initNewFreeChain()
     }
 
-    private suspend fun saveNewRecord() {
-        (state.gameOverStatus as? GameOver)?.score?.let { score ->
-            checkScoreAndSetRecordUseCase.execute(score)
-        }
-    }
-
-    private fun initIdleGameState() {
+    private suspend fun initIdleGameState() {
         _stateFlow.update {
             it.copy(
                 direct = RIGHT,
-                gameOverStatus = GameInProgress(record = state.gameOverStatus.record),
-                chains = snakeHelper.startChains
+                chains = snakeHelper.startChains,
+                record = getCurrentRecordUseCase.execute()
             )
         }
     }
 
     private fun initNewFreeChain() {
         _stateFlow.update {
-            it.copy(freeChain = snakeHelper.getFreeChain(chains = state.chains))
+            it.copy(
+                score = it.chains.size,
+                freeChain = snakeHelper.getFreeChain(chains = state.chains),
+            )
         }
     }
 
@@ -121,7 +118,6 @@ class GameViewModelImpl(
                     .let(movedChains::add)
                 speed = (speed - (10F / 100F * speed)).toLong()
             }
-            println("1488 snake = $movedChains")
             _stateFlow.update { it.copy(chains = movedChains) }
             delay(speed)
             runSnake()
@@ -129,14 +125,8 @@ class GameViewModelImpl(
     }
 
     private suspend fun gameOver() {
-        _stateFlow.update {
-            it.copy(
-                gameOverStatus = GameOver(
-                    score = state.chains.size,
-                    record = getCurrentRecordUseCase.execute()
-                )
-            )
-        }
+        _stateFlow.update { it.copy(isGameOver = true) }
+        checkScoreAndSetRecordUseCase.execute(score = state.chains.size)
     }
 
     override fun release() {
