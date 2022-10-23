@@ -9,7 +9,6 @@ version = "1.0"
 kotlin {
     js(IR) {
         browser()
-        nodejs()
         binaries.executable()
     }
     sourceSets {
