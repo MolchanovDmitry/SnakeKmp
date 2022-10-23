@@ -120,6 +120,7 @@ class GameViewModelImpl(
                     .let(movedChains::add)
                 speed = (speed - (10F / 100F * speed)).toLong()
             }
+            println("1488 snake = $movedChains")
             _stateFlow.update { it.copy(chains = movedChains) }
             delay(speed)
             runSnake()

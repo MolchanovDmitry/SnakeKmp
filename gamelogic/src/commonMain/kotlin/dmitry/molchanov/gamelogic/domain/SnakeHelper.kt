@@ -76,6 +76,9 @@ class SnakeHelper(
     }
 
     private fun getRoundedChainSize(notOptimizeChainSize: Int): Int {
+        if (notOptimizeChainSize == 1) {
+            return 1
+        }
         val chainSizeDivRest = notOptimizeChainSize % 5
         return if (chainSizeDivRest == 0) {
             notOptimizeChainSize
