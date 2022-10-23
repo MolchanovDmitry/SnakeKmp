@@ -153,7 +153,7 @@ private fun DrawGame(width: Int, height: Int) {
             }
         }
     } else {
-        GameOver {
+        GameOver(state.value) {
             gameViewModel.onAction(GameOverClick)
         }
     }
@@ -170,8 +170,11 @@ private fun ScoreView(score: Int, record: Int) {
 }
 
 @Composable
-private fun GameOver(onClick: () -> Unit) {
-    H2 { Text("💀 Game Over 💀") }
+private fun GameOver(state: SnakeState, onClick: () -> Unit) {
+    H2 { Text("💀 Game Over with score: ${state.score} 💀") }
+    if (state.score > state.record) {
+        H2 { Text("Congratulations, new record!") }
+    }
     Button(attrs = {
         onClick {
             onClick()
