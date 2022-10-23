@@ -8,6 +8,7 @@ import dmitry.molchanov.gamelogic.domain.Direct.RIGHT
 import dmitry.molchanov.gamelogic.domain.Direct.TOP
 import dmitry.molchanov.gamelogic.domain.GameInProgress
 import dmitry.molchanov.gamelogic.domain.GameOver
+import dmitry.molchanov.gamelogic.domain.ScreenHelper
 import dmitry.molchanov.gamelogic.domain.SnakeChain
 import dmitry.molchanov.gamelogic.domain.SnakeHelper
 import dmitry.molchanov.gamelogic.domain.SnakeState
@@ -77,7 +78,7 @@ class GameViewModelImpl(
         _stateFlow.update {
             it.copy(
                 direct = RIGHT,
-                gameOverStatus = GameInProgress,
+                gameOverStatus = GameInProgress(record = state.gameOverStatus.record),
                 chains = snakeHelper.startChains
             )
         }

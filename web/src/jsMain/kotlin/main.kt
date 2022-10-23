@@ -1,5 +1,7 @@
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import dmitry.molchanov.gamelogic.GameViewModelImpl
 import dmitry.molchanov.gamelogic.NewDirect
 import dmitry.molchanov.gamelogic.domain.CoroutineDispatchers
@@ -29,10 +31,23 @@ import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.KeyboardEvent
 import org.w3c.dom.get
 
-const val WIDTH = 40
-const val HEIGHT = 20
+private const val START_WIDTH = 40
+private const val START_HEIGHT = 20
+private const val TOP_KEYCODE = 38
+private const val RIGHT_KEYCODE = 39
+private const val DOWN_KEYCODE = 40
+private const val LEFT_KEYCODE = 37
 
-fun main() {
+private data class FieldState(
+    val isGameStart: Boolean = false,
+    val score: Int = 0,
+    val record: Int = 0,
+    val fieldSize: FieldSize = FieldSize(width = START_WIDTH, height = START_HEIGHT)
+)
+
+private data class FieldSize(val width: Int, val height: Int)
+
+private fun getViewModel(width: Int, height: Int): GameViewModelImpl {
     val dispatchers = CoroutineDispatchers(
         main = Dispatchers.Main,
         io = Dispatchers.Default,
@@ -41,10 +56,10 @@ fun main() {
     )
     val recordSettings = RecordSettings(dispatcher = dispatchers.io)
     val recordStore = RecordDataStoreImpl(recordSettings)
-    val gameViewModel = GameViewModelImpl(
+    return GameViewModelImpl(
         coroutineDispatchers = dispatchers,
-        snakeHelper = SnakeHelper(inputWidth = WIDTH,
-            inputHeight = HEIGHT,
+        snakeHelper = SnakeHelper(inputWidth = width,
+            inputHeight = height,
             inputChainSize = 1,
             screenHelper = object : ScreenHelper {
                 override fun isPointOnScreen(width: Int, height: Int, x: Int, y: Int): Boolean =
@@ -53,43 +68,36 @@ fun main() {
         checkScoreAndSetRecordUseCase = CheckScoreAndSetRecordUseCase(recordStore, dispatchers),
         getCurrentRecordUseCase = GetCurrentRecordUseCase(recordStore, dispatchers)
     )
+}
 
-    val body = document.getElementsByTagName("body")[0] as HTMLElement
-    body.addEventListener("keyup", {
-        when ((it as? KeyboardEvent)?.keyCode) {
-            38 -> Direct.TOP
-            39 -> Direct.RIGHT
-            40 -> Direct.DOWN
-            37 -> Direct.LEFT
-            else -> null
-        }?.let(::NewDirect)?.let(gameViewModel::onAction)
-    })
-
+fun main() {
     renderComposable(rootElementId = "root") {
-        val state = gameViewModel.stateFlow.collectAsState()
+        val fieldState = remember { mutableStateOf(FieldState()) }
+        val fieldSize = fieldState.value.fieldSize
+        fun changeWidth(width: Int) {
+            fieldState.value = fieldState.value.copy(fieldSize = fieldSize.copy(width = width))
+        }
+        fun changeHeight(height: Int) {
+            fieldState.value = fieldState.value.copy(fieldSize = fieldSize.copy(height = height))
+        }
+        val isGameStart = remember { mutableStateOf(false) }
         Div(attrs = {
             style {
                 property("text-align", "center")
             }
         }) {
-            Header(state.value)
-            Div(attrs = {
-                style {
-                    marginTop(30.px)
-                }
-            }) {
-                repeat(HEIGHT) { rowIndex ->
-                    Div {
-                        repeat(WIDTH) { columnIndex ->
-                            Input(InputType.Radio, attrs = {
-                                isChecked(
-                                    state = state.value,
-                                    rowIndex = rowIndex,
-                                    columnIndex = columnIndex
-                                ).let(::checked)
-                            })
-                        }
-                    }
+            Header()
+            Div({ style { marginTop(15.px) } }) {
+                println("isGameStart = $isGameStart")
+                if (isGameStart.value) {
+                    DrawGame(width = fieldSize.width, height = fieldSize.height)
+                } else {
+                    DrawSettings(
+                        fieldState = fieldState.value,
+                        onWidthChange = ::changeWidth,
+                        onHeightChange = ::changeHeight,
+                        onStartClick = { isGameStart.value = true}
+                    )
                 }
             }
         }
@@ -97,19 +105,81 @@ fun main() {
 }
 
 @Composable
-private fun Header(state: SnakeState) {
-    H1 {
-        Text(value = "\uD83D\uDC0D Snake \uD83D\uDC0D")
+private fun DrawSettings(
+    fieldState: FieldState,
+    onWidthChange: (Int) -> Unit,
+    onHeightChange: (Int) -> Unit,
+    onStartClick: () -> Unit
+) {
+    val fieldSize = fieldState.fieldSize
+    Div {
+        CounterView(title = "Width:", value = fieldSize.width) { newWidth ->
+            onWidthChange(newWidth)
+        }
     }
-    Text(value = "Current score: ${state.chains.size}, top Score: ${state.gameOverStatus.record}")
+    Div({ style { marginTop(5.px) } }) {
+        CounterView(title = "Height:", value = fieldSize.height) { newHeight ->
+            onHeightChange(newHeight)
+        }
+    }
+    Button(attrs = { onClick { onStartClick() } }) {
+        Text("Start!")
+    }
+    repeat(fieldSize.height) {
+        Div {
+            repeat(fieldSize.width) {
+                Input(InputType.Radio)
+            }
+        }
+    }
+}
+
+@Composable
+private fun DrawGame(width: Int, height: Int) {
+    val gameViewModel = remember { getViewModel(width, height) }
+    val state = gameViewModel.stateFlow.collectAsState()
+    val body = document.getElementsByTagName("body")[0] as HTMLElement
+    body.addEventListener("keyup", {
+        when ((it as? KeyboardEvent)?.keyCode) {
+            TOP_KEYCODE -> Direct.TOP
+            RIGHT_KEYCODE -> Direct.RIGHT
+            DOWN_KEYCODE -> Direct.DOWN
+            LEFT_KEYCODE -> Direct.LEFT
+            else -> null
+        }
+            ?.let(::NewDirect)
+            ?.let(gameViewModel::onAction)
+    })
+    ScoreView(score = state.value.chains.size, record = state.value.gameOverStatus.record)
+    repeat(height) { rowIndex ->
+        Div {
+            repeat(width) { columnIndex ->
+                Input(InputType.Radio, attrs = {
+                    isChecked(
+                        state = state.value,
+                        rowIndex = rowIndex,
+                        columnIndex = columnIndex
+                    ).let(::checked)
+                })
+            }
+        }
+    }
+}
+
+@Composable
+private fun Header() {
+    H1 { Text(value = "\uD83D\uDC0D Snake \uD83D\uDC0D") }
+}
+
+@Composable
+private fun ScoreView(score: Int, record: Int) {
+    Text(value = "Current score: $score, top Score: $record")
 }
 
 @Composable
 private fun GameResult(state: SnakeState) {
     if (state.gameOverStatus is GameOver) {
-        H2 {
-            Text("💀 Game Over 💀")
-        }
+        H2 { Text("💀 Game Over 💀") }
     }
     Button(attrs = { onClick { window.location.reload() } }) {
         Text("Try Again!")
