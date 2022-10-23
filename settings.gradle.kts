@@ -13,8 +13,8 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Snake"
-include ':app'
+include (":app")
 
-include ':record:recordDS'
-include ':record:recordDSImpl'
-include ':gamelogic'
+include (":record:recordDS")
+include (":record:recordDSImpl")
+include (":gamelogic")
