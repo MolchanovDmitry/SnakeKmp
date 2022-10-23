@@ -31,21 +31,6 @@ import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.KeyboardEvent
 import org.w3c.dom.get
 
-private const val START_WIDTH = 20
-private const val START_HEIGHT = 10
-private const val TOP_KEYCODE = 38
-private const val RIGHT_KEYCODE = 39
-private const val DOWN_KEYCODE = 40
-private const val LEFT_KEYCODE = 37
-
-private data class FieldState(
-    val isGameStart: Boolean = false,
-    val score: Int = 0,
-    val record: Int = 0,
-    val fieldSize: FieldSize = FieldSize(width = START_WIDTH, height = START_HEIGHT)
-)
-
-private data class FieldSize(val width: Int, val height: Int)
 
 private fun getViewModel(width: Int, height: Int): GameViewModelImpl {
     val dispatchers = CoroutineDispatchers(
