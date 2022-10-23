@@ -1,8 +1,10 @@
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import dmitry.molchanov.gamelogic.GameViewModelImpl
 import dmitry.molchanov.gamelogic.NewDirect
 import dmitry.molchanov.gamelogic.domain.CoroutineDispatchers
 import dmitry.molchanov.gamelogic.domain.Direct
+import dmitry.molchanov.gamelogic.domain.GameOver
 import dmitry.molchanov.gamelogic.domain.ScreenHelper
 import dmitry.molchanov.gamelogic.domain.SnakeHelper
 import dmitry.molchanov.gamelogic.domain.SnakeState
@@ -11,11 +13,15 @@ import dmitry.molchanov.gamelogic.domain.usecase.GetCurrentRecordUseCase
 import dmitry.molchanov.recorddsimpl.RecordDataStoreImpl
 import dmitry.molchanov.recorddsimpl.RecordSettings
 import kotlinx.browser.document
+import kotlinx.browser.window
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.compose.web.attributes.InputType
 import org.jetbrains.compose.web.css.marginTop
 import org.jetbrains.compose.web.css.px
+import org.jetbrains.compose.web.dom.Button
 import org.jetbrains.compose.web.dom.Div
+import org.jetbrains.compose.web.dom.H1
+import org.jetbrains.compose.web.dom.H2
 import org.jetbrains.compose.web.dom.Input
 import org.jetbrains.compose.web.dom.Text
 import org.jetbrains.compose.web.renderComposable
@@ -61,26 +67,52 @@ fun main() {
 
     renderComposable(rootElementId = "root") {
         val state = gameViewModel.stateFlow.collectAsState()
-
         Div(attrs = {
             style {
-                marginTop(30.px)
+                property("text-align", "center")
             }
         }) {
-            repeat(HEIGHT) { rowIndex ->
-                Div {
-                    repeat(WIDTH) { columnIndex ->
-                        Input(InputType.Radio, attrs = {
-                            isChecked(
-                                state = state.value,
-                                rowIndex = rowIndex,
-                                columnIndex = columnIndex
-                            ).let(::checked)
-                        })
+            Header(state.value)
+            Div(attrs = {
+                style {
+                    marginTop(30.px)
+                }
+            }) {
+                repeat(HEIGHT) { rowIndex ->
+                    Div {
+                        repeat(WIDTH) { columnIndex ->
+                            Input(InputType.Radio, attrs = {
+                                isChecked(
+                                    state = state.value,
+                                    rowIndex = rowIndex,
+                                    columnIndex = columnIndex
+                                ).let(::checked)
+                            })
+                        }
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun Header(state: SnakeState) {
+    H1 {
+        Text(value = "\uD83D\uDC0D Snake \uD83D\uDC0D")
+    }
+    Text(value = "Current score: ${state.chains.size}, top Score: ${state.gameOverStatus.record}")
+}
+
+@Composable
+private fun GameResult(state: SnakeState) {
+    if (state.gameOverStatus is GameOver) {
+        H2 {
+            Text("💀 Game Over 💀")
+        }
+    }
+    Button(attrs = { onClick { window.location.reload() } }) {
+        Text("Try Again!")
     }
 }
 

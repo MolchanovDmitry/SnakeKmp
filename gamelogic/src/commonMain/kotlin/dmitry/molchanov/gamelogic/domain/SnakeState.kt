@@ -5,7 +5,7 @@ data class SnakeState(
     val chains: List<SnakeChain>,
     val direct: Direct = Direct.RIGHT,
     val chainSize: Float,
-    val gameOverStatus: GameStatus = GameInProgress
+    val gameOverStatus: GameStatus = GameInProgress(record = 0)
 )
 
 data class SnakeChain(
@@ -13,6 +13,6 @@ data class SnakeChain(
     val y: Int
 )
 
-sealed class GameStatus
-object GameInProgress : GameStatus()
-data class GameOver(val score: Int, val record: Int) : GameStatus()
+sealed class GameStatus(open val record: Int)
+data class GameInProgress(override val record: Int) : GameStatus(record)
+data class GameOver(val score: Int, override val record: Int) : GameStatus(record)
