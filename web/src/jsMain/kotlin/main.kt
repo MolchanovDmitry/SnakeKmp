@@ -18,9 +18,12 @@ import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.compose.web.attributes.InputType
+import org.jetbrains.compose.web.attributes.disabled
 import org.jetbrains.compose.web.css.marginTop
 import org.jetbrains.compose.web.css.px
+import org.jetbrains.compose.web.css.selectors.CSSSelector.PseudoClass.disabled
 import org.jetbrains.compose.web.dom.Button
+import org.jetbrains.compose.web.dom.CheckboxInput
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.H1
 import org.jetbrains.compose.web.dom.H2
@@ -115,7 +118,9 @@ private fun DrawSettings(
     repeat(fieldSize.height) {
         Div {
             repeat(fieldSize.width) {
-                Input(InputType.Radio)
+                Input(InputType.Radio){
+                    disabled()
+                }
             }
         }
     }
@@ -144,6 +149,7 @@ private fun DrawGame(width: Int, height: Int) {
                 Div {
                     repeat(width) { columnIndex ->
                         Input(InputType.Radio, attrs = {
+                            disabled()
                             isChecked(
                                 state = state.value,
                                 rowIndex = rowIndex,
