@@ -13,9 +13,9 @@ import dmitry.molchanov.gamelogic.domain.SnakeState
 import dmitry.molchanov.gamelogic.domain.usecase.CheckScoreAndSetRecordUseCase
 import dmitry.molchanov.gamelogic.domain.usecase.GetCurrentRecordUseCase
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,7 +29,7 @@ class GameViewModelImpl(
     private val checkScoreAndSetRecordUseCase: CheckScoreAndSetRecordUseCase
 ) : GameViewModel {
 
-    private val scope = CoroutineScope(coroutineDispatchers.main + SupervisorJob())
+    private val scope = CoroutineScope(coroutineDispatchers.default + SupervisorJob())
     private val _stateFlow = MutableStateFlow(
         SnakeState(
             stepDelay = DEFAULT_STEP_DELAY,
@@ -43,20 +43,33 @@ class GameViewModelImpl(
     private val state: SnakeState
         get() = stateFlow.value
 
-    private var job: Job? = null
-
     init {
-        runNewGame()
+        scope.launch { initIdle() }
     }
 
     override fun onAction(action: Action) {
         when (action) {
             is NewDirect -> changeDirect(action.direct)
-            GameOverClick -> runNewGame()
+            Stop -> stopGame()
+            Start -> startGame()
+            Release -> scope.cancel()
         }
     }
 
-    private fun runNewGame() = scope.launch {
+    private fun stopGame() {
+        scope.coroutineContext.cancelChildren()
+    }
+
+    private fun startGame() {
+        scope.launch {
+            if (state.isGameOver) {
+                initIdle()
+            }
+            runSnake()
+        }
+    }
+
+    private suspend fun initIdle() {
         initIdleGameState()
         initNewFreeChain()
     }
@@ -92,14 +105,14 @@ class GameViewModelImpl(
             else -> false
         }
         if (shouldUpdate) {
-            job?.cancel()
+            stopGame()
             _stateFlow.update { it.copy(direct = newDirect) }
             runSnake()
         }
     }
 
     private fun runSnake() {
-        job = scope.launch {
+        scope.launch {
             val state = state
             val chains = state.chains
             val movedChains =
@@ -115,19 +128,17 @@ class GameViewModelImpl(
             } else {
                 state.stepDelay
             }
-            _stateFlow.update { it.copy(chains = movedChains, stepDelay = newSpeed) }
+            _stateFlow.update {
+                it.copy(chains = movedChains, stepDelay = newSpeed)
+            }
             delay(newSpeed)
             runSnake()
         }
     }
 
     private suspend fun gameOver() {
-        job?.cancel()
+        stopGame()
         _stateFlow.update { it.copy(isGameOver = true) }
         checkScoreAndSetRecordUseCase.execute(score = state.chains.size)
-    }
-
-    override fun release() {
-        scope.cancel()
     }
 }

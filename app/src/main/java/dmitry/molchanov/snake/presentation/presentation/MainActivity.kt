@@ -6,6 +6,8 @@ import android.util.DisplayMetrics
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import dmitry.molchanov.gamelogic.Start
+import dmitry.molchanov.gamelogic.Stop
 import dmitry.molchanov.recorddsimpl.RecordSettings
 import dmitry.molchanov.snake.R
 import dmitry.molchanov.snake.presentation.presentation.ui.GameScreen
@@ -32,6 +34,16 @@ class MainActivity : ComponentActivity() {
                 GameScreen(viewModel = viewModel)
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.onAction(Stop)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.onAction(Start)
     }
 
     private fun getScreenWidthHeightPair(): Pair<Int, Int> {

@@ -5,12 +5,14 @@ import dmitry.molchanov.gamelogic.domain.SnakeState
 import kotlinx.coroutines.flow.StateFlow
 
 interface GameViewModel {
+
     fun onAction(action: Action)
-    fun release()
 
     val stateFlow: StateFlow<SnakeState>
 }
 
 sealed class Action
 class NewDirect(val direct: Direct) : Action()
-object GameOverClick : Action()
+object Stop: Action()
+object Start: Action()
+object Release: Action()

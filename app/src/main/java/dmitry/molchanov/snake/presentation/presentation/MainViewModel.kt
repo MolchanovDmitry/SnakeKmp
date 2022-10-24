@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dmitry.molchanov.gamelogic.GameViewModel
 import dmitry.molchanov.gamelogic.GameViewModelImpl
+import dmitry.molchanov.gamelogic.Release
 import dmitry.molchanov.gamelogic.domain.CoroutineDispatchers
 import dmitry.molchanov.gamelogic.domain.ScreenHelper
 import dmitry.molchanov.gamelogic.domain.SnakeHelper
@@ -20,9 +21,8 @@ class MainViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        gameViewModel.release()
+        gameViewModel.onAction(Release)
     }
-
 }
 
 class MainViewModelProvider(

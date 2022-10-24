@@ -33,8 +33,8 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.Text
-import dmitry.molchanov.gamelogic.GameOverClick
 import dmitry.molchanov.gamelogic.NewDirect
+import dmitry.molchanov.gamelogic.Start
 import dmitry.molchanov.gamelogic.domain.Direct
 import dmitry.molchanov.gamelogic.domain.SnakeChain
 import dmitry.molchanov.gamelogic.domain.getNewDirect
@@ -95,7 +95,7 @@ fun GameScreen(viewModel: MainViewModel) {
             ShowGameOver(
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .clickable { viewModel.onAction(GameOverClick) },
+                    .clickable { viewModel.onAction(Start) },
                 score = state.value.score,
                 record = state.value.record
             )

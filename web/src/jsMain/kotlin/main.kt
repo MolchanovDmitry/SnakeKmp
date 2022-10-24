@@ -2,9 +2,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import dmitry.molchanov.gamelogic.GameOverClick
 import dmitry.molchanov.gamelogic.GameViewModelImpl
 import dmitry.molchanov.gamelogic.NewDirect
+import dmitry.molchanov.gamelogic.Start
 import dmitry.molchanov.gamelogic.domain.CoroutineDispatchers
 import dmitry.molchanov.gamelogic.domain.Direct
 import dmitry.molchanov.gamelogic.domain.ScreenHelper
@@ -23,9 +23,7 @@ import org.jetbrains.compose.web.attributes.InputType
 import org.jetbrains.compose.web.attributes.disabled
 import org.jetbrains.compose.web.css.marginTop
 import org.jetbrains.compose.web.css.px
-import org.jetbrains.compose.web.css.selectors.CSSSelector.PseudoClass.disabled
 import org.jetbrains.compose.web.dom.Button
-import org.jetbrains.compose.web.dom.CheckboxInput
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.H1
 import org.jetbrains.compose.web.dom.H2
@@ -35,7 +33,6 @@ import org.jetbrains.compose.web.renderComposable
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.KeyboardEvent
 import org.w3c.dom.get
-
 
 private fun getViewModel(width: Int, height: Int): GameViewModelImpl {
     val dispatchers = CoroutineDispatchers(
@@ -48,7 +45,8 @@ private fun getViewModel(width: Int, height: Int): GameViewModelImpl {
     val recordStore = RecordDataStoreImpl(recordSettings)
     return GameViewModelImpl(
         coroutineDispatchers = dispatchers,
-        snakeHelper = SnakeHelper(inputWidth = width,
+        snakeHelper = SnakeHelper(
+            inputWidth = width,
             inputHeight = height,
             inputChainSize = 1,
             screenHelper = object : ScreenHelper {
@@ -85,7 +83,6 @@ fun main() {
         }) {
             Header()
             Div({ style { marginTop(15.px) } }) {
-                println("isGameStart = $isGameStart")
                 if (isGameStart.value) {
                     DrawGame(width = fieldSize.width, height = fieldSize.height)
                 } else {
@@ -125,7 +122,7 @@ private fun DrawSettings(
     repeat(fieldSize.height) {
         Div {
             repeat(fieldSize.width) {
-                Input(InputType.Radio){
+                Input(InputType.Radio) {
                     disabled()
                 }
             }
@@ -169,7 +166,7 @@ private fun DrawGame(width: Int, height: Int) {
         }
     } else {
         GameOver(state.value) {
-            gameViewModel.onAction(GameOverClick)
+            gameViewModel.onAction(Start)
         }
     }
 }

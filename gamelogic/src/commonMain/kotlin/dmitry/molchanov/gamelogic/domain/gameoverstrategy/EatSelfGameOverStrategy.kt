@@ -11,10 +11,8 @@ class EatSelfGameOverStrategy : GameOverStrategy {
     ): Boolean {
         val newHeadChain = newChains.first()
         newChains.forEachIndexed { index, snakeChain ->
-            if (index != 0) {
-                if (snakeChain == newHeadChain) {
-                    return true
-                }
+            if (index != 0 && snakeChain == newHeadChain) {
+                return true
             }
         }
         return false

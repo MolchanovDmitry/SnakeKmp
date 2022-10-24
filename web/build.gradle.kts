@@ -1,11 +1,12 @@
-import com.google.wireless.android.sdk.stats.GradleModule
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose") version ("1.2.0")
+    id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
 }
 
-//group = "dmitry.molchanov"
+group = "dmitry.molchanov"
 version = "1.0"
 
 kotlin {
@@ -27,5 +28,14 @@ kotlin {
                 ).forEach(::implementation)
             }
         }
+    }
+}
+
+ktlint {
+    ignoreFailures.set(false)
+    reporters {
+        reporter(ReporterType.PLAIN)
+        reporter(ReporterType.CHECKSTYLE)
+        reporter(ReporterType.SARIF)
     }
 }
