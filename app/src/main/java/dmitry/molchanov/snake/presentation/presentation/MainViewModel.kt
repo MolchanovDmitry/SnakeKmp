@@ -46,7 +46,8 @@ class MainViewModelProvider(
                 inputWidth = inputWidth,
                 inputHeight = inputHeight,
                 inputChainSize = chainSize,
-                screenHelper = screenHelper
+                screenHelper = screenHelper,
+                allowTeleport = true
             ),
             getCurrentRecordUseCase = GetCurrentRecordUseCase(recordDS.value, coroutineDispatchers),
             checkScoreAndSetRecordUseCase = CheckScoreAndSetRecordUseCase(recordDS.value, coroutineDispatchers)

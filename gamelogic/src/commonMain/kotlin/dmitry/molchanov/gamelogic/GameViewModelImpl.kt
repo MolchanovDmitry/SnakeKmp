@@ -109,7 +109,7 @@ class GameViewModelImpl(
             val chains = state.chains
             val movedChains =
                 snakeHelper.getMovedChains(chains = chains, direct = state.direct).toMutableList()
-            if (snakeHelper.isGameOver(movedChains)) {
+            if (snakeHelper.isGameOver(prefChains = chains, newChains = movedChains)) {
                 gameOver()
             }
             if (movedChains.first() == state.freeChain) {

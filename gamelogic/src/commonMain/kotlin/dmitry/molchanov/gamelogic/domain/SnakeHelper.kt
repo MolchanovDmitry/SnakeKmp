@@ -6,6 +6,7 @@ class SnakeHelper(
     inputWidth: Int,
     inputHeight: Int,
     inputChainSize: Int,
+    private val allowTeleport: Boolean,
     private val screenHelper: ScreenHelper
 ) {
 
@@ -44,11 +45,19 @@ class SnakeHelper(
         }
     }
 
-    fun isGameOver(chains: List<SnakeChain>): Boolean {
-        val headChain = chains.first()
-        chains.forEachIndexed { index, snakeChain ->
+    fun isGameOver(prefChains: List<SnakeChain>, newChains: List<SnakeChain>): Boolean {
+        val newHeadChain = newChains.first()
+        if (!allowTeleport) {
+            val prefHeadChain = prefChains.first()
+            if (getDifference(prefHeadChain.x, newHeadChain.x) > chainSize ||
+                getDifference(prefHeadChain.y, newHeadChain.y) > chainSize
+            ) {
+                return true
+            }
+        }
+        newChains.forEachIndexed { index, snakeChain ->
             if (index != 0) {
-                if (snakeChain == headChain) {
+                if (snakeChain == newHeadChain) {
                     return true
                 }
             }
@@ -143,4 +152,6 @@ class SnakeHelper(
             }
         }
     }
+
+    private fun getDifference(a: Int, b: Int): Int = if (a > b) a - b else b - a
 }

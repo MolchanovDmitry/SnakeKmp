@@ -52,7 +52,9 @@ private fun getViewModel(width: Int, height: Int): GameViewModelImpl {
             screenHelper = object : ScreenHelper {
                 override fun isPointOnScreen(width: Int, height: Int, x: Int, y: Int): Boolean =
                     true
-            }),
+            },
+            allowTeleport = false
+        ),
         checkScoreAndSetRecordUseCase = CheckScoreAndSetRecordUseCase(recordStore, dispatchers),
         getCurrentRecordUseCase = GetCurrentRecordUseCase(recordStore, dispatchers)
     )
