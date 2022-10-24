@@ -1,11 +1,11 @@
 package dmitry.molchanov.snake
 
-import dmitry.molchanov.snake.presentation.domain.Direct.DOWN
-import dmitry.molchanov.snake.presentation.domain.Direct.LEFT
-import dmitry.molchanov.snake.presentation.domain.Direct.RIGHT
-import dmitry.molchanov.snake.presentation.domain.Direct.TOP
-import dmitry.molchanov.snake.presentation.domain.SnakeChain
-import dmitry.molchanov.snake.presentation.domain.SnakeHelper
+import dmitry.molchanov.gamelogic.domain.Direct.DOWN
+import dmitry.molchanov.gamelogic.domain.Direct.LEFT
+import dmitry.molchanov.gamelogic.domain.Direct.RIGHT
+import dmitry.molchanov.gamelogic.domain.Direct.TOP
+import dmitry.molchanov.gamelogic.domain.SnakeChain
+import dmitry.molchanov.gamelogic.domain.SnakeHelper
 import dmitry.molchanov.snake.presentation.presentation.ScreenHelperImpl
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -23,7 +23,8 @@ class SnakeHelperTestForOneChainSnake {
         inputWidth = WIDTH,
         inputHeight = HEIGHT,
         inputChainSize = CHAIN_SIZE,
-        screenHelper = ScreenHelperImpl(isRoundDevice = Random.nextBoolean())
+        screenHelper = ScreenHelperImpl(isRoundDevice = Random.nextBoolean()),
+        gameOverStrategies = emptyList()
     )
 
     @Test

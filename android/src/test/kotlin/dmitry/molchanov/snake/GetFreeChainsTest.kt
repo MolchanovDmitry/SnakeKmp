@@ -1,7 +1,7 @@
 package dmitry.molchanov.snake
 
-import dmitry.molchanov.snake.presentation.domain.SnakeChain
-import dmitry.molchanov.snake.presentation.domain.SnakeHelper
+import dmitry.molchanov.gamelogic.domain.SnakeChain
+import dmitry.molchanov.gamelogic.domain.SnakeHelper
 import dmitry.molchanov.snake.presentation.presentation.ScreenHelperImpl
 import org.junit.Assert.assertFalse
 import org.junit.Test
@@ -13,7 +13,8 @@ class GetFreeChainsTest {
         inputWidth = 500,
         inputHeight = 500,
         inputChainSize = 10,
-        screenHelper = ScreenHelperImpl(isRoundDevice = Random.nextBoolean())
+        screenHelper = ScreenHelperImpl(isRoundDevice = Random.nextBoolean()),
+        gameOverStrategies = emptyList()
     )
 
     @Test

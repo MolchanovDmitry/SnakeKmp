@@ -1,8 +1,8 @@
 package dmitry.molchanov.snake
 
-import dmitry.molchanov.snake.presentation.domain.Direct
-import dmitry.molchanov.snake.presentation.domain.SnakeChain
-import dmitry.molchanov.snake.presentation.domain.getNewDirect
+import dmitry.molchanov.gamelogic.domain.Direct
+import dmitry.molchanov.gamelogic.domain.SnakeChain
+import dmitry.molchanov.gamelogic.domain.getNewDirect
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

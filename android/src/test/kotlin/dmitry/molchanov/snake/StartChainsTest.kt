@@ -1,6 +1,6 @@
 package dmitry.molchanov.snake
 
-import dmitry.molchanov.snake.presentation.domain.SnakeHelper
+import dmitry.molchanov.gamelogic.domain.SnakeHelper
 import dmitry.molchanov.snake.presentation.presentation.ScreenHelperImpl
 import junit.framework.Assert.assertTrue
 import org.junit.Assert.assertEquals
@@ -15,7 +15,8 @@ class StartChainsTest {
             inputWidth = 100,
             inputHeight = 100,
             inputChainSize = 10,
-            screenHelper = ScreenHelperImpl(isRoundDevice = Random.nextBoolean())
+            screenHelper = ScreenHelperImpl(isRoundDevice = Random.nextBoolean()),
+            gameOverStrategies = emptyList()
         )
         val startChains = snakeHelper.startChains
         assertTrue(startChains.isNotEmpty())
@@ -28,7 +29,8 @@ class StartChainsTest {
             inputWidth = 100,
             inputHeight = 100,
             inputChainSize = 10,
-            screenHelper = ScreenHelperImpl(isRoundDevice = Random.nextBoolean())
+            screenHelper = ScreenHelperImpl(isRoundDevice = Random.nextBoolean()),
+            gameOverStrategies = emptyList()
         )
         val startChains = snakeHelper.startChains
         startChains.forEach { chain ->
@@ -47,7 +49,8 @@ class StartChainsTest {
                 inputWidth = inputWidth,
                 inputHeight = inputHeight,
                 inputChainSize = chainSize,
-                screenHelper = ScreenHelperImpl(isRoundDevice = Random.nextBoolean())
+                screenHelper = ScreenHelperImpl(isRoundDevice = Random.nextBoolean()),
+                gameOverStrategies = emptyList()
             )
             val startChains = snakeHelper.startChains
             startChains.forEach { chain ->
