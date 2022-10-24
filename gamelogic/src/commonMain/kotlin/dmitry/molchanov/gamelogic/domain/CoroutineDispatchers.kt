@@ -6,5 +6,5 @@ class CoroutineDispatchers(
     val main: CoroutineDispatcher,
     val io: CoroutineDispatcher,
     val default: CoroutineDispatcher,
-    val unconfined: CoroutineDispatcher
+    val unconfined: CoroutineDispatcher,
 )

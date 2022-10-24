@@ -1,14 +1,12 @@
 package dmitry.molchanov.gamelogic
 
 import dmitry.molchanov.gamelogic.domain.CoroutineDispatchers
+import dmitry.molchanov.gamelogic.domain.DEFAULT_STEP_DELAY
 import dmitry.molchanov.gamelogic.domain.Direct
 import dmitry.molchanov.gamelogic.domain.Direct.DOWN
 import dmitry.molchanov.gamelogic.domain.Direct.LEFT
 import dmitry.molchanov.gamelogic.domain.Direct.RIGHT
 import dmitry.molchanov.gamelogic.domain.Direct.TOP
-import dmitry.molchanov.gamelogic.domain.GameInProgress
-import dmitry.molchanov.gamelogic.domain.GameOver
-import dmitry.molchanov.gamelogic.domain.ScreenHelper
 import dmitry.molchanov.gamelogic.domain.SnakeChain
 import dmitry.molchanov.gamelogic.domain.SnakeHelper
 import dmitry.molchanov.gamelogic.domain.SnakeState
@@ -34,6 +32,7 @@ class GameViewModelImpl(
     private val scope = CoroutineScope(coroutineDispatchers.main + SupervisorJob())
     private val _stateFlow = MutableStateFlow(
         SnakeState(
+            stepDelay = DEFAULT_STEP_DELAY,
             chainSize = snakeHelper.chainSize.toFloat(),
             freeChain = SnakeChain(x = 0, y = 0),
             chains = snakeHelper.startChains,
@@ -45,14 +44,9 @@ class GameViewModelImpl(
         get() = stateFlow.value
 
     private var job: Job? = null
-    private var speed = START_SPEED
 
     init {
-        scope.launch {
-            initIdleGameState()
-            initNewFreeChain()
-            runSnake()
-        }
+        runNewGame()
     }
 
     override fun onAction(action: Action) {
@@ -63,7 +57,6 @@ class GameViewModelImpl(
     }
 
     private fun runNewGame() = scope.launch {
-        speed = START_SPEED
         initIdleGameState()
         initNewFreeChain()
     }
@@ -72,6 +65,8 @@ class GameViewModelImpl(
         _stateFlow.update {
             it.copy(
                 direct = RIGHT,
+                isGameOver = false,
+                stepDelay = DEFAULT_STEP_DELAY,
                 chains = snakeHelper.startChains,
                 record = getCurrentRecordUseCase.execute()
             )
@@ -112,28 +107,27 @@ class GameViewModelImpl(
             if (snakeHelper.isGameOver(prefChains = chains, newChains = movedChains)) {
                 gameOver()
             }
-            if (movedChains.first() == state.freeChain) {
+            val newSpeed = if (movedChains.first() == state.freeChain) {
                 initNewFreeChain()
                 snakeHelper.getNewChainToTail(chains = movedChains, direct = state.direct)
                     .let(movedChains::add)
-                speed = (speed - (10F / 100F * speed)).toLong()
+                (state.stepDelay - (10F / 100F * state.stepDelay)).toLong()
+            } else {
+                state.stepDelay
             }
-            _stateFlow.update { it.copy(chains = movedChains) }
-            delay(speed)
+            _stateFlow.update { it.copy(chains = movedChains, stepDelay = newSpeed) }
+            delay(newSpeed)
             runSnake()
         }
     }
 
     private suspend fun gameOver() {
+        job?.cancel()
         _stateFlow.update { it.copy(isGameOver = true) }
         checkScoreAndSetRecordUseCase.execute(score = state.chains.size)
     }
 
     override fun release() {
         scope.cancel()
-    }
-
-    private companion object {
-        const val START_SPEED = 700L
     }
 }

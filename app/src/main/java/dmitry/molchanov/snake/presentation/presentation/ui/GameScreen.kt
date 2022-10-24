@@ -36,8 +36,6 @@ import androidx.wear.compose.material.Text
 import dmitry.molchanov.gamelogic.GameOverClick
 import dmitry.molchanov.gamelogic.NewDirect
 import dmitry.molchanov.gamelogic.domain.Direct
-import dmitry.molchanov.gamelogic.domain.GameInProgress
-import dmitry.molchanov.gamelogic.domain.GameOver
 import dmitry.molchanov.gamelogic.domain.SnakeChain
 import dmitry.molchanov.gamelogic.domain.getNewDirect
 import dmitry.molchanov.snake.R
@@ -90,20 +88,17 @@ fun GameScreen(viewModel: MainViewModel) {
             .focusRequester(requester)
             .focusable()
     ) {
-        when (val gameStatus = state.value.gameOverStatus) {
-            is GameInProgress -> {
-                DrawSnake(state.value.chains, chainSize, color)
-                DrawFreeChain(state.value.freeChain, color, chainSize)
-            }
-            is GameOver -> {
-                ShowGameOver(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .clickable { viewModel.onAction(GameOverClick) },
-                    score = gameStatus.score,
-                    record = gameStatus.record
-                )
-            }
+        if (!state.value.isGameOver) {
+            DrawSnake(state.value.chains, chainSize, color)
+            DrawFreeChain(state.value.freeChain, color, chainSize)
+        } else {
+            ShowGameOver(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .clickable { viewModel.onAction(GameOverClick) },
+                score = state.value.score,
+                record = state.value.record
+            )
         }
     }
     LaunchedEffect(Unit) {

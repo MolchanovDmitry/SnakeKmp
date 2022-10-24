@@ -1,6 +1,9 @@
 package dmitry.molchanov.gamelogic.domain
 
+const val DEFAULT_STEP_DELAY = 700L
+
 data class SnakeState(
+    val stepDelay: Long,
     val freeChain: SnakeChain,
     val chains: List<SnakeChain>,
     val direct: Direct = Direct.RIGHT,
@@ -14,7 +17,3 @@ data class SnakeChain(
     val x: Int,
     val y: Int
 )
-
-sealed class GameStatus(open val record: Int)
-data class GameInProgress(override val record: Int) : GameStatus(record)
-data class GameOver(val score: Int, override val record: Int) : GameStatus(record)

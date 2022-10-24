@@ -7,6 +7,7 @@ import dmitry.molchanov.gamelogic.GameViewModelImpl
 import dmitry.molchanov.gamelogic.domain.CoroutineDispatchers
 import dmitry.molchanov.gamelogic.domain.ScreenHelper
 import dmitry.molchanov.gamelogic.domain.SnakeHelper
+import dmitry.molchanov.gamelogic.domain.gameoverstrategy.EatSelfGameOverStrategy
 import dmitry.molchanov.gamelogic.domain.usecase.CheckScoreAndSetRecordUseCase
 import dmitry.molchanov.gamelogic.domain.usecase.GetCurrentRecordUseCase
 import dmitry.molchanov.recorddsimpl.RecordDataStoreImpl
@@ -47,7 +48,7 @@ class MainViewModelProvider(
                 inputHeight = inputHeight,
                 inputChainSize = chainSize,
                 screenHelper = screenHelper,
-                allowTeleport = true
+                gameOverStrategies = listOf(EatSelfGameOverStrategy())
             ),
             getCurrentRecordUseCase = GetCurrentRecordUseCase(recordDS.value, coroutineDispatchers),
             checkScoreAndSetRecordUseCase = CheckScoreAndSetRecordUseCase(recordDS.value, coroutineDispatchers)
