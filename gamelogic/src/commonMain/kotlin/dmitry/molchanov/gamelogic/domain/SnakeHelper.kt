@@ -1,13 +1,14 @@
 package dmitry.molchanov.gamelogic.domain
 
+import dmitry.molchanov.gamelogic.domain.gameoverstrategy.GameOverStrategy
 import kotlin.random.Random
 
 class SnakeHelper(
     inputWidth: Int,
     inputHeight: Int,
     inputChainSize: Int,
-    private val allowTeleport: Boolean,
-    private val screenHelper: ScreenHelper
+    private val screenHelper: ScreenHelper,
+    private val gameOverStrategies: List<GameOverStrategy>,
 ) {
 
     val chainSize = getRoundedChainSize(notOptimizeChainSize = inputChainSize)
@@ -45,25 +46,14 @@ class SnakeHelper(
         }
     }
 
-    fun isGameOver(prefChains: List<SnakeChain>, newChains: List<SnakeChain>): Boolean {
-        val newHeadChain = newChains.first()
-        if (!allowTeleport) {
-            val prefHeadChain = prefChains.first()
-            if (getDifference(prefHeadChain.x, newHeadChain.x) > chainSize ||
-                getDifference(prefHeadChain.y, newHeadChain.y) > chainSize
-            ) {
-                return true
-            }
-        }
-        newChains.forEachIndexed { index, snakeChain ->
-            if (index != 0) {
-                if (snakeChain == newHeadChain) {
-                    return true
-                }
-            }
-        }
-        return false
-    }
+    fun isGameOver(prefChains: List<SnakeChain>, newChains: List<SnakeChain>): Boolean =
+        gameOverStrategies.find { gameOverStrategy ->
+            gameOverStrategy.isGameOver(
+                prefChains = prefChains,
+                newChains = newChains,
+                chainSize = chainSize
+            )
+        } != null
 
     fun getFreeChain(chains: List<SnakeChain>): SnakeChain {
         val randomHorizontalChainCount = Random.nextInt(0, maxHorizontalChains)
@@ -152,6 +142,4 @@ class SnakeHelper(
             }
         }
     }
-
-    private fun getDifference(a: Int, b: Int): Int = if (a > b) a - b else b - a
 }

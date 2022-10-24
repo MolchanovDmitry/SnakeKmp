@@ -10,6 +10,8 @@ import dmitry.molchanov.gamelogic.domain.Direct
 import dmitry.molchanov.gamelogic.domain.ScreenHelper
 import dmitry.molchanov.gamelogic.domain.SnakeHelper
 import dmitry.molchanov.gamelogic.domain.SnakeState
+import dmitry.molchanov.gamelogic.domain.gameoverstrategy.EatSelfGameOverStrategy
+import dmitry.molchanov.gamelogic.domain.gameoverstrategy.TeleportGameOverStrategy
 import dmitry.molchanov.gamelogic.domain.usecase.CheckScoreAndSetRecordUseCase
 import dmitry.molchanov.gamelogic.domain.usecase.GetCurrentRecordUseCase
 import dmitry.molchanov.recorddsimpl.RecordDataStoreImpl
@@ -53,7 +55,10 @@ private fun getViewModel(width: Int, height: Int): GameViewModelImpl {
                 override fun isPointOnScreen(width: Int, height: Int, x: Int, y: Int): Boolean =
                     true
             },
-            allowTeleport = false
+            gameOverStrategies = listOf(
+                EatSelfGameOverStrategy(),
+                TeleportGameOverStrategy()
+            )
         ),
         checkScoreAndSetRecordUseCase = CheckScoreAndSetRecordUseCase(recordStore, dispatchers),
         getCurrentRecordUseCase = GetCurrentRecordUseCase(recordStore, dispatchers)
