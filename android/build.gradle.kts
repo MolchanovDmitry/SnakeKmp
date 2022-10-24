@@ -77,9 +77,9 @@ ktlint {
 
 dependencies {
     arrayOf(
-        project(Modules.GAME_LOGIC),
-        project(Modules.Record.DATA_STORE),
-        project(Modules.Record.DATA_STORE_IMPL),
+        project(Modules.Shared.GAME_LOGIC),
+        project(Modules.Shared.Record.DATA_STORE),
+        project(Modules.Shared.Record.DATA_STORE_IMPL),
         "androidx.wear.compose:compose-material:${Deps.WEAR_COMPOSE_VERSION}",
         "androidx.activity:activity-compose:1.6.0"
     ).forEach(::implementation)

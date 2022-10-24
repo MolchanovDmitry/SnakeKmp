@@ -16,7 +16,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 arrayOf(
-                    project(Modules.Record.DATA_STORE),
+                    project(Modules.Shared.Record.DATA_STORE),
                     Deps.Coroutine.CORE,
                     Deps.Settings.WOLF_SETTINGS,
                     Deps.Settings.WOLF_SETTINGS_COROUTINES

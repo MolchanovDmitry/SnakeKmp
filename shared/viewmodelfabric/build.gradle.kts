@@ -15,9 +15,9 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 arrayOf(
-                    project(Modules.GAME_LOGIC),
-                    project(Modules.Record.DATA_STORE),
-                    project(Modules.Record.DATA_STORE_IMPL)
+                    project(Modules.Shared.GAME_LOGIC),
+                    project(Modules.Shared.Record.DATA_STORE),
+                    project(Modules.Shared.Record.DATA_STORE_IMPL)
                 ).forEach(::implementation)
             }
         }

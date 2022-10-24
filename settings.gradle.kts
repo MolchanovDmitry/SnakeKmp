@@ -11,10 +11,13 @@ pluginManagement {
 }
 
 rootProject.name = "Snake"
-include (":web")
-include (":android")
 
-include (":record:recordDS")
-include (":record:recordDSImpl")
-include (":gamelogic")
+// platforms
+include(":web")
+include(":android")
+
+// shared
+include(":shared:gamelogic")
 include(":shared:viewmodelfabric")
+include(":shared:record:recordDS")
+include(":shared:record:recordDSImpl")

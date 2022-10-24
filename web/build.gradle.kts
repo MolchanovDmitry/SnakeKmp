@@ -20,9 +20,9 @@ kotlin {
                 arrayOf(
                     compose.web.core,
                     compose.runtime,
-                    project(Modules.GAME_LOGIC),
-                    project(Modules.Record.DATA_STORE),
-                    project(Modules.Record.DATA_STORE_IMPL),
+                    project(Modules.Shared.GAME_LOGIC),
+                    project(Modules.Shared.Record.DATA_STORE),
+                    project(Modules.Shared.Record.DATA_STORE_IMPL),
                     "org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.6.3-native-mt"
 
                 ).forEach(::implementation)
