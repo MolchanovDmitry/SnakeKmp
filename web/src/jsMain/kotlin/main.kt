@@ -132,7 +132,7 @@ private fun DrawSettings(
 
 @Composable
 private fun DrawGame(width: Int, height: Int) {
-    val gameViewModel = remember { getViewModel(width, height) }
+    val gameViewModel = remember { getViewModel(width, height).apply { onAction(Start) } }
     val state = gameViewModel.stateFlow.collectAsState()
     val body = document.getElementsByTagName("body")[0] as HTMLElement
     body.addEventListener("keyup", {
@@ -165,9 +165,7 @@ private fun DrawGame(width: Int, height: Int) {
             }
         }
     } else {
-        GameOver(state.value) {
-            gameViewModel.onAction(Start)
-        }
+        GameOver(state.value)
     }
 }
 
@@ -182,17 +180,12 @@ private fun ScoreView(score: Int, record: Int) {
 }
 
 @Composable
-private fun GameOver(state: SnakeState, onClick: () -> Unit) {
+private fun GameOver(state: SnakeState) {
     H2 { Text("💀 Game Over with score: ${state.score} 💀") }
     if (state.score > state.record) {
         H2 { Text("Congratulations, new record!") }
     }
-    Button(attrs = {
-        onClick {
-            onClick()
-            window.location.reload()
-        }
-    }) {
+    Button(attrs = { onClick { window.location.reload() } }) {
         Text("Try Again!")
     }
 }

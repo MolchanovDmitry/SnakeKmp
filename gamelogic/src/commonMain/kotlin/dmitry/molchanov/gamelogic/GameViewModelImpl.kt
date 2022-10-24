@@ -113,6 +113,7 @@ class GameViewModelImpl(
 
     private fun runSnake() {
         scope.launch {
+            println(state.chains)
             val state = state
             val chains = state.chains
             val movedChains =
