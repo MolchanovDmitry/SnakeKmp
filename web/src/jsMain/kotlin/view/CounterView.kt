@@ -1,3 +1,5 @@
+package view
+
 import androidx.compose.runtime.Composable
 import org.jetbrains.compose.web.css.padding
 import org.jetbrains.compose.web.css.px
