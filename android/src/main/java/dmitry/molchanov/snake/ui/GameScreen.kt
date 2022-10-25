@@ -1,4 +1,4 @@
-package dmitry.molchanov.snake.presentation.presentation.ui
+package dmitry.molchanov.snake.ui
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
@@ -38,9 +38,9 @@ import dmitry.molchanov.gamelogic.Start
 import dmitry.molchanov.gamelogic.domain.Direct
 import dmitry.molchanov.gamelogic.domain.SnakeChain
 import dmitry.molchanov.gamelogic.domain.getNewDirect
+import dmitry.molchanov.snake.MainViewModel
 import dmitry.molchanov.snake.R
-import dmitry.molchanov.snake.presentation.presentation.MainViewModel
-import dmitry.molchanov.snake.presentation.presentation.ui.theme.colors
+import dmitry.molchanov.snake.ui.theme.colors
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable

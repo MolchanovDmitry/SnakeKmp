@@ -1,8 +1,8 @@
-package dmitry.molchanov.snake.presentation.presentation
+package dmitry.molchanov.snake
 
 import android.app.Application
 import dmitry.molchanov.gamelogic.di.sharedModule
-import dmitry.molchanov.snake.presentation.presentation.di.platformModule
+import dmitry.molchanov.snake.di.platformModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 

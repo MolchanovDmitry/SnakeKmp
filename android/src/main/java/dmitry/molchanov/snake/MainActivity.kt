@@ -1,4 +1,4 @@
-package dmitry.molchanov.snake.presentation.presentation
+package dmitry.molchanov.snake
 
 import android.os.Build
 import android.os.Bundle
@@ -7,8 +7,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import dmitry.molchanov.gamelogic.Start
 import dmitry.molchanov.gamelogic.Stop
-import dmitry.molchanov.snake.presentation.presentation.ui.GameScreen
-import dmitry.molchanov.snake.presentation.presentation.ui.theme.SnakeTheme
+import dmitry.molchanov.snake.ui.GameScreen
+import dmitry.molchanov.snake.ui.theme.SnakeTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 

@@ -1,4 +1,4 @@
-package dmitry.molchanov.snake.presentation.presentation
+package dmitry.molchanov.snake
 
 import androidx.lifecycle.ViewModel
 import dmitry.molchanov.gamelogic.GameViewModel

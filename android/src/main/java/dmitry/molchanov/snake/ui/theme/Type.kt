@@ -1,4 +1,4 @@
-package dmitry.molchanov.snake.presentation.presentation.ui.theme
+package dmitry.molchanov.snake.ui.theme
 
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily

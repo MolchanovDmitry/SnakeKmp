@@ -1,4 +1,4 @@
-package dmitry.molchanov.snake.presentation.presentation.di
+package dmitry.molchanov.snake.di
 
 import android.content.Context
 import dmitry.molchanov.gamelogic.di.CHAIN_SIZE
@@ -7,9 +7,9 @@ import dmitry.molchanov.gamelogic.domain.ScreenHelper
 import dmitry.molchanov.gamelogic.domain.gameoverstrategy.EatSelfGameOverStrategy
 import dmitry.molchanov.gamelogic.domain.gameoverstrategy.GameOverStrategy
 import dmitry.molchanov.recorddsimpl.RecordSettings
+import dmitry.molchanov.snake.MainViewModel
 import dmitry.molchanov.snake.R
-import dmitry.molchanov.snake.presentation.presentation.MainViewModel
-import dmitry.molchanov.snake.presentation.presentation.ScreenHelperImpl
+import dmitry.molchanov.snake.ScreenHelperImpl
 import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
