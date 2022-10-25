@@ -5,26 +5,18 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import dmitry.molchanov.gamelogic.Start
 import dmitry.molchanov.gamelogic.Stop
-import dmitry.molchanov.recorddsimpl.RecordSettings
-import dmitry.molchanov.snake.R
 import dmitry.molchanov.snake.presentation.presentation.ui.GameScreen
 import dmitry.molchanov.snake.presentation.presentation.ui.theme.SnakeTheme
-import kotlinx.coroutines.Dispatchers
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: MainViewModel by viewModels {
+    private val viewModel: MainViewModel by viewModel {
         val widthHeightPair = getScreenWidthHeightPair()
-        MainViewModelProvider(
-            inputWidth = widthHeightPair.first,
-            inputHeight = widthHeightPair.second,
-            chainSize = resources.getDimensionPixelOffset(R.dimen.chain_size),
-            recordSettings = lazy { RecordSettings(this, Dispatchers.IO) },
-            screenHelper = ScreenHelperImpl(isRoundDevice = resources.configuration.isScreenRound)
-        )
+        parametersOf(widthHeightPair.first, widthHeightPair.second)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

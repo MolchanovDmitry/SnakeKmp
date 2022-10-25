@@ -18,6 +18,5 @@ include(":android")
 
 // shared
 include(":shared:gamelogic")
-include(":shared:viewmodelfabric")
 include(":shared:record:recordDS")
 include(":shared:record:recordDSImpl")

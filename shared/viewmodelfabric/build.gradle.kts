@@ -17,7 +17,8 @@ kotlin {
                 arrayOf(
                     project(Modules.Shared.GAME_LOGIC),
                     project(Modules.Shared.Record.DATA_STORE),
-                    project(Modules.Shared.Record.DATA_STORE_IMPL)
+                    project(Modules.Shared.Record.DATA_STORE_IMPL),
+                    Deps.Koin.CORE 
                 ).forEach(::implementation)
             }
         }

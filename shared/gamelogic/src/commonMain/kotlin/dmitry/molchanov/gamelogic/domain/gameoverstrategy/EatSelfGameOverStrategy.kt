@@ -2,7 +2,7 @@ package dmitry.molchanov.gamelogic.domain.gameoverstrategy
 
 import dmitry.molchanov.gamelogic.domain.SnakeChain
 
-class EatSelfGameOverStrategy : GameOverStrategy {
+object EatSelfGameOverStrategy : GameOverStrategy {
 
     override fun isGameOver(
         prefChains: List<SnakeChain>,

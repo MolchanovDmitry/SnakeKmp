@@ -12,4 +12,11 @@ object Deps {
         const val CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3-native-mt"
     }
 
+    object Koin {
+        private const val koin_version = "3.2.2"
+        const val CORE = "io.insert-koin:koin-core:$koin_version"
+        const val ANDROID = "io.insert-koin:koin-android:$koin_version"
+        const val COMPOSE = "io.insert-koin:koin-androidx-compose:$koin_version"
+    }
+
 }

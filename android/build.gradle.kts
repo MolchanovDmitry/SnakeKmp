@@ -1,5 +1,3 @@
-import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -70,7 +68,8 @@ dependencies {
         project(Modules.Shared.Record.DATA_STORE),
         project(Modules.Shared.Record.DATA_STORE_IMPL),
         "androidx.wear.compose:compose-material:${Deps.WEAR_COMPOSE_VERSION}",
-        "androidx.activity:activity-compose:1.6.0"
+        "androidx.activity:activity-compose:1.6.0",
+        Deps.Koin.ANDROID
     ).forEach(::implementation)
 
     implementation("androidx.wear.compose:compose-material:${Deps.WEAR_COMPOSE_VERSION}")

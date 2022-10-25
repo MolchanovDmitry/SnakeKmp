@@ -3,7 +3,7 @@ package dmitry.molchanov.recorddsimpl
 import dmitry.molchanov.preference.RecordDataStore
 
 class RecordDataStoreImpl(
-    private val recordSettings: RecordSettings
+    recordSettings: RecordSettings
 ) : RecordDataStore {
 
     private val settings = recordSettings.settings

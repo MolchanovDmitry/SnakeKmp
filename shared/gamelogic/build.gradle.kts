@@ -1,5 +1,3 @@
-import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
-
 plugins {
     kotlin(GradlePlugins.Kotlin.MULTIPLATFORM)
     id(GradlePlugins.Id.ANDROID_LIBRARY)
@@ -24,7 +22,9 @@ kotlin {
             dependencies {
                 arrayOf(
                     project(Modules.Shared.Record.DATA_STORE),
-                    Deps.Coroutine.CORE
+                    project(Modules.Shared.Record.DATA_STORE_IMPL),
+                    Deps.Coroutine.CORE,
+                    Deps.Koin.CORE
                 ).forEach(::implementation)
             }
         }

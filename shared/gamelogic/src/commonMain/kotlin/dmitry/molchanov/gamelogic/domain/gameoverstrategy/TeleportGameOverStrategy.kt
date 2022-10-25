@@ -2,7 +2,7 @@ package dmitry.molchanov.gamelogic.domain.gameoverstrategy
 
 import dmitry.molchanov.gamelogic.domain.SnakeChain
 
-class TeleportGameOverStrategy : GameOverStrategy {
+object TeleportGameOverStrategy : GameOverStrategy {
 
     override fun isGameOver(
         prefChains: List<SnakeChain>,
