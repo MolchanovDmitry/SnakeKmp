@@ -3,7 +3,6 @@ import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
 }
 
 android {
@@ -62,16 +61,6 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
-    }
-}
-
-ktlint {
-    android.set(true)
-    ignoreFailures.set(false)
-    reporters {
-        reporter(ReporterType.PLAIN)
-        reporter(ReporterType.CHECKSTYLE)
-        reporter(ReporterType.SARIF)
     }
 }
 

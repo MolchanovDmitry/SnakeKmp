@@ -14,7 +14,8 @@ class StartChainsTest {
             inputWidth = 100,
             inputHeight = 100,
             inputChainSize = 10,
-            screenHelper = testScreenHelper
+            screenHelper = testScreenHelper,
+            gameOverStrategies = emptyList()
         )
         val startChains = snakeHelper.startChains
         assertTrue(startChains.isNotEmpty())
@@ -27,7 +28,8 @@ class StartChainsTest {
             inputWidth = 100,
             inputHeight = 100,
             inputChainSize = 10,
-            screenHelper = testScreenHelper
+            screenHelper = testScreenHelper,
+            gameOverStrategies = emptyList()
         )
         val startChains = snakeHelper.startChains
         startChains.forEach { chain ->
@@ -46,7 +48,8 @@ class StartChainsTest {
                 inputWidth = inputWidth,
                 inputHeight = inputHeight,
                 inputChainSize = chainSize,
-                screenHelper = testScreenHelper
+                screenHelper = testScreenHelper,
+                gameOverStrategies = emptyList()
             )
             val startChains = snakeHelper.startChains
             startChains.forEach { chain ->

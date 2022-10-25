@@ -11,7 +11,8 @@ class GetFreeChainsTest {
         inputWidth = 500,
         inputHeight = 500,
         inputChainSize = 10,
-        screenHelper = testScreenHelper
+        screenHelper = testScreenHelper,
+        gameOverStrategies = emptyList()
     )
 
     @Test

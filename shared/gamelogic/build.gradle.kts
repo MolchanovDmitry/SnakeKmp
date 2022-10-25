@@ -1,3 +1,5 @@
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+
 plugins {
     kotlin(GradlePlugins.Kotlin.MULTIPLATFORM)
     id(GradlePlugins.Id.ANDROID_LIBRARY)
@@ -7,8 +9,13 @@ kotlin {
     android()
 
     js(IR) {
-        useCommonJs()
-        browser()
+        browser {
+            testTask {
+                useKarma {
+                    useSafari()
+                }
+            }
+        }
         binaries.executable()
     }
 
@@ -28,7 +35,6 @@ kotlin {
                     kotlin("test-common"),
                     kotlin("test-annotations-common"),
                 ).forEach(::implementation)
-
             }
         }
         val androidMain by getting

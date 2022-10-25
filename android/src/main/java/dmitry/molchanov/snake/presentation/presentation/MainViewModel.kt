@@ -51,7 +51,8 @@ class MainViewModelProvider(
                 gameOverStrategies = listOf(EatSelfGameOverStrategy())
             ),
             getCurrentRecordUseCase = GetCurrentRecordUseCase(recordDS.value, coroutineDispatchers),
-            checkScoreAndSetRecordUseCase = CheckScoreAndSetRecordUseCase(recordDS.value, coroutineDispatchers)
+            checkScoreAndSetRecordUseCase =
+            CheckScoreAndSetRecordUseCase(recordDS.value, coroutineDispatchers)
         )
         return MainViewModel(gameViewModel = gameVM) as T
     }

@@ -1,2 +1,0 @@
-package dmitry.molchanov.gamelogic
-

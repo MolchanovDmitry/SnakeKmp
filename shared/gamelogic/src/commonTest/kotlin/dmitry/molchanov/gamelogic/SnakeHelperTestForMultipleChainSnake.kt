@@ -19,7 +19,8 @@ class SnakeHelperTestForMultipleChainSnake {
             inputWidth = WIDTH,
             inputHeight = HEIGHT,
             inputChainSize = CHAIN_SIZE,
-            screenHelper = testScreenHelper
+            screenHelper = testScreenHelper,
+            gameOverStrategies = emptyList()
         )
 
     @Test
@@ -65,5 +66,4 @@ class SnakeHelperTestForMultipleChainSnake {
             assertEquals(SnakeChain(x = 50 + CHAIN_SIZE * 2, y = 50), newChains)
         }
     }
-
 }

@@ -13,6 +13,6 @@ interface GameViewModel {
 
 sealed class Action
 class NewDirect(val direct: Direct) : Action()
-object Stop: Action()
-object Start: Action()
-object Release: Action()
+object Stop : Action()
+object Start : Action()
+object Release : Action()

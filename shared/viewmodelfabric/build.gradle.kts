@@ -7,7 +7,7 @@ kotlin {
     android()
 
     js(IR) {
-        useCommonJs()
+        browser()
         binaries.executable()
     }
 
