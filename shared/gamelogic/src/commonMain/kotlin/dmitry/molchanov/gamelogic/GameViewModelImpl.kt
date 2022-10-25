@@ -29,7 +29,7 @@ class GameViewModelImpl(
     private val checkScoreAndSetRecordUseCase: CheckScoreAndSetRecordUseCase
 ) : GameViewModel {
 
-    private val scope = CoroutineScope(coroutineDispatchers.default + SupervisorJob())
+    private val scope = CoroutineScope(coroutineDispatchers.game + SupervisorJob())
     private val _stateFlow = MutableStateFlow(
         SnakeState(
             stepDelay = DEFAULT_STEP_DELAY,
@@ -113,7 +113,6 @@ class GameViewModelImpl(
 
     private fun runSnake() {
         scope.launch {
-            println(state.chains)
             val state = state
             val chains = state.chains
             val movedChains =

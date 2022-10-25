@@ -2,7 +2,7 @@ package dmitry.molchanov.snake.presentation.presentation
 
 import android.app.Application
 import dmitry.molchanov.gamelogic.di.sharedModule
-import dmitry.molchanov.snake.presentation.presentation.di.androidModule
+import dmitry.molchanov.snake.presentation.presentation.di.platformModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -13,7 +13,7 @@ class SnakeApp: Application() {
         startKoin {
             androidContext(this@SnakeApp)
             modules(
-                androidModule,
+                platformModule,
                 sharedModule
             )
         }

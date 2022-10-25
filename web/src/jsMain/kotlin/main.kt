@@ -1,14 +1,21 @@
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import di.platformModule
+import dmitry.molchanov.gamelogic.di.sharedModule
 import org.jetbrains.compose.web.css.marginTop
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.H1
 import org.jetbrains.compose.web.dom.Text
 import org.jetbrains.compose.web.renderComposable
+import org.koin.core.context.startKoin
 import screen.DrawGame
 import screen.Settings
+
+val koinApp = startKoin {
+    modules(platformModule, sharedModule)
+}
 
 fun main() {
     renderComposable(rootElementId = "root") {

@@ -7,23 +7,14 @@ import TOP_KEYCODE
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
-import dmitry.molchanov.gamelogic.GameViewModelImpl
+import dmitry.molchanov.gamelogic.GameViewModel
 import dmitry.molchanov.gamelogic.NewDirect
 import dmitry.molchanov.gamelogic.Start
-import dmitry.molchanov.gamelogic.domain.CoroutineDispatchers
 import dmitry.molchanov.gamelogic.domain.Direct
-import dmitry.molchanov.gamelogic.domain.ScreenHelper
-import dmitry.molchanov.gamelogic.domain.SnakeHelper
 import dmitry.molchanov.gamelogic.domain.SnakeState
-import dmitry.molchanov.gamelogic.domain.gameoverstrategy.EatSelfGameOverStrategy
-import dmitry.molchanov.gamelogic.domain.gameoverstrategy.TeleportGameOverStrategy
-import dmitry.molchanov.gamelogic.domain.usecase.CheckScoreAndSetRecordUseCase
-import dmitry.molchanov.gamelogic.domain.usecase.GetCurrentRecordUseCase
-import dmitry.molchanov.recorddsimpl.RecordDataStoreImpl
-import dmitry.molchanov.recorddsimpl.RecordSettings
+import koinApp
 import kotlinx.browser.document
 import kotlinx.browser.window
-import kotlinx.coroutines.Dispatchers
 import org.jetbrains.compose.web.attributes.InputType
 import org.jetbrains.compose.web.attributes.disabled
 import org.jetbrains.compose.web.css.marginTop
@@ -33,6 +24,7 @@ import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.H2
 import org.jetbrains.compose.web.dom.Input
 import org.jetbrains.compose.web.dom.Text
+import org.koin.core.parameter.parametersOf
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.KeyboardEvent
 import org.w3c.dom.get
@@ -76,33 +68,11 @@ fun DrawGame(width: Int, height: Int) {
     }
 }
 
-private fun getViewModel(width: Int, height: Int): GameViewModelImpl {
-    val dispatchers = CoroutineDispatchers(
-        main = Dispatchers.Main,
-        io = Dispatchers.Default,
-        default = Dispatchers.Default,
-        unconfined = Dispatchers.Unconfined
-    )
-    val recordSettings = RecordSettings(dispatcher = dispatchers.io)
-    val recordStore = RecordDataStoreImpl(recordSettings)
-    return GameViewModelImpl(
-        coroutineDispatchers = dispatchers,
-        snakeHelper = SnakeHelper(
-            inputWidth = width,
-            inputHeight = height,
-            inputChainSize = 1,
-            screenHelper = object : ScreenHelper {
-                override fun isPointOnScreen(width: Int, height: Int, x: Int, y: Int): Boolean =
-                    true
-            },
-            gameOverStrategies = listOf(
-                EatSelfGameOverStrategy(),
-                TeleportGameOverStrategy()
-            )
-        ),
-        checkScoreAndSetRecordUseCase = CheckScoreAndSetRecordUseCase(recordStore, dispatchers),
-        getCurrentRecordUseCase = GetCurrentRecordUseCase(recordStore, dispatchers)
-    )
+private fun getViewModel(width: Int, height: Int): GameViewModel {
+    val gameViewModel: GameViewModel by koinApp.koin.inject {
+        parametersOf(width, height)
+    }
+    return gameViewModel
 }
 
 @Composable

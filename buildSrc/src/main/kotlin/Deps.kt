@@ -16,6 +16,7 @@ object Deps {
         private const val koin_version = "3.2.2"
         const val CORE = "io.insert-koin:koin-core:$koin_version"
         const val ANDROID = "io.insert-koin:koin-android:$koin_version"
+        const val JS = "io.insert-koin:koin-core-js:$koin_version"
         const val COMPOSE = "io.insert-koin:koin-androidx-compose:$koin_version"
     }
 

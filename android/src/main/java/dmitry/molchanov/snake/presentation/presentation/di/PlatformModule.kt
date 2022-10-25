@@ -15,14 +15,15 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-val androidModule = module {
+val platformModule = module {
 
     single {
         CoroutineDispatchers(
             main = Dispatchers.Main.immediate,
             io = Dispatchers.IO,
             default = Dispatchers.Default,
-            unconfined = Dispatchers.Unconfined
+            unconfined = Dispatchers.Unconfined,
+            game = Dispatchers.Main.immediate
         )
     }
 

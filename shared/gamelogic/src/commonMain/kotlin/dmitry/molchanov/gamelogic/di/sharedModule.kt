@@ -24,8 +24,8 @@ val sharedModule = module {
 
     factory { params ->
         SnakeHelper(
-            inputWidth = params.get(),
-            inputHeight = params.get(),
+            inputWidth = params[0],
+            inputHeight = params[1],
             inputChainSize = get(named(CHAIN_SIZE)),
             screenHelper = get(),
             gameOverStrategies = get(),
