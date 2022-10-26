@@ -22,8 +22,7 @@ kotlin {
                     project(Modules.Shared.Record.DATA_STORE),
                     project(Modules.Shared.Record.DATA_STORE_IMPL),
                     Deps.Koin.JS,
-                    "org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.6.3-native-mt"
-
+                    Deps.Coroutine.JS
                 ).forEach(::implementation)
             }
         }

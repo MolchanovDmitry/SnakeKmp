@@ -9,7 +9,9 @@ object Deps {
     }
 
     object Coroutine {
-        const val CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3-native-mt"
+        const val mtVersion = "1.6.3-native-mt"
+        const val CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$mtVersion"
+        const val JS = "org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$mtVersion"
     }
 
     object Koin {
