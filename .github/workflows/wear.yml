@@ -1,10 +1,10 @@
-name: CI
+name: Web-test-build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ js ]
   pull_request:
-    branches: [ master ]
+    branches: [ js ]
 
   workflow_dispatch:
 
@@ -17,18 +17,15 @@ jobs:
       - name: Change wrapper permission
         run: chmod +x ./gradlew
 
-      - name: Run lint
-        run: ./gradlew ktlintCheck
-
       - name: Run unit test
-        run: ./gradlew :android:testReleaseUnitTest
+        run: ./gradlew :shared:gamelogic:testReleaseUnitTest
 
       - name: Assemble
-        run: ./gradlew :android:assembleRelease
+        run: ./gradlew :wear:assembleRelease
 
       - name: Deploy apk
         uses: actions/upload-artifact@v3
         with:
           name: snake
-          path: android/build/outputs/apk/release/android-release.apk
-          retention-days: 2
+          path: wear/build/outputs/apk/release/
+          retention-days: 1

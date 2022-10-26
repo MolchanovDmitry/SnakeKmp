@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -16,7 +18,10 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-        resConfigs("en")
+        resourceConfigurations.apply {
+            clear()
+            add("en")
+        }
     }
     signingConfigs {
         register("release") {
@@ -24,6 +29,18 @@ android {
             keyPassword = SigningConfig.keyPassword
             storeFile = file(SigningConfig.storeFile)
             storePassword = SigningConfig.storePassword
+        }
+    }
+    applicationVariants.all {
+        val variant = this
+        variant.outputs.all {
+            val output = this
+            val outputImpl = output as BaseVariantOutputImpl
+            val outputFile = output.outputFile
+            if (outputFile?.name?.endsWith(".apk") == true) {
+                val fileName = "snake_${buildType.name}_${defaultConfig.versionName}.apk"
+                outputImpl.outputFileName = fileName
+            }
         }
     }
     buildTypes {
