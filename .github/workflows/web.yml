@@ -1,0 +1,31 @@
+name: Web-test-build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Change wrapper permission
+        run: chmod +x ./gradlew
+
+      - name: Run unit test
+        run: ./gradlew :shared:gamelogic:jsNodeTest
+
+      - name: Assemble
+        run: ./gradlew :web:jsBrowserDistribution
+
+      - name: Deploy js
+        uses: actions/upload-artifact@v3
+        with:
+          name: snake
+          path: web/build/distributions/
+          retention-days: 1

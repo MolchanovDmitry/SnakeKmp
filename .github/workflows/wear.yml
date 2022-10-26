@@ -1,0 +1,31 @@
+name: Wear-test-build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Change wrapper permission
+        run: chmod +x ./gradlew
+
+      - name: Run unit test
+        run: ./gradlew :shared:gamelogic:testReleaseUnitTest
+
+      - name: Assemble
+        run: ./gradlew :wear:assembleRelease
+
+      - name: Deploy apk
+        uses: actions/upload-artifact@v3
+        with:
+          name: snake
+          path: wear/build/outputs/apk/release/
+          retention-days: 1
