@@ -13,6 +13,7 @@ import dmitry.molchanov.gamelogic.domain.SnakeState
 import dmitry.molchanov.gamelogic.domain.usecase.CheckScoreAndSetRecordUseCase
 import dmitry.molchanov.gamelogic.domain.usecase.GetCurrentRecordUseCase
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
@@ -21,12 +22,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class GameViewModelImpl(
     coroutineDispatchers: CoroutineDispatchers,
     private val snakeHelper: SnakeHelper,
     private val getCurrentRecordUseCase: GetCurrentRecordUseCase,
-    private val checkScoreAndSetRecordUseCase: CheckScoreAndSetRecordUseCase
+    private val checkScoreAndSetRecordUseCase: CheckScoreAndSetRecordUseCase,
 ) : GameViewModel {
 
     private val scope = CoroutineScope(coroutineDispatchers.game + SupervisorJob())
@@ -139,6 +141,8 @@ class GameViewModelImpl(
     private suspend fun gameOver() {
         stopGame()
         _stateFlow.update { it.copy(isGameOver = true) }
-        checkScoreAndSetRecordUseCase.execute(score = state.chains.size)
+        withContext(NonCancellable) {
+            checkScoreAndSetRecordUseCase.execute(score = state.chains.size)
+        }
     }
 }
