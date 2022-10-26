@@ -1,21 +1,21 @@
 <h1 align="center">Kotlin multiplatform Snake</h1> 
 <p align="center">
   <a href="#">
-    <img src="https://img.shields.io/badge/android-7.10-blue?logo=android">
+    <img src="https://img.shields.io/badge/kotlin-1.7.10-blue?logo=kotlin">
   </a>
   <a href="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/lint.yml">
     <img src="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/lint.yml/badge.svg">
   </a>
   <br>
   <a href="https://developer.android.com/jetpack/androidx/releases/wear-compose">
-    <img src="https://img.shields.io/badge/Wear%20Compose-1.1.0--alpha07-yellow)">
+    <img src="https://img.shields.io/badge/Wear%20Compose-1.1.0--alpha07-blue?)">
   </a>
   <a href="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/web.yml">
     <img src="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/web.yml/badge.svg">
   </a>
   <br>
   <a href="https://www.jetbrains.com/lp/compose-mpp/">
-    <img src="https://img.shields.io/badge/Compose%20Multiplatform%20Compose-1.2.0-yellow)">
+    <img src="https://img.shields.io/badge/Compose%20Multiplatform%20Compose-1.2.0-blue?)">
   </a>
   <a href="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/wear.yml">
     <img src="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/wear.yml/badge.svg">
