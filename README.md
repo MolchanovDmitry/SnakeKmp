@@ -1,21 +1,60 @@
-<h1 align="center">Snake</h1> 
+<h1 align="center">Kotlin multiplatform Snake</h1> 
 <p align="center">
   <a href="#">
     <img src="https://img.shields.io/badge/android-7.10-blue?logo=android">
   </a>
+  <a href="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/lint.yml">
+    <img src="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/lint.yml/badge.svg">
+  </a>
+  <br>
   <a href="https://developer.android.com/jetpack/androidx/releases/wear-compose">
     <img src="https://img.shields.io/badge/Wear%20Compose-1.1.0--alpha07-yellow)">
   </a>
-  <a href="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/main.yml">
-    <img src="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/main.yml/badge.svg">
+  <a href="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/web.yml">
+    <img src="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/web.yml/badge.svg">
+  </a>
+  <br>
+  <a href="https://www.jetbrains.com/lp/compose-mpp/">
+    <img src="https://img.shields.io/badge/Compose%20Multiplatform%20Compose-1.2.0-yellow)">
+  </a>
+  <a href="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/wear.yml">
+    <img src="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/wear.yml/badge.svg">
   </a>
 </p>
-<p align="center">
-Snake from childhood for your wear os watch.
-</p>
+
+Snake from childhood for the following platforms:
+* [wear OS](#Wear-OS)
+* [web](#Web)
+
+# Wear OS
 <div align="center">
-  <img src="img/screenshot.webp">
+  <img src="img/wear_snake_game.webp">
 </div>
+
+You can get the apk by running [the following github action](https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/wear.yml).
+
+Or build apk manually by running command below in root directory:
+
+``
+./gradlew :wear:assembleRelease
+``
+
+The output file will be located in the following directory `wear/build/outputs/apk/release/`. 
+
+# Web
+Adjust the field size and press `Start!`:
+<div align="center">
+  <img src="img/web_snake_settings.webp">
+  <img src="img/web_snake_game.webp">
+</div>
+
+You can get the artefacts by running [the following github action](https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/web.yml).
+
+Or run game manually by running command below in root directory:
+```
+./gradlew :wear:assembleRelease
+```
+
 
 ## License
 ```

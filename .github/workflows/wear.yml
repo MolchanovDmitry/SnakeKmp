@@ -1,4 +1,4 @@
-name: Web-test-build
+name: Wear-test-build
 
 on:
   push:
