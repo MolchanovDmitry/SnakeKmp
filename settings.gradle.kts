@@ -14,7 +14,7 @@ rootProject.name = "Snake"
 
 // platforms
 include(":web")
-include(":android")
+include(":wear")
 
 // shared
 include(":shared:gamelogic")

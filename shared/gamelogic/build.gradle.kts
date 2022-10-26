@@ -7,13 +7,8 @@ kotlin {
     android()
 
     js(IR) {
-        browser {
-            testTask {
-                useKarma {
-                    useSafari()
-                }
-            }
-        }
+        browser()
+        nodejs()
         binaries.executable()
     }
 
