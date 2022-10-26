@@ -2,9 +2,9 @@ name: Wear-test-build
 
 on:
   push:
-    branches: [ js ]
+    branches: [ master ]
   pull_request:
-    branches: [ js ]
+    branches: [ master ]
 
   workflow_dispatch:
 
