@@ -13,6 +13,7 @@ import dmitry.molchanov.commonui.GameScreenWrapper
 import dmitry.molchanov.commonui.resolvers.ColorResolver
 import dmitry.molchanov.commonui.resolvers.SizeResolver
 import dmitry.molchanov.commonui.resolvers.StringResolver
+import dmitry.molchanov.gamelogic.GameInputParams
 import dmitry.molchanov.gamelogic.Start
 import dmitry.molchanov.gamelogic.Stop
 import dmitry.molchanov.snake.ui.GameScreen
@@ -24,9 +25,19 @@ import org.koin.core.parameter.parametersOf
 class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModel {
-        val widthHeightPair = getScreenWidthHeightPair()
-        parametersOf(widthHeightPair.first, widthHeightPair.second)
+        parametersOf(gameInputParams)
     }
+
+    private val gameInputParams: GameInputParams
+        get() {
+            val widthHeightPair = getScreenWidthHeightPair()
+            return GameInputParams(
+                inputWidth = widthHeightPair.first,
+                inputHeight = widthHeightPair.second,
+                inputChainSize = resources.getDimensionPixelSize(R.dimen.chain_size),
+            )
+        }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,16 +49,16 @@ class MainActivity : ComponentActivity() {
                             dimensionResource(id = R.dimen.game_over_text_size).value.sp
                     },
                     colorResolver = object : ColorResolver {
+                        override val textColor: Color = Color.White
                         override val availableChainColors: List<Color> = colors
-
                     },
                     stringResolver = object : StringResolver {
                         override val score: String = getString(R.string.score)
                         override val record: String = getString(R.string.new_record)
+                        override val newRecord: String = getString(R.string.new_record)
                         override val gameOver: String = getString(R.string.game_over)
                     }
-                ).GameScreen(viewModel = viewModel)
-                //GameScreen(viewModel = viewModel)
+                ).GameScreen(viewModel = viewModel, onGameFinished = { viewModel.onAction(Start) })
             }
         }
     }

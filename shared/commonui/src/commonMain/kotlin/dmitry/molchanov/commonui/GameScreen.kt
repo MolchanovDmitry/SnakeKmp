@@ -113,17 +113,20 @@ class GameScreenWrapper(
         Column(modifier = modifier) {
             Text(
                 text = stringResolver.gameOver,
+                color = colorResolver.textColor,
                 fontSize = sizeResolver.gameOverTextSize,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
             )
             if (score <= record) {
                 Text(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
+                    color = colorResolver.textColor,
                     text = "${stringResolver.score}: $score. ${stringResolver.record}: $record"
                 )
             } else {
                 Text(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
+                    color = colorResolver.textColor,
                     text = "${stringResolver.newRecord}: $score"
                 )
             }

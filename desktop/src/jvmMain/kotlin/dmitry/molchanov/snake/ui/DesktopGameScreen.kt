@@ -24,7 +24,8 @@ fun DesktopGameScreen(gameInputParams: GameInputParams, onGameFinished: () -> Un
             override val gameOverTextSize: TextUnit = 20.sp
         },
         colorResolver = object : ColorResolver {
-            override val availableChainColors: List<Color> = listOf(Color.Red)
+            override val textColor: Color = Color.Black
+            override val availableChainColors: List<Color> = listOf(Color.Red, Color.Green, Color.Blue)
         },
         stringResolver = object : StringResolver {
             override val score: String = "Score"
