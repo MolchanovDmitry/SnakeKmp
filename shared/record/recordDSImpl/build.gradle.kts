@@ -11,6 +11,12 @@ kotlin {
         binaries.executable()
     }
 
+    jvm {
+        compilations.all {
+            kotlinOptions.jvmTarget = "11"
+        }
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {

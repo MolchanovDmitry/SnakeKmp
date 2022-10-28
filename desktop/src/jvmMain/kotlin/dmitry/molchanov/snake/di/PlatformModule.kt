@@ -1,20 +1,21 @@
-package di
+package dmitry.molchanov.snake.di
 
 import dmitry.molchanov.gamelogic.domain.CoroutineDispatchers
 import dmitry.molchanov.gamelogic.domain.ScreenHelper
 import dmitry.molchanov.gamelogic.domain.gameoverstrategy.EatSelfGameOverStrategy
 import dmitry.molchanov.gamelogic.domain.gameoverstrategy.TeleportGameOverStrategy
 import dmitry.molchanov.recorddsimpl.RecordSettings
+import dmitry.molchanov.snake.ui.ScreenHelperImpl
 import kotlinx.coroutines.Dispatchers
 import org.koin.dsl.module
 
-val platformModule = module {
+val desktopModule = module {
 
     single {
         val default = Dispatchers.Default
         CoroutineDispatchers(
             main = default,
-            io = default,
+            io = Dispatchers.IO,
             default = default,
             unconfined = Dispatchers.Unconfined,
             game = default
@@ -28,9 +29,6 @@ val platformModule = module {
     single { listOf(EatSelfGameOverStrategy, TeleportGameOverStrategy) }
 
     single<ScreenHelper> {
-        object : ScreenHelper {
-            override fun isPointOnScreen(width: Int, height: Int, x: Int, y: Int): Boolean =
-                true
-        }
+        ScreenHelperImpl()
     }
 }

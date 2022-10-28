@@ -157,7 +157,7 @@ private fun DrawFreeChain(freeChain: SnakeChain, color: Color, chainSize: Float)
     }
 }
 
-private fun getNextItem(currentColor: Color, colors: Array<Color>): Color {
+private fun getNextItem(currentColor: Color, colors: List<Color>): Color {
     val newIndex = colors.indexOf(currentColor) + 1
     return if (newIndex >= colors.size) colors.first() else colors[newIndex]
 }

@@ -7,6 +7,7 @@ import TOP_KEYCODE
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import dmitry.molchanov.gamelogic.GameInputParams
 import dmitry.molchanov.gamelogic.GameViewModel
 import dmitry.molchanov.gamelogic.NewDirect
 import dmitry.molchanov.gamelogic.Start
@@ -31,7 +32,9 @@ import org.w3c.dom.get
 
 @Composable
 fun DrawGame(width: Int, height: Int) {
-    val gameViewModel = remember { getViewModel(width, height).apply { onAction(Start) } }
+    val gameViewModel = remember {
+        getViewModel(width, height).apply { onAction(Start) }
+    }
     val state = gameViewModel.stateFlow.collectAsState()
     val body = document.getElementsByTagName("body")[0] as HTMLElement
     body.addEventListener("keyup", {
@@ -70,7 +73,12 @@ fun DrawGame(width: Int, height: Int) {
 
 private fun getViewModel(width: Int, height: Int): GameViewModel {
     val gameViewModel: GameViewModel by koinApp.koin.inject {
-        parametersOf(width, height)
+        val gameInputParams = GameInputParams(
+            inputWidth = width,
+            inputHeight = height,
+            inputChainSize = 1,
+        )
+        parametersOf(gameInputParams)
     }
     return gameViewModel
 }

@@ -81,6 +81,7 @@ android {
 
 dependencies {
     arrayOf(
+        project(Modules.Shared.COMMON_UI),
         project(Modules.Shared.GAME_LOGIC),
         project(Modules.Shared.Record.DATA_STORE),
         project(Modules.Shared.Record.DATA_STORE_IMPL),

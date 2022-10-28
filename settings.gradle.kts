@@ -15,8 +15,10 @@ rootProject.name = "Snake"
 // platforms
 include(":web")
 include(":wear")
+include(":desktop")
 
 // shared
 include(":shared:gamelogic")
 include(":shared:record:recordDS")
 include(":shared:record:recordDSImpl")
+include(":shared:commonui")

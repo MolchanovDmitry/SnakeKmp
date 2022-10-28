@@ -12,6 +12,7 @@ object Deps {
         const val mtVersion = "1.6.3-native-mt"
         const val CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$mtVersion"
         const val JS = "org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$mtVersion"
+        const val JVM = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$mtVersion"
     }
 
     object Koin {
@@ -19,6 +20,7 @@ object Deps {
         const val CORE = "io.insert-koin:koin-core:$koin_version"
         const val ANDROID = "io.insert-koin:koin-android:$koin_version"
         const val JS = "io.insert-koin:koin-core-js:$koin_version"
+        const val JVM = "io.insert-koin:koin-core-jvm:$koin_version"
         const val COMPOSE = "io.insert-koin:koin-androidx-compose:$koin_version"
     }
 
