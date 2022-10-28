@@ -11,7 +11,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -49,7 +52,7 @@ class GameScreenWrapper(
         val state = viewModel.stateFlow.collectAsState(context = Dispatchers.Unconfined)
         val chainSize = state.value.chainSize - 2
         val requester = remember { FocusRequester() }
-        var color = remember { colorResolver.availableChainColors.firstOrNull() ?: Color.White }
+        var color by remember { mutableStateOf(colorResolver.availableChainColors.firstOrNull() ?: Color.White) }
         fun onKeyEventFetched(keyEvent: KeyEvent): Boolean {
             if (keyEvent.type == KeyEventType.KeyUp) {
                 when (keyEvent.key) {
