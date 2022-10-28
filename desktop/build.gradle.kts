@@ -1,9 +1,9 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
-    kotlin("multiplatform")
-    id("org.jetbrains.compose")
-    id("org.jlleitschuh.gradle.ktlint")
+    kotlin(GradlePlugins.Kotlin.MULTIPLATFORM)
+    id(GradlePlugins.Id.COMPOSE)
+    id(GradlePlugins.Id.KTLINT)
 }
 
 kotlin {

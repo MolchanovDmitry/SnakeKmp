@@ -1,13 +1,13 @@
-import com.google.wireless.android.sdk.stats.GradleModule
-
 plugins {
-    kotlin("multiplatform")
-    id("com.android.library")
-    id("org.jetbrains.compose")
+    kotlin(GradlePlugins.Kotlin.MULTIPLATFORM)
+    id(GradlePlugins.Id.ANDROID_LIBRARY)
+    id(GradlePlugins.Id.COMPOSE)
+    id(GradlePlugins.Id.KTLINT)
 }
 
 kotlin {
     android()
+
     jvm()
 
     sourceSets {

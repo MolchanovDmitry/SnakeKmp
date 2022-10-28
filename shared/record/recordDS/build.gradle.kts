@@ -1,20 +1,17 @@
 plugins {
     kotlin(GradlePlugins.Kotlin.MULTIPLATFORM)
     id(GradlePlugins.Id.ANDROID_LIBRARY)
+    id(GradlePlugins.Id.KTLINT)
 }
 
 kotlin {
     android()
 
+    jvm()
+
     js(IR) {
         browser()
         binaries.executable()
-    }
-
-    jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "11"
-        }
     }
 
     sourceSets {

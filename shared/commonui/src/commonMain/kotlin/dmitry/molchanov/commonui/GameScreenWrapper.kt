@@ -37,7 +37,6 @@ import dmitry.molchanov.gamelogic.domain.SnakeChain
 import dmitry.molchanov.gamelogic.domain.getNewDirect
 import kotlinx.coroutines.Dispatchers
 
-
 class GameScreenWrapper(
     private val sizeResolver: SizeResolver,
     private val colorResolver: ColorResolver,
@@ -167,5 +166,4 @@ class GameScreenWrapper(
         val newIndex = colors.indexOf(currentColor) + 1
         return if (newIndex >= colors.size) colors.first() else colors[newIndex]
     }
-
 }

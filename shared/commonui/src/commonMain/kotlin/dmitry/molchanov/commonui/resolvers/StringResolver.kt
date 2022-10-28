@@ -9,5 +9,4 @@ interface StringResolver {
     val newRecord: String
 
     val gameOver: String
-
 }

@@ -6,7 +6,7 @@ import dmitry.molchanov.snake.di.platformModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
-class SnakeApp: Application() {
+class SnakeApp : Application() {
 
     override fun onCreate() {
         super.onCreate()

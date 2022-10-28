@@ -42,5 +42,4 @@ val sharedModule = module {
     }
 
     single<RecordDataStore> { RecordDataStoreImpl(recordSettings = get()) }
-
 }
