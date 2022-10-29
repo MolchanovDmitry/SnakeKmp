@@ -35,7 +35,7 @@ compose.desktop {
     application {
         mainClass = "dmitry.molchanov.snake.MainKt"
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(TargetFormat.Dmg, TargetFormat.Deb, TargetFormat.Exe)
             packageName = "dmitry.molchanov.snake"
             packageVersion = "1.0.0"
         }

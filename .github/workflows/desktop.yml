@@ -1,0 +1,22 @@
+name: Desktop-build
+
+on:
+  push:
+    branches: [ desktop ]
+  pull_request:
+    branches: [ desktop ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Change wrapper permission
+        run: chmod +x ./gradlew
+
+      - name: Build dmg
+        run: ./gradlew :desktop:build
+

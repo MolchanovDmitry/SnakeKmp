@@ -23,8 +23,9 @@
 </p>
 
 Snake from childhood for the following platforms:
-* [wear OS](#Wear-OS)
-* [web](#Web)
+* [Wear OS](#Wear-OS)
+* [Web](#Web)
+* [Desktop](#Desktop)
 
 # Wear OS
 <div align="center">
@@ -53,6 +54,20 @@ You can get the artefacts by running [the following github action](https://githu
 Or run game manually by running command below in root directory:
 ```
 ./gradlew :wear:assembleRelease
+```
+
+# Desktop
+1. Adjust window size.
+2. Adjust chain size by `+`/`-` buttons.
+3. Press `Start game`.
+<div align="center">
+  <img src="img/desktop_settings.webp">
+  <img src="img/desktop_game.webp">
+</div>
+
+Run game manually by running command below in root directory:
+```
+./gradlew :desktop:run
 ```
 
 

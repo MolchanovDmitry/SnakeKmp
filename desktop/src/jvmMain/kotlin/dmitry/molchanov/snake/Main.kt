@@ -52,7 +52,7 @@ fun App() {
 }
 
 fun main() = application {
-    Window(onCloseRequest = ::exitApplication) {
+    Window(title = StringRes.appTitle, onCloseRequest = ::exitApplication) {
         App()
     }
 }

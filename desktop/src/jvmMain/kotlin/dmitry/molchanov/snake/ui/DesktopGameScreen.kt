@@ -7,10 +7,10 @@ import androidx.compose.ui.unit.sp
 import dmitry.molchanov.commonui.GameScreenWrapper
 import dmitry.molchanov.commonui.resolvers.ColorResolver
 import dmitry.molchanov.commonui.resolvers.SizeResolver
-import dmitry.molchanov.commonui.resolvers.StringResolver
 import dmitry.molchanov.gamelogic.GameInputParams
 import dmitry.molchanov.gamelogic.GameViewModel
 import dmitry.molchanov.gamelogic.Start
+import dmitry.molchanov.snake.StringRes
 import dmitry.molchanov.snake.koinApp
 import org.koin.core.parameter.parametersOf
 
@@ -27,11 +27,6 @@ fun DesktopGameScreen(gameInputParams: GameInputParams, onGameFinished: () -> Un
             override val textColor: Color = Color.Black
             override val availableChainColors: List<Color> = listOf(Color.Red, Color.Green, Color.Blue)
         },
-        stringResolver = object : StringResolver {
-            override val score: String = "Score"
-            override val record: String = "Record"
-            override val newRecord: String = "New record"
-            override val gameOver: String = "Game over"
-        }
+        stringResolver = StringRes
     ).GameScreen(viewModel = viewModel, onGameFinished = onGameFinished)
 }
