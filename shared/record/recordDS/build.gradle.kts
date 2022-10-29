@@ -1,10 +1,13 @@
 plugins {
     kotlin(GradlePlugins.Kotlin.MULTIPLATFORM)
     id(GradlePlugins.Id.ANDROID_LIBRARY)
+    id(GradlePlugins.Id.KTLINT)
 }
 
 kotlin {
     android()
+
+    jvm()
 
     js(IR) {
         browser()

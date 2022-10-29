@@ -16,9 +16,11 @@ class SnakeHelperTestForMultipleChainSnake {
 
     private val snakeHelper =
         SnakeHelper(
-            inputWidth = WIDTH,
-            inputHeight = HEIGHT,
-            inputChainSize = CHAIN_SIZE,
+            gameInputParams = GameInputParams(
+                inputWidth = WIDTH,
+                inputHeight = HEIGHT,
+                inputChainSize = CHAIN_SIZE,
+            ),
             screenHelper = testScreenHelper,
             gameOverStrategies = emptyList()
         )

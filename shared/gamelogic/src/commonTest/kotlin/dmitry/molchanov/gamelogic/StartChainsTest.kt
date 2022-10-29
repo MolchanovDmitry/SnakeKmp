@@ -11,9 +11,11 @@ class StartChainsTest {
     @Test
     fun check_start_chains_not_empty() {
         val snakeHelper = SnakeHelper(
-            inputWidth = 100,
-            inputHeight = 100,
-            inputChainSize = 10,
+            gameInputParams = GameInputParams(
+                inputWidth = 100,
+                inputHeight = 100,
+                inputChainSize = 10,
+            ),
             screenHelper = testScreenHelper,
             gameOverStrategies = emptyList()
         )
@@ -25,9 +27,11 @@ class StartChainsTest {
     fun check_start_chains_in_right_coordinates() {
         val chainSize = 10
         val snakeHelper = SnakeHelper(
-            inputWidth = 100,
-            inputHeight = 100,
-            inputChainSize = 10,
+            gameInputParams = GameInputParams(
+                inputWidth = 100,
+                inputHeight = 100,
+                inputChainSize = 10,
+            ),
             screenHelper = testScreenHelper,
             gameOverStrategies = emptyList()
         )
@@ -45,9 +49,11 @@ class StartChainsTest {
             val inputWidth = Random.nextInt(100, 1000)
             val inputHeight = Random.nextInt(100, 1000)
             val snakeHelper = SnakeHelper(
-                inputWidth = inputWidth,
-                inputHeight = inputHeight,
-                inputChainSize = chainSize,
+                gameInputParams = GameInputParams(
+                    inputWidth = 100,
+                    inputHeight = 100,
+                    inputChainSize = 10,
+                ),
                 screenHelper = testScreenHelper,
                 gameOverStrategies = emptyList()
             )

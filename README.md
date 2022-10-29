@@ -3,28 +3,36 @@
   <a href="#">
     <img src="https://img.shields.io/badge/kotlin-1.7.10-blue?logo=kotlin">
   </a>
-  <a href="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/lint.yml">
-    <img src="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/lint.yml/badge.svg">
-  </a>
-  <br>
   <a href="https://developer.android.com/jetpack/androidx/releases/wear-compose">
     <img src="https://img.shields.io/badge/Wear%20Compose-1.1.0--alpha07-blue?)">
   </a>
+    <a href="https://www.jetbrains.com/lp/compose-mpp/">
+    <img src="https://img.shields.io/badge/Compose-1.2.0-blue?)">
+  </a>
+
+  <br>
+
+  <a href="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/lint.yml">
+    <img src="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/lint.yml/badge.svg">
+  </a>
+
+  <br>
+  
   <a href="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/web.yml">
     <img src="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/web.yml/badge.svg">
-  </a>
-  <br>
-  <a href="https://www.jetbrains.com/lp/compose-mpp/">
-    <img src="https://img.shields.io/badge/Compose%20Multiplatform%20Compose-1.2.0-blue?)">
   </a>
   <a href="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/wear.yml">
     <img src="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/wear.yml/badge.svg">
   </a>
+  <a href="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/desktop.yml">
+    <img src="https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/desktop.yml/badge.svg">
+  </a>
 </p>
 
 Snake from childhood for the following platforms:
-* [wear OS](#Wear-OS)
-* [web](#Web)
+* [Wear OS](#Wear-OS)
+* [Web](#Web)
+* [Desktop](#Desktop)
 
 # Wear OS
 <div align="center">
@@ -53,6 +61,20 @@ You can get the artefacts by running [the following github action](https://githu
 Or run game manually by running command below in root directory:
 ```
 ./gradlew :wear:assembleRelease
+```
+
+# Desktop
+1. Adjust window size.
+2. Adjust chain size by `+`/`-` buttons.
+3. Press `Start game`.
+<div align="center">
+  <img src="img/desktop_settings.webp">
+  <img src="img/desktop_game.webp">
+</div>
+
+Run game manually by running command below in root directory:
+```
+./gradlew :desktop:run
 ```
 
 

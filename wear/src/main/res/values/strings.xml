@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Snake</string>
     <string name="game_over">GAME OVER</string>
-    <string name="score">Score: %1$d, record: %2$d</string>
-    <string name="new_record">New record: %1$d</string>
+    <string name="score">Score</string>
+    <string name="record">Record</string>
+    <string name="new_record">New record</string>
 </resources>

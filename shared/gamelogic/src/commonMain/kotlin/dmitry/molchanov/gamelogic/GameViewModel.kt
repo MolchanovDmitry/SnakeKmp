@@ -5,7 +5,6 @@ import dmitry.molchanov.gamelogic.domain.SnakeState
 import kotlinx.coroutines.flow.StateFlow
 
 interface GameViewModel {
-
     fun onAction(action: Action)
 
     val stateFlow: StateFlow<SnakeState>

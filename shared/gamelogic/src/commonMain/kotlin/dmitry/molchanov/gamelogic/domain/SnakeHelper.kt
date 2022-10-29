@@ -1,19 +1,18 @@
 package dmitry.molchanov.gamelogic.domain
 
+import dmitry.molchanov.gamelogic.GameInputParams
 import dmitry.molchanov.gamelogic.domain.gameoverstrategy.GameOverStrategy
 import kotlin.random.Random
 
 class SnakeHelper(
-    inputWidth: Int,
-    inputHeight: Int,
-    inputChainSize: Int,
+    gameInputParams: GameInputParams,
     private val screenHelper: ScreenHelper,
     private val gameOverStrategies: List<GameOverStrategy>,
 ) {
 
-    val chainSize = getRoundedChainSize(notOptimizeChainSize = inputChainSize)
-    private val maxHorizontalChains: Int = inputWidth / chainSize
-    private val maxVerticalChains: Int = inputHeight / chainSize
+    val chainSize = getRoundedChainSize(notOptimizeChainSize = gameInputParams.inputChainSize)
+    private val maxHorizontalChains: Int = gameInputParams.inputWidth / chainSize
+    private val maxVerticalChains: Int = gameInputParams.inputHeight / chainSize
     private val width = maxHorizontalChains * chainSize
     private val height = maxVerticalChains * chainSize
 

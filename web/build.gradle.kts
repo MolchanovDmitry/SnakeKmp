@@ -1,7 +1,7 @@
 plugins {
-    kotlin("multiplatform")
-    id("org.jetbrains.compose") version ("1.2.0")
-    id("org.jlleitschuh.gradle.ktlint")
+    kotlin(GradlePlugins.Kotlin.MULTIPLATFORM)
+    id(GradlePlugins.Id.COMPOSE)
+    id(GradlePlugins.Id.KTLINT)
 }
 
 group = "dmitry.molchanov"
