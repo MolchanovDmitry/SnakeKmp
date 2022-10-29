@@ -2,9 +2,9 @@ name: Desktop-build
 
 on:
   push:
-    branches: [ desktop ]
+    branches: [ master ]
   pull_request:
-    branches: [ desktop ]
+    branches: [ master ]
 
   workflow_dispatch:
 
