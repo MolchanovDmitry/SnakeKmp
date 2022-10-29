@@ -8,9 +8,11 @@ import kotlin.test.assertFalse
 class GetFreeChainsTest {
 
     private val snakeHelper = SnakeHelper(
-        inputWidth = 500,
-        inputHeight = 500,
-        inputChainSize = 10,
+        gameInputParams = GameInputParams(
+            inputWidth = 500,
+            inputHeight = 500,
+            inputChainSize = 10,
+        ),
         screenHelper = testScreenHelper,
         gameOverStrategies = emptyList()
     )
@@ -45,7 +47,7 @@ class GetFreeChainsTest {
 
     private fun assertChainNotInSnake(
         freeChain: SnakeChain,
-        snake: List<SnakeChain>
+        snake: List<SnakeChain>,
     ) {
         val isInChain = snake.firstOrNull { it == freeChain } != null
         assertFalse(isInChain)

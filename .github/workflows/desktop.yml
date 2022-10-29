@@ -1,4 +1,4 @@
-name: Desktop-build
+name: Desktop-test-build
 
 on:
   push:
@@ -16,6 +16,9 @@ jobs:
 
       - name: Change wrapper permission
         run: chmod +x ./gradlew
+
+      - name: Build dmg
+        run: ./gradlew :desktop:jvmTest
 
       - name: Build dmg
         run: ./gradlew :desktop:build
