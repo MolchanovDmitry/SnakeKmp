@@ -1,8 +1,8 @@
 package di
 
-import ScreenHelperImpl
 import dmitry.molchanov.gamelogic.domain.CoroutineDispatchers
 import dmitry.molchanov.gamelogic.domain.ScreenHelper
+import dmitry.molchanov.gamelogic.domain.defaultScreenHelper
 import dmitry.molchanov.gamelogic.domain.gameoverstrategy.EatSelfGameOverStrategy
 import dmitry.molchanov.gamelogic.domain.gameoverstrategy.TeleportGameOverStrategy
 import dmitry.molchanov.recorddsimpl.RecordSettings
@@ -29,6 +29,6 @@ val iosModule = module {
     single { listOf(EatSelfGameOverStrategy, TeleportGameOverStrategy) }
 
     single<ScreenHelper> {
-        ScreenHelperImpl()
+        defaultScreenHelper
     }
 }

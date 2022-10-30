@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import di.iosModule
+import dmitry.molchanov.commonui.SettingsScreen
 import dmitry.molchanov.gamelogic.GameInputParams
 import dmitry.molchanov.gamelogic.GameViewModel
 import dmitry.molchanov.gamelogic.di.sharedModule

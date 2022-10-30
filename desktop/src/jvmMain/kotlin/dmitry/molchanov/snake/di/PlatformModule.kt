@@ -2,10 +2,10 @@ package dmitry.molchanov.snake.di
 
 import dmitry.molchanov.gamelogic.domain.CoroutineDispatchers
 import dmitry.molchanov.gamelogic.domain.ScreenHelper
+import dmitry.molchanov.gamelogic.domain.defaultScreenHelper
 import dmitry.molchanov.gamelogic.domain.gameoverstrategy.EatSelfGameOverStrategy
 import dmitry.molchanov.gamelogic.domain.gameoverstrategy.TeleportGameOverStrategy
 import dmitry.molchanov.recorddsimpl.RecordSettings
-import dmitry.molchanov.snake.ui.ScreenHelperImpl
 import kotlinx.coroutines.Dispatchers
 import org.koin.dsl.module
 
@@ -29,6 +29,6 @@ val desktopModule = module {
     single { listOf(EatSelfGameOverStrategy, TeleportGameOverStrategy) }
 
     single<ScreenHelper> {
-        ScreenHelperImpl()
+        defaultScreenHelper
     }
 }

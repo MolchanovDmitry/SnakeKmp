@@ -13,11 +13,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import dmitry.molchanov.commonui.SettingsScreen
 import dmitry.molchanov.gamelogic.GameInputParams
 import dmitry.molchanov.gamelogic.di.sharedModule
 import dmitry.molchanov.snake.di.desktopModule
 import dmitry.molchanov.snake.ui.DesktopGameScreen
-import dmitry.molchanov.snake.ui.SettingsScreen
 import org.koin.core.context.startKoin
 
 val koinApp = startKoin {

@@ -1,6 +1,5 @@
-package dmitry.molchanov.snake.ui
+package dmitry.molchanov.commonui
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,13 +22,12 @@ import androidx.compose.ui.unit.dp
 private const val CHAIN_DELTA_STEP = 10
 private const val DEFAULT_CHAIN_SIZE = 50
 
-@Preview
 @Composable
-fun SettingsScreen(onStartGame: (IntSize, Int) -> Unit) {
+fun SettingsScreen(onStartClick: (IntSize, Int) -> Unit) {
     var fieldSize by remember { mutableStateOf(IntSize(0, 0)) }
     var chainSize by remember { mutableStateOf(DEFAULT_CHAIN_SIZE) }
     var chainSizeDelta by remember { mutableStateOf(0) }
-    fun startGame() = onStartGame(fieldSize, chainSize + chainSizeDelta)
+    fun startGame() = onStartClick(fieldSize, chainSize + chainSizeDelta)
     Box(
         modifier = Modifier.fillMaxSize().onSizeChanged { size ->
             fieldSize = size
