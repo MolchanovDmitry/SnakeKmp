@@ -86,23 +86,3 @@ compose.experimental {
         }
     }
 }
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
-}
-
-kotlin {
-    targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget> {
-        binaries.all {
-            // TODO: the current compose binary surprises LLVM, so disable checks for now.
-            freeCompilerArgs += "-Xdisable-phases=VerifyBitcode"
-        }
-    }
-}
-
-// TODO: remove when https://youtrack.jetbrains.com/issue/KT-50778 fixed
-project.tasks.withType(org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile::class.java).configureEach {
-    kotlinOptions.freeCompilerArgs += listOf(
-        "-Xir-dce-runtime-diagnostic=log"
-    )
-}
