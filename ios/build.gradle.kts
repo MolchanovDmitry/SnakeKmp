@@ -1,6 +1,6 @@
 plugins {
-    kotlin("multiplatform")
-    id("org.jetbrains.compose")
+    kotlin(GradlePlugins.Kotlin.MULTIPLATFORM)
+    id(GradlePlugins.Id.COMPOSE)
 }
 
 kotlin {
@@ -36,12 +36,13 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 arrayOf(
+                    project(Modules.Shared.COMMON_UI),
+
                     compose.ui,
                     compose.foundation,
                     compose.material,
                     compose.runtime,
                     Deps.Koin.CORE,
-                    project(Modules.Shared.COMMON_UI),
                 ).forEach(::implementation)
             }
         }
