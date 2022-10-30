@@ -1,18 +1,9 @@
 plugins {
-    kotlin(GradlePlugins.Kotlin.MULTIPLATFORM)
-    id(GradlePlugins.Id.ANDROID_LIBRARY)
-    id(GradlePlugins.Id.KTLINT)
+    kotlin("multiplatform")
+    id("org.jetbrains.compose")
 }
 
 kotlin {
-    android()
-
-    jvm()
-
-    js(IR) {
-        browser()
-        binaries.executable()
-    }
 
     iosX64("uikitX64") {
         binaries {
@@ -45,21 +36,24 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 arrayOf(
-                    project(Modules.Shared.Record.DATA_STORE),
-                    Deps.Coroutine.CORE,
-                    Deps.Settings.WOLF_SETTINGS,
-                    Deps.Settings.WOLF_SETTINGS_COROUTINES
+                    compose.ui,
+                    compose.foundation,
+                    compose.material,
+                    compose.runtime,
+                    Deps.Koin.CORE,
+                    project(Modules.Shared.COMMON_UI),
                 ).forEach(::implementation)
             }
         }
+
         val commonTest by getting {
             dependencies {
-                implementation(kotlin("test"))
+                implementation(kotlin("test-common"))
+                implementation(kotlin("test-annotations-common"))
             }
         }
-        val androidMain by getting
-        val androidTest by getting
-        val jsMain by getting
+
+
         val iosMain by creating {
             dependsOn(commonMain)
         }
@@ -75,16 +69,39 @@ kotlin {
     }
 }
 
-android {
-    namespace = "dmitry.molchanov.recorddsimpl"
-    compileSdk = Config.compileSdk
-    defaultConfig {
-        minSdk = Config.minSdk
-        targetSdk = Config.targetSdk
-    }
-    buildTypes {
-        release {
-            isMinifyEnabled = true
+compose.experimental {
+    uikit.application {
+        bundleIdPrefix = "dmitry.molchanov"
+        projectName = "Snake"
+        deployConfigurations {
+            simulator("IPhone13") {
+                //Usage: ./gradlew iosDeployIPhone13Debug
+                device = org.jetbrains.compose.experimental.dsl.IOSDevices.IPHONE_13_PRO
+            }
+            simulator("IPadUI") {
+                //Usage: ./gradlew iosDeployIPadUIDebug
+                device = org.jetbrains.compose.experimental.dsl.IOSDevices.IPAD_MINI_6th_Gen
+            }
         }
     }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions.jvmTarget = "11"
+}
+
+kotlin {
+    targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget> {
+        binaries.all {
+            // TODO: the current compose binary surprises LLVM, so disable checks for now.
+            freeCompilerArgs += "-Xdisable-phases=VerifyBitcode"
+        }
+    }
+}
+
+// TODO: remove when https://youtrack.jetbrains.com/issue/KT-50778 fixed
+project.tasks.withType(org.jetbrains.kotlin.gradle.dsl.KotlinJsCompile::class.java).configureEach {
+    kotlinOptions.freeCompilerArgs += listOf(
+        "-Xir-dce-runtime-diagnostic=log"
+    )
 }
