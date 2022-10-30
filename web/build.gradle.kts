@@ -8,10 +8,8 @@ group = "dmitry.molchanov"
 version = "1.0"
 
 kotlin {
-    js(IR) {
-        browser()
-        binaries.executable()
-    }
+    initJs()
+
     sourceSets {
         val jsMain by getting {
             dependencies {
