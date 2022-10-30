@@ -13,6 +13,7 @@ pluginManagement {
 rootProject.name = "Snake"
 
 // platforms
+include(":ios")
 include(":web")
 include(":wear")
 include(":desktop")

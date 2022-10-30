@@ -1,4 +1,4 @@
-package dmitry.molchanov.snake.di
+package di
 
 import dmitry.molchanov.gamelogic.domain.CoroutineDispatchers
 import dmitry.molchanov.gamelogic.domain.ScreenHelper
@@ -9,13 +9,13 @@ import dmitry.molchanov.recorddsimpl.RecordSettings
 import kotlinx.coroutines.Dispatchers
 import org.koin.dsl.module
 
-val desktopModule = module {
+val iosModule = module {
 
     single {
         val default = Dispatchers.Default
         CoroutineDispatchers(
             main = default,
-            io = Dispatchers.IO,
+            io = Dispatchers.Default,
             default = default,
             unconfined = Dispatchers.Unconfined,
             game = default
