@@ -79,8 +79,8 @@ Run game manually by running command below:
 ```
 
 # Ios
-2. Adjust chain size by `+`/`-` buttons.
-3. Press `Start game`.
+1. Adjust chain size by `+`/`-` buttons.
+2. Press `Start game`.
 
 <p>
     <img src="img/ios_settings.webp" width="380" height="720">
