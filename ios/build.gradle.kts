@@ -1,6 +1,7 @@
 plugins {
     kotlin(GradlePlugins.Kotlin.MULTIPLATFORM)
     id(GradlePlugins.Id.COMPOSE)
+    id(GradlePlugins.Id.KTLINT)
 }
 
 kotlin {
@@ -54,7 +55,6 @@ kotlin {
             }
         }
 
-
         val iosMain by creating {
             dependsOn(commonMain)
         }
@@ -76,11 +76,11 @@ compose.experimental {
         projectName = "Snake"
         deployConfigurations {
             simulator("IPhone13") {
-                //Usage: ./gradlew iosDeployIPhone13Debug
+                // Usage: ./gradlew iosDeployIPhone13Debug
                 device = org.jetbrains.compose.experimental.dsl.IOSDevices.IPHONE_13_PRO
             }
             simulator("IPadUI") {
-                //Usage: ./gradlew iosDeployIPadUIDebug
+                // Usage: ./gradlew iosDeployIPadUIDebug
                 device = org.jetbrains.compose.experimental.dsl.IOSDevices.IPAD_MINI_6th_Gen
             }
         }

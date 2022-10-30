@@ -37,6 +37,5 @@ fun MainScreen() {
                 inputChainSize = chainSize
             )
         })
-
     }
 }
