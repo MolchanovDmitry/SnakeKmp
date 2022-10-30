@@ -10,9 +10,11 @@ import dmitry.molchanov.commonui.GameScreenWrapper
 import dmitry.molchanov.commonui.resolvers.ColorResolver
 import dmitry.molchanov.commonui.resolvers.SizeResolver
 import dmitry.molchanov.gamelogic.GameViewModel
+import dmitry.molchanov.gamelogic.Start
 
 @Composable
 fun IosGameScreen(viewModel: GameViewModel, onGameFinished: () -> Unit) {
+    viewModel.onAction(Start)
     Column {
         GameScreenWrapper(
             sizeResolver = object : SizeResolver {
