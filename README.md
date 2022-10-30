@@ -33,6 +33,7 @@ Snake from childhood for the following platforms:
 * [Wear OS](#Wear-OS)
 * [Web](#Web)
 * [Desktop](#Desktop)
+* [Ios](#Ios)
 
 # Wear OS
 <div align="center">
@@ -41,7 +42,7 @@ Snake from childhood for the following platforms:
 
 You can get the apk by running [the following github action](https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/wear.yml).
 
-Or build apk manually by running command below in root directory:
+Or build apk manually by running command below:
 
 ``
 ./gradlew :wear:assembleRelease
@@ -58,7 +59,7 @@ Adjust the field size and press `Start!`:
 
 You can get the artefacts by running [the following github action](https://github.com/MolchanovDmitry/SnakeWearOS/actions/workflows/web.yml).
 
-Or run game manually by running command below in root directory:
+Or run game manually by running command below:
 ```
 ./gradlew :wear:assembleRelease
 ```
@@ -72,11 +73,24 @@ Or run game manually by running command below in root directory:
   <img src="img/desktop_game.webp">
 </div>
 
-Run game manually by running command below in root directory:
+Run game manually by running command below:
 ```
 ./gradlew :desktop:run
 ```
 
+# Ios
+2. Adjust chain size by `+`/`-` buttons.
+3. Press `Start game`.
+
+<p>
+    <img src="img/ios_settings.webp" width="380" height="720">
+    <img src="img/ios_game.webp" width="380" height="720">
+</p>
+
+Run game manually by running command below:
+```
+./gradlew iosDeployIPhone13Debug
+```
 
 ## License
 ```

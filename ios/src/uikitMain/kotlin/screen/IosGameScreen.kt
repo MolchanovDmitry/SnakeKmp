@@ -22,7 +22,8 @@ fun IosGameScreen(viewModel: GameViewModel, onGameFinished: () -> Unit) {
             },
             colorResolver = object : ColorResolver {
                 override val textColor: Color = Color.Black
-                override val availableChainColors: List<Color> = listOf(Color.Red, Color.Green, Color.Blue)
+                override val availableChainColors: List<Color> =
+                    listOf(Color(0xFF6200EE), Color.Red, Color.Green, Color.Blue)
             },
             stringResolver = StringRes
         ).GameScreen(viewModel = viewModel, onGameFinished = onGameFinished)
