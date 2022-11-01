@@ -33,6 +33,18 @@ kotlin {
 
 compose.desktop {
     application {
+        nativeDistributions {
+            val pathToLogo = "src/jvmMain/resources/img/"
+            macOS {
+                iconFile.set(project.file("${pathToLogo}logo.icns"))
+            }
+            windows {
+                iconFile.set(project.file("${pathToLogo}logo.ico"))
+            }
+            linux {
+                iconFile.set(project.file("${pathToLogo}logo.png"))
+            }
+        }
         mainClass = "dmitry.molchanov.snake.MainKt"
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Deb, TargetFormat.Exe)
