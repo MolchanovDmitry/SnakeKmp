@@ -1,4 +1,4 @@
-package di
+package dmitry.molchanov.snake.di
 
 import dmitry.molchanov.gamelogic.domain.CoroutineDispatchers
 import dmitry.molchanov.gamelogic.domain.ScreenHelper

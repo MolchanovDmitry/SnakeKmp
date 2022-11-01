@@ -47,7 +47,7 @@ kotlin {
 
 compose.experimental {
     uikit.application {
-        bundleIdPrefix = "dmitry.molchanov"
+        bundleIdPrefix = "dmitry.molchanov.snake"
         projectName = "Snake"
         deployConfigurations {
             simulator("IPhone13") {

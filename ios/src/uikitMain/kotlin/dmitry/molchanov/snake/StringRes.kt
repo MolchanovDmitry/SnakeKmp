@@ -1,3 +1,5 @@
+package dmitry.molchanov.snake
+
 import dmitry.molchanov.commonui.resolvers.StringResolver
 
 object StringRes : StringResolver {

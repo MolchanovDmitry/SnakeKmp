@@ -1,6 +1,5 @@
-package screen
+package dmitry.molchanov.snake.screen
 
-import StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -11,6 +10,7 @@ import dmitry.molchanov.commonui.resolvers.ColorResolver
 import dmitry.molchanov.commonui.resolvers.SizeResolver
 import dmitry.molchanov.gamelogic.GameViewModel
 import dmitry.molchanov.gamelogic.Start
+import dmitry.molchanov.snake.StringRes
 
 @Composable
 fun IosGameScreen(viewModel: GameViewModel, onGameFinished: () -> Unit) {

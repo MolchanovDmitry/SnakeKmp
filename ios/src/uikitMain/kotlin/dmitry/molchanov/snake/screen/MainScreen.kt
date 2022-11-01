@@ -1,4 +1,4 @@
-package screen
+package dmitry.molchanov.snake.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -6,11 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import di.iosModule
 import dmitry.molchanov.commonui.SettingsScreen
 import dmitry.molchanov.gamelogic.GameInputParams
 import dmitry.molchanov.gamelogic.GameViewModel
 import dmitry.molchanov.gamelogic.di.sharedModule
+import dmitry.molchanov.snake.di.iosModule
 import org.koin.core.context.startKoin
 import org.koin.core.parameter.parametersOf
 

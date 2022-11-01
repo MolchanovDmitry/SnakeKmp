@@ -1,5 +1,6 @@
 import androidx.compose.ui.window.Application
-import kotlinx.cinterop.ObjCObjectBase
+import dmitry.molchanov.snake.StringRes
+import dmitry.molchanov.snake.screen.MainScreen
 import kotlinx.cinterop.autoreleasepool
 import kotlinx.cinterop.cstr
 import kotlinx.cinterop.memScoped
@@ -13,7 +14,6 @@ import platform.UIKit.UIResponder
 import platform.UIKit.UIResponderMeta
 import platform.UIKit.UIScreen
 import platform.UIKit.UIWindow
-import screen.MainScreen
 
 fun main() {
     val args = emptyArray<String>()
@@ -26,11 +26,8 @@ fun main() {
     }
 }
 
-class SkikoAppDelegate : UIResponder, UIApplicationDelegateProtocol {
+class SkikoAppDelegate @OverrideInit constructor() : UIResponder(), UIApplicationDelegateProtocol {
     companion object : UIResponderMeta(), UIApplicationDelegateProtocolMeta
-
-    @ObjCObjectBase.OverrideInit
-    constructor() : super()
 
     private var _window: UIWindow? = null
 
