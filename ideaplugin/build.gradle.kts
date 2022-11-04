@@ -1,9 +1,8 @@
 plugins {
     id("org.jetbrains.intellij") version "1.9.0"
-    java
-    kotlin("jvm")
-    id("org.jetbrains.compose")
     id("idea")
+    id(GradlePlugins.Id.COMPOSE)
+    id(GradlePlugins.Id.KTLINT)
 }
 
 group = "dmitry.molchanov"
