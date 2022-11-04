@@ -34,6 +34,7 @@ Snake from childhood for the following platforms:
 * [Web](#Web)
 * [Desktop](#Desktop)
 * [Ios](#Ios)
+* [Intellij idea plugin](#Intellij-idea-plugin)
 
 # Wear OS
 <div align="center">
@@ -91,6 +92,16 @@ Run game manually by running command below:
 ```
 ./gradlew iosDeployIPhone13Debug
 ```
+
+# Intellij idea plugin
+1. Run `./gradlew ideaplugin:runIde` command.
+2. In the opened window select or create project.
+3. Select Tools -> Snake
+
+<div align="center">
+  <img src="img/idea_tools.webp">
+  <img src="img/idea_settings.webp">
+</div>
 
 ## License
 ```
