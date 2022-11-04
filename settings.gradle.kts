@@ -17,6 +17,7 @@ include(":ios")
 include(":web")
 include(":wear")
 include(":desktop")
+include(":ideaplugin")
 
 // shared
 include(":shared:gamelogic")
