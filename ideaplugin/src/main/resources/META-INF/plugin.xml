@@ -1,0 +1,25 @@
+<idea-plugin>
+    <id>dmitry.molchanov.snake.SnakeAction</id>
+    <name>Snake game</name>
+    <vendor email="penopllast@yandex.ru" url="https://github.com/MolchanovDmitry">DmitryMolchanov</vendor>
+
+    <description><![CDATA[
+A plugin demonstrates Snake on IntelliJ Platform
+    ]]></description>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+        <action id="dmitry.molchanov.snake.SnakeAction" class="dmitry.molchanov.snake.SnakeAction"
+                text="Snake">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+    </actions>
+</idea-plugin>
