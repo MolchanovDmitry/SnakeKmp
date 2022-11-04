@@ -13,17 +13,14 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.DumbAwareAction
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
-import com.intellij.openapi.util.IconLoader
-import com.intellij.ui.scale.Scale
-import com.intellij.ui.scale.ScaleContext
-import com.intellij.ui.scale.ScaleType
 import dmitry.molchanov.commonui.SettingsScreen
 import dmitry.molchanov.gamelogic.GameInputParams
 import dmitry.molchanov.gamelogic.di.sharedModule
+import dmitry.molchanov.snake.Icons.TOOLBAR
 import dmitry.molchanov.snake.di.pluginModule
 import dmitry.molchanov.snake.theme.WidgetTheme
-import org.koin.core.context.startKoin
 import javax.swing.JComponent
+import org.koin.core.context.startKoin
 
 
 val koinApp = startKoin {
@@ -36,16 +33,9 @@ class SnakeAction : DumbAwareAction() {
         DemoDialog(e.project).show()
     }
 
-    object MyIcons {
-        @JvmField
-        val Action = IconLoader.getIcon("/icons/ic_snake_tr_13x13.png", javaClass)
-    }
-
     override fun update(e: AnActionEvent) {
         super.update(e)
-        ScaleContext.create(Scale.create(2.0, ScaleType.USR_SCALE))
-
-        e.presentation.icon = MyIcons.Action
+        e.presentation.icon = TOOLBAR.icon
     }
 
     class DemoDialog(project: Project?) : DialogWrapper(project) {
