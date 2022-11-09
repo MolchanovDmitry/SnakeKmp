@@ -62,7 +62,7 @@ You can get the artefacts by running [the following github action](https://githu
 
 Or run game manually by running command below:
 ```
-./gradlew :wear:assembleRelease
+./gradlew :web:jsBrowserRun
 ```
 
 # Desktop
